@@ -67,6 +67,8 @@ void RocEye::loadSceneFile(void)
 			}//end model
 			else if (key == "PLANE")
 			{
+				string type = val;
+				
 				string material = "";
 				float normal_x = NAN;
 				float normal_y = NAN;
@@ -97,7 +99,15 @@ void RocEye::loadSceneFile(void)
 				
 				if (material != "" && !isnan(normal_x) && !isnan(normal_y) && !isnan(normal_z) && !isnan(updir_x) && !isnan(updir_y) && !isnan(updir_z) && !isnan(height) && !isnan(width) && !isnan(dist_from_origin))
 				{
-					createPlane(Ogre::Vector3(normal_x, normal_y, normal_z), dist_from_origin, width, height, material, Ogre::Vector3(updir_x, updir_y, updir_z));
+					Ogre::Vector3 normal(normal_x, normal_y, normal_z);
+					Ogre::Vector3 up(updir_x, updir_y, updir_z);
+					createPlane(normal, dist_from_origin, width, height, material, up);
+					
+					if (type == "DOUBLE")
+					{
+						//make the plane double-sided by creating a second one with the opposite normal vector, in the same location
+						createPlane(-normal, -dist_from_origin, width, height, material, up);
+					}
 				}
 				else
 				{

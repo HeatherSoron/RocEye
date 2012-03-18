@@ -1,0 +1,22 @@
+Dependencies: Ogre, OIS, CMake
+
+Windows:
+========
+Build instructions will come as soon as I prep binaries for the non-programmers in our group.
+
+
+Linux:
+======
+1. Install Ogre 1.7.2+ (may have to build from source) and CMake.
+
+2. Navigate to this directory and run the following commands:
+
+cmake source/
+make
+
+3. Run the RocEye binary.
+
+
+Mac OS X:
+=========
+Erm... this could take a bit. It's tricky. Ogre and especially OIS are probably not going to be packaged well. Give us a bit of time to figure this out (since we DO have Mac users in our group!).

@@ -1,0 +1,30 @@
+# Resources required by the sample browser and most samples.
+[Essential]
+Zip=/home/USERNAME/dev/ogre/Samples/Media/packs/SdkTrays.zip
+FileSystem=/home/USERNAME/dev/ogre/Samples/Media/thumbnails
+
+# Common sample resources needed by many of the samples.
+# Rarely used resources should be separately loaded by the
+# samples which require them.
+[Popular]
+FileSystem=/home/USERNAME/dev/ogre/Samples/Media/fonts
+FileSystem=/home/USERNAME/dev/ogre/Samples/Media/materials/programs
+FileSystem=/home/USERNAME/dev/ogre/Samples/Media/materials/scripts
+FileSystem=/home/USERNAME/dev/ogre/Samples/Media/materials/textures
+FileSystem=/home/USERNAME/dev/ogre/Samples/Media/materials/textures/nvidia
+FileSystem=/home/USERNAME/dev/ogre/Samples/Media/models
+FileSystem=/home/USERNAME/dev/ogre/Samples/Media/particle
+FileSystem=/home/USERNAME/dev/ogre/Samples/Media/DeferredShadingMedia
+FileSystem=/home/USERNAME/dev/ogre/Samples/Media/PCZAppMedia
+FileSystem=/home/USERNAME/dev/ogre/Samples/Media/RTShaderLib
+Zip=/home/USERNAME/dev/ogre/Samples/Media/packs/cubemap.zip
+Zip=/home/USERNAME/dev/ogre/Samples/Media/packs/cubemapsJS.zip
+Zip=/home/USERNAME/dev/ogre/Samples/Media/packs/dragon.zip
+Zip=/home/USERNAME/dev/ogre/Samples/Media/packs/fresneldemo.zip
+Zip=/home/USERNAME/dev/ogre/Samples/Media/packs/ogretestmap.zip
+Zip=/home/USERNAME/dev/ogre/Samples/Media/packs/ogredance.zip
+Zip=/home/USERNAME/dev/ogre/Samples/Media/packs/Sinbad.zip
+Zip=/home/USERNAME/dev/ogre/Samples/Media/packs/skybox.zip
+
+[General]
+FileSystem=/home/USERNAME/dev/ogre/Samples/Media

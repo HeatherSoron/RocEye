@@ -1,5 +1,7 @@
 Dependencies: Ogre, OIS, CMake
 
+Note: due to lack of support for recent versions of OS X, OIS will be replaced with another library very soon.
+
 Windows:
 ========
 Build instructions will come as soon as I prep binaries for the non-programmers in our group.
@@ -19,4 +21,4 @@ make
 
 Mac OS X:
 =========
-Erm... this could take a bit. It's tricky. Ogre and especially OIS are probably not going to be packaged well. Give us a bit of time to figure this out (since we DO have Mac users in our group!).
+Erm... this could take a bit. It's tricky. Ogre might be hard to build, and OIS does *not* work on Lion. Give us a bit of time to figure this out (since we DO have Mac users in our group!).

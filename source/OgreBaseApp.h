@@ -42,21 +42,27 @@ protected:
     virtual void setupInput(void);
     
     virtual void createScene(void) = 0;
+    
+    virtual void moveCamera(void);
 	
     Ogre::Root* mRoot;
     Ogre::String mPluginsCfg;
     Ogre::String mResourcesCfg;
     Ogre::RenderWindow* mWindow;
     Ogre::SceneManager* mSceneMgr;
+    Ogre::SceneNode* mCameraNode;
     Ogre::Camera* mCamera;
     Ogre::Viewport* mViewport;
-    
-    // OgreBites
-    OgreBites::SdkCameraMan* mCameraMan;       // basic camera controller
 
     OIS::InputManager* mInputManager;
     OIS::Mouse* mMouse;
     OIS::Keyboard* mKeyboard;
+    
+    Ogre::Vector3 mMovementVector; //used to manually translate the camera
+    Ogre::Real mRoll;
+    static const Ogre::Real mCameraSpeed = 4; //the speed of our camera
+    static const Ogre::Real mRotateSpeed = 0.2;
+    static const Ogre::Real mRollSpeed = 2;
     
 private:
 };

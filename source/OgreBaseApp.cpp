@@ -10,7 +10,9 @@ OgreBaseApp::OgreBaseApp(void)
 		mRoot(0),
 		mWindow(0),
 		mPluginsCfg(Ogre::StringUtil::BLANK),
-		mResourcesCfg(Ogre::StringUtil::BLANK)
+		mResourcesCfg(Ogre::StringUtil::BLANK),
+		mMovementVector(0,0,0),
+		mRoll(0)
 {
 }
 //-------------------------------------------------------------------------------------
@@ -19,9 +21,6 @@ OgreBaseApp::~OgreBaseApp(void)
 	Ogre::WindowEventUtilities::removeWindowEventListener(mWindow, this);
 	windowClosed(mWindow);
 	delete mRoot;
-	
-	delete mCameraMan;
-	mCameraMan = 0;
 }
 
 bool OgreBaseApp::setup(void)
@@ -113,7 +112,8 @@ void OgreBaseApp::createCamera(void)
 	mCamera->lookAt(Ogre::Vector3(0,0,-300));
 	mCamera->setNearClipDistance(5);
 	
-	mCameraMan = new OgreBites::SdkCameraMan(mCamera);   // create a default camera controller
+	mCameraNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
+	mCameraNode->attachObject(mCamera);
 }
 
 void OgreBaseApp::createViewport(void)
@@ -192,43 +192,100 @@ bool OgreBaseApp::frameRenderingQueued(const Ogre::FrameEvent& evt)
 		return false;
 	}
 	
-	//update the camera
-	mCameraMan->frameRenderingQueued(evt);
+	//update camera position
+	moveCamera();
 
 	return true;
 }
 
+void OgreBaseApp::moveCamera()
+{
+	mCameraNode->translate(mMovementVector, Ogre::SceneNode::TS_LOCAL);
+	mCameraNode->roll(Ogre::Degree(mRoll), Ogre::SceneNode::TS_LOCAL);
+}
+
 bool OgreBaseApp::mousePressed(const OIS::MouseEvent& evt, OIS::MouseButtonID id)
 {
-	/* normal mouse processing here... */
-	mCameraMan->injectMouseDown(evt, id);
 	return true;
 }
  
 bool OgreBaseApp::mouseReleased(const OIS::MouseEvent& evt, OIS::MouseButtonID id)
 {
-	/* normal mouse processing here... */
-	mCameraMan->injectMouseUp(evt, id);
 	return true;
 }
  
 bool OgreBaseApp::mouseMoved(const OIS::MouseEvent& evt)
 {
-	/* normal mouse processing here... */
-	mCameraMan->injectMouseMove(evt);
+	mCameraNode->yaw(Ogre::Degree(-evt.state.X.rel * mRotateSpeed));
+    mCameraNode->pitch(Ogre::Degree(-evt.state.Y.rel * mRotateSpeed));
 	return true;
 }
  
 bool OgreBaseApp::keyPressed(const OIS::KeyEvent& evt)
 {
-	/* normal key processing here... */
-	mCameraMan->injectKeyDown(evt);
+	switch(evt.key)
+	{
+		case OIS::KC_W:
+			mMovementVector.z = -mCameraSpeed;
+			break;
+		case OIS::KC_S:
+			mMovementVector.z = mCameraSpeed;
+			break;
+		case OIS::KC_A:
+			mMovementVector.x = -mCameraSpeed;
+			break;
+		case OIS::KC_D:
+			mMovementVector.x = mCameraSpeed;
+			break;
+		case OIS::KC_R:
+			mMovementVector.y = mCameraSpeed;
+			break;
+		case OIS::KC_F:
+			mMovementVector.y = -mCameraSpeed;
+			break;
+		
+		case OIS::KC_E:
+			mRoll = -mRollSpeed;
+			break;
+		case OIS::KC_Q:
+			mRoll = mRollSpeed;
+			break;
+	}
+	
 	return true;
 }
  
 bool OgreBaseApp::keyReleased(const OIS::KeyEvent& evt)
 {
-	/* normal key processing here... */
-	mCameraMan->injectKeyUp(evt);
+	switch(evt.key)
+	{
+		case OIS::KC_W:
+			mMovementVector.z = 0;
+			break;
+		case OIS::KC_S:
+			mMovementVector.z = 0;
+			break;
+		case OIS::KC_A:
+			mMovementVector.x = 0;
+			break;
+		case OIS::KC_D:
+			mMovementVector.x = 0;
+			break;
+		case OIS::KC_R:
+			mMovementVector.y = 0;
+			break;
+		case OIS::KC_F:
+			mMovementVector.y = 0;
+			break;
+			
+		
+		case OIS::KC_E:
+			mRoll = 0;
+			break;
+		case OIS::KC_Q:
+			mRoll = 0;
+			break;
+	}
+	
 	return true;
 }

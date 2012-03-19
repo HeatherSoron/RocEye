@@ -8,9 +8,12 @@ You'll have to set up plugins.cfg and resources.cfg for your own system. Sample 
 
 Controls:
 =========
-WASD: camera movement
+WASD: standard camera movement
+Q: rotate counterclockwise
+E: rotate clockwise
+R: move up
+F: move down
 Mouse movement: change camera direction
-Left shift (held): make camera move faster (20x)
 Escape: exit
 
 

@@ -55,30 +55,30 @@ void RocEye::createCube(Ogre::Vector3 center, Ogre::Real diam, Ogre::String text
 	
 	Ogre::SceneNode* boxNode = mSceneMgr->getRootSceneNode()->createChildSceneNode(Ogre::String(name) + "node");
 	
-	Ogre::ManualObject mo(Ogre::String(name) + "Object");
+	Ogre::ManualObject* mo = mSceneMgr->createManualObject(Ogre::String(name) + "Object");
 	
-	mo.begin(texture, Ogre::RenderOperation::OT_TRIANGLE_LIST);
+	mo->begin(texture, Ogre::RenderOperation::OT_TRIANGLE_LIST);
 	
-	mo.position(diam/2, diam/2, diam/2);
-	mo.textureCoord(0,0);
+	mo->position(diam/2, diam/2, diam/2);
+	mo->textureCoord(0,0);
 	
-	mo.position(-diam/2, diam/2, diam/2);
-	mo.textureCoord(1,0);
+	mo->position(-diam/2, diam/2, diam/2);
+	mo->textureCoord(1,0);
 	
-	mo.position(diam/2, diam/2, -diam/2);
-	mo.textureCoord(0,1);
+	mo->position(diam/2, diam/2, -diam/2);
+	mo->textureCoord(0,1);
 	
-	mo.position(-diam/2, diam/2, -diam/2);
-	mo.textureCoord(1,1);
+	mo->position(-diam/2, diam/2, -diam/2);
+	mo->textureCoord(1,1);
 	
-	mo.triangle(0,2,1);
-	mo.triangle(1,2,3);
+	mo->triangle(0,2,1);
+	mo->triangle(1,2,3);
 	
-	mo.end();
-	mo.convertToMesh(Ogre::String(name) + "Mesh");
+	mo->end();
+	mo->convertToMesh(Ogre::String(name) + "Mesh");
 	
 	Ogre::Entity* ent = mSceneMgr->createEntity(Ogre::String(name), Ogre::String(name) + "Mesh");
-	boxNode->attachObject(ent);
+	boxNode->attachObject(mo);
     
     boxNode->setPosition(center);
 }

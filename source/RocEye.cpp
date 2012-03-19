@@ -55,53 +55,30 @@ void RocEye::createCube(Ogre::Vector3 center, Ogre::Real diam, Ogre::String text
 	
 	Ogre::SceneNode* boxNode = mSceneMgr->getRootSceneNode()->createChildSceneNode(Ogre::String(name) + "node");
 	
-	Ogre::Plane top(Ogre::Vector3::UNIT_Y, diam/2);
-	Ogre::MeshManager::getSingleton().createPlane(Ogre::String(name) + "Top", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
-    top, diam, diam, 20, 20, true, 1, 1, 1, Ogre::Vector3::UNIT_X);
-    Ogre::Entity* ent = mSceneMgr->createEntity(Ogre::String(name) + "TopEntity", Ogre::String(name) + "Top");
-    ent->setMaterialName(texture);
-    ent->setCastShadows(true);
-    boxNode->createChildSceneNode()->attachObject(ent);
-    
-	Ogre::Plane right(Ogre::Vector3::UNIT_X, diam/2);
-	Ogre::MeshManager::getSingleton().createPlane(Ogre::String(name) + "Right", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
-    right, diam, diam, 20, 20, true, 1, 1, 1, Ogre::Vector3::UNIT_Y);
-    ent = mSceneMgr->createEntity(Ogre::String(name) + "RightEntity", Ogre::String(name) + "Right");
-    ent->setMaterialName(texture);
-    ent->setCastShadows(true);
-    boxNode->createChildSceneNode()->attachObject(ent);
-    
-	Ogre::Plane left(Ogre::Vector3::NEGATIVE_UNIT_X, diam/2);
-	Ogre::MeshManager::getSingleton().createPlane(Ogre::String(name) + "Left", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
-    left, diam, diam, 20, 20, true, 1, 1, 1, Ogre::Vector3::UNIT_Y);
-    ent = mSceneMgr->createEntity(Ogre::String(name) + "LeftEntity", Ogre::String(name) + "Left");
-    ent->setMaterialName(texture);
-    ent->setCastShadows(true);
-    boxNode->createChildSceneNode()->attachObject(ent);
-    
-	Ogre::Plane far(Ogre::Vector3::UNIT_Z, diam/2);
-	Ogre::MeshManager::getSingleton().createPlane(Ogre::String(name) + "Far", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
-    far, diam, diam, 20, 20, true, 1, 1, 1, Ogre::Vector3::UNIT_Y);
-    ent = mSceneMgr->createEntity(Ogre::String(name) + "FarEntity", Ogre::String(name) + "Far");
-    ent->setMaterialName(texture);
-    ent->setCastShadows(true);
-    boxNode->createChildSceneNode()->attachObject(ent);
-    
-	Ogre::Plane near(Ogre::Vector3::NEGATIVE_UNIT_Z, diam/2);
-	Ogre::MeshManager::getSingleton().createPlane(Ogre::String(name) + "Near", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
-    near, diam, diam, 20, 20, true, 1, 1, 1, Ogre::Vector3::UNIT_Y);
-    ent = mSceneMgr->createEntity(Ogre::String(name) + "NearEntity", Ogre::String(name) + "Near");
-    ent->setMaterialName(texture);
-    ent->setCastShadows(true);
-    boxNode->createChildSceneNode()->attachObject(ent);
-    
-	Ogre::Plane bottom(Ogre::Vector3::NEGATIVE_UNIT_Y, diam/2);
-	Ogre::MeshManager::getSingleton().createPlane(Ogre::String(name) + "Bottom", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
-    bottom, diam, diam, 20, 20, true, 1, 1, 1, Ogre::Vector3::UNIT_X);
-    ent = mSceneMgr->createEntity(Ogre::String(name) + "BottomEntity", Ogre::String(name) + "Bottom");
-    ent->setMaterialName(texture);
-    ent->setCastShadows(true);
-    boxNode->createChildSceneNode()->attachObject(ent);
+	Ogre::ManualObject mo(Ogre::String(name) + "Object");
+	
+	mo.begin(texture, Ogre::RenderOperation::OT_TRIANGLE_LIST);
+	
+	mo.position(diam/2, diam/2, diam/2);
+	mo.textureCoord(0,0);
+	
+	mo.position(-diam/2, diam/2, diam/2);
+	mo.textureCoord(1,0);
+	
+	mo.position(diam/2, diam/2, -diam/2);
+	mo.textureCoord(0,1);
+	
+	mo.position(-diam/2, diam/2, -diam/2);
+	mo.textureCoord(1,1);
+	
+	mo.triangle(0,2,1);
+	mo.triangle(1,2,3);
+	
+	mo.end();
+	mo.convertToMesh(Ogre::String(name) + "Mesh");
+	
+	Ogre::Entity* ent = mSceneMgr->createEntity(Ogre::String(name), Ogre::String(name) + "Mesh");
+	boxNode->attachObject(ent);
     
     boxNode->setPosition(center);
 }

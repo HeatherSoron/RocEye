@@ -46,7 +46,7 @@ void RocEye::createPlane(Ogre::Vector3 normal, Ogre::Real distFromOrigin, Ogre::
 }
 
 //this is kinda hack-y, yes. I wanted to just use a manual object, but it wasn't working for me, for some reason. I'm gonna clean this up in future versions.
-void RocEye::createCube(Ogre::Vector3 center, Ogre::Real diam, Ogre::String texture)
+void RocEye::createPortraitPillar(Ogre::Vector3 center, Ogre::Real diam, Ogre::String texture)
 {
 	static unsigned int id = 0;
 	
@@ -73,6 +73,9 @@ void RocEye::createCube(Ogre::Vector3 center, Ogre::Real diam, Ogre::String text
 	
 	mo->triangle(offset + 0, offset + 2, offset + 1);
 	mo->triangle(offset + 1, offset + 2, offset + 3);
+	//double-sided
+	mo->triangle(offset + 0, offset + 1, offset + 2);
+	mo->triangle(offset + 1, offset + 3, offset + 2);
 	offset += 4;
 	
 	//now the bottom
@@ -87,6 +90,9 @@ void RocEye::createCube(Ogre::Vector3 center, Ogre::Real diam, Ogre::String text
 	
 	mo->triangle(offset + 0, offset + 2, offset + 1);
 	mo->triangle(offset + 1, offset + 2, offset + 3);
+	//double-sided
+	mo->triangle(offset + 0, offset + 1, offset + 2);
+	mo->triangle(offset + 1, offset + 3, offset + 2);
 	offset += 4;
 	
 	//set up a rotation for the for loop below

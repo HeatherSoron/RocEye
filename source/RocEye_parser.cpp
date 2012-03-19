@@ -223,8 +223,10 @@ void RocEye::loadSceneFile(void)
 					continue;
 				}
 			}//end light
-			else if (key == "CUBE")
+			else if (key == "PORTRAIT")
 			{
+				string type = val;
+				
 				Ogre::String material = "";
 				float x = NAN;
 				float y = NAN;
@@ -247,7 +249,10 @@ void RocEye::loadSceneFile(void)
 				
 				if (material != "" && ! center.isNaN() && !isnan(diameter))
 				{
-					createCube(center, diameter, material);
+					if (val == "PILLAR")
+					{
+						createPortraitPillar(center, diameter, material);
+					}
 				}
 			}//end cube
 			else if (key == "PARTICLE")

@@ -1,23 +1,36 @@
 #ifndef OGRE_BASE_APP_H
 #define OGRE_BASE_APP_H
 
+#include <Ogre.h>
 #include <OgreRoot.h>
+#include <OgreException.h>
+#include <OgreEntity.h>
+#include <OgreWindowEventUtilities.h>
 #include <OgreConfigFile.h>
 #include <OgreRenderWindow.h>
 #include <OgreCamera.h>
 #include <OgreViewport.h>
 #include <OgreSceneManager.h>
+#include <OgreMeshManager.h>
 
-#include <OISEvents.h>
-#include <OISInputManager.h>
-#include <OISKeyboard.h>
-#include <OISMouse.h>
+// OGRE initialization:
+#ifdef WIN32
+//Necessary to tell the mouse events to go to this window
+#if (_WIN32_WINNT < 0x0501)
+#undef _WIN32_WINNT
+#define _WIN32_WINNT 0x0501
+#endif
+// Necessary to get the Window Handle of the window
+// OGRE created, so SDL can grab its input.
+#include "windows.h"
+#include "SDL_getenv.h"
+#endif
+ 
+// SDL initialization:
+#include "SDL/SDL.h"
+#include "SDL/SDL_syswm.h"
 
-#include <SdkCameraMan.h>
-
-#include <OgreWindowEventUtilities.h>
-
-class OgreBaseApp : public Ogre::WindowEventListener, public Ogre::FrameListener, public OIS::KeyListener, public OIS::MouseListener
+class OgreBaseApp : public Ogre::FrameListener
 {
 public:
     OgreBaseApp(void);
@@ -25,23 +38,15 @@ public:
     bool go(void);
 
 protected:
-    //from Ogre::WindowEventListener
-    virtual void windowResized(Ogre::RenderWindow* rw);
-    virtual void windowClosed(Ogre::RenderWindow* rw);
     //from Ogre::FrameListener
     virtual bool frameRenderingQueued(const Ogre::FrameEvent& evt);
-    virtual bool mousePressed(const OIS::MouseEvent& evt, OIS::MouseButtonID id);
-    virtual bool mouseReleased(const OIS::MouseEvent& evt, OIS::MouseButtonID id);
-    virtual bool mouseMoved( const OIS::MouseEvent &arg );
-    virtual bool keyPressed(const OIS::KeyEvent& evt);
-    virtual bool keyReleased(const OIS::KeyEvent& evt);
     
     virtual bool setup(void);
     virtual void createCamera(void);
     virtual void createViewport(void);
     virtual void setupInput(void);
     
-    virtual void createScene(void) = 0;
+    virtual void createScene(void) {};
     
     virtual void moveCamera(void);
 	
@@ -53,10 +58,6 @@ protected:
     Ogre::SceneNode* mCameraNode;
     Ogre::Camera* mCamera;
     Ogre::Viewport* mViewport;
-
-    OIS::InputManager* mInputManager;
-    OIS::Mouse* mMouse;
-    OIS::Keyboard* mKeyboard;
     
     Ogre::Vector3 mMovementVector; //used to manually translate the camera
     Ogre::Real mRoll;

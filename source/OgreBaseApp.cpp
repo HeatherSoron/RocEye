@@ -18,13 +18,20 @@ OgreBaseApp::OgreBaseApp(void)
 //-------------------------------------------------------------------------------------
 OgreBaseApp::~OgreBaseApp(void)
 {
+/*
 	Ogre::WindowEventUtilities::removeWindowEventListener(mWindow, this);
 	windowClosed(mWindow);
+*/
 	delete mRoot;
+	
+	SDL_Quit();
 }
 
 bool OgreBaseApp::setup(void)
 {
+	SDL_Init(SDL_INIT_VIDEO);
+	SDL_Surface *screen = SDL_SetVideoMode(640, 480, 0, SDL_OPENGL);
+	
 	//construct the Ogre::Root object
 	mRoot = new Ogre::Root(mPluginsCfg);
 
@@ -70,9 +77,31 @@ bool OgreBaseApp::go(void)
 #endif
 
 	if (!setup()) return false;
-
+	
+	mRoot->initialise(false); //do NOT create a window
+	
+	//connect SDL and Ogre here
+	Ogre::NameValuePairList misc;
+#ifdef WINDOWS
+	SDL_SysWMinfo wmInfo;
+	SDL_VERSION(&wmInfo.version);
+	SDL_GetWMInfo(&wmInfo);
+	
+	size_t winHandle = reinterpret_cast<size_t>(wmInfo.window);
+	size_t winGlContext = reinterpret_cast<size_t>(wmInfo.hglrc);
+	
+	misc["externalWindowHandle"] = StringConverter::toString(winHandle);
+	misc["externalGLContext"] = StringConverter::toString(winGlContext);
+#else
+	misc["currentGLContext"] = Ogre::String("True");
+#endif
+	
+	//NOW we make a RenderWindow!
+	mWindow = mRoot->createRenderWindow("MainRenderWindow", 640, 480, false, &misc);
+	mWindow->setVisible(true);
+	
 	//just have Ogre create our window for us
-	mWindow = mRoot->initialise(true, "OgreBaseApp Render Window");
+	//mWindow = mRoot->initialise(true, "OgreBaseApp Render Window");
 	
 
 	//set the default mipmap level
@@ -89,11 +118,13 @@ bool OgreBaseApp::go(void)
 	
 	setupInput();
 
+/*
 	//set initial mouse clipping area
 	windowResized(mWindow);
 
 	//register this app as a window listener
 	Ogre::WindowEventUtilities::addWindowEventListener(mWindow, this);
+*/
 
 	mRoot->addFrameListener(this);
 
@@ -129,6 +160,7 @@ void OgreBaseApp::createViewport(void)
 
 void OgreBaseApp::setupInput(void)
 {
+/*
 	//set up OIS for input handling
 	Ogre::LogManager::getSingletonPtr()->logMessage("*** Initializing OIS ***");
 	OIS::ParamList pl;
@@ -146,39 +178,12 @@ void OgreBaseApp::setupInput(void)
 	
 	mMouse->setEventCallback(this);
 	mKeyboard->setEventCallback(this);
-}
-
-//adjust mouse clipping area
-void OgreBaseApp::windowResized(Ogre::RenderWindow* rw)
-{
-	unsigned int width, height, depth;
-	int left, top;
-	rw->getMetrics(width, height, depth, left, top);
-
-	const OIS::MouseState &ms = mMouse->getMouseState();
-	ms.width = width;
-	ms.height = height;
-}
-
-//unattach OIS before window shutdown (very important under Linux)
-void OgreBaseApp::windowClosed(Ogre::RenderWindow* rw)
-{
-	//only close for window that created OIS (the main window in these demos)
-	if (rw == mWindow)
-	{
-		if (mInputManager)
-		{
-			mInputManager->destroyInputObject(mMouse);
-			mInputManager->destroyInputObject(mKeyboard);
-
-			OIS::InputManager::destroyInputSystem(mInputManager);
-			mInputManager = 0;
-		}
-	}
+*/
 }
 
 bool OgreBaseApp::frameRenderingQueued(const Ogre::FrameEvent& evt)
 {
+/*
 	if (mWindow->isClosed())
 	{
 		return false;
@@ -192,10 +197,13 @@ bool OgreBaseApp::frameRenderingQueued(const Ogre::FrameEvent& evt)
 	{
 		return false;
 	}
+*/
 	
 	//update camera position
 	moveCamera();
-
+	
+	SDL_GL_SwapBuffers();
+	
 	return true;
 }
 
@@ -205,16 +213,8 @@ void OgreBaseApp::moveCamera()
 	mCameraNode->roll(Ogre::Degree(mRoll), Ogre::SceneNode::TS_LOCAL);
 }
 
-bool OgreBaseApp::mousePressed(const OIS::MouseEvent& evt, OIS::MouseButtonID id)
-{
-	return true;
-}
- 
-bool OgreBaseApp::mouseReleased(const OIS::MouseEvent& evt, OIS::MouseButtonID id)
-{
-	return true;
-}
- 
+
+/*
 bool OgreBaseApp::mouseMoved(const OIS::MouseEvent& evt)
 {
 	mCameraNode->yaw(Ogre::Degree(-evt.state.X.rel * mRotateSpeed));
@@ -290,3 +290,4 @@ bool OgreBaseApp::keyReleased(const OIS::KeyEvent& evt)
 	
 	return true;
 }
+*/

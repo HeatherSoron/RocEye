@@ -57,10 +57,10 @@ if(NOT "${OGRE_VERSION_NAME}" STREQUAL "Cthugha")
   message(SEND_ERROR "You need Ogre 1.7 Cthugha to build this.")
 endif()
  
-find_package(OIS REQUIRED)
+find_package(SDL REQUIRED)
  
-if(NOT OIS_FOUND)
-	message(SEND_ERROR "Failed to find OIS.")
+if(NOT SDL_FOUND)
+	message(SEND_ERROR "Failed to find SDL.")
 endif()
  
 # Find Boost
@@ -106,7 +106,7 @@ set(SRCS
 	./RocEye_runner.cpp
 )
  
-include_directories( ${OIS_INCLUDE_DIRS}
+include_directories( ${SDL_INCLUDE_DIRS}
 	${OGRE_INCLUDE_DIRS}
 	${OGRE_SAMPLES_INCLUDEPATH}
 )
@@ -115,7 +115,7 @@ add_executable(RocEye WIN32 ${HDRS} ${SRCS})
  
 set_target_properties(RocEye PROPERTIES DEBUG_POSTFIX _d)
  
-target_link_libraries(RocEye ${OGRE_LIBRARIES} ${OIS_LIBRARIES})
+target_link_libraries(RocEye ${OGRE_LIBRARIES} ${SDL_LIBRARY})
  
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/dist/bin)
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/dist/media)
@@ -155,12 +155,12 @@ if(WIN32)
 		CONFIGURATIONS Debug
 	)
  
-        # NOTE: for the 1.7.1 sdk the OIS dll is called OIS.dll instead of libOIS.dll
+        # NOTE: for the 1.7.1 sdk the SDL dll is called SDL.dll instead of libSDL.dll
         # so you'll have to change that to make it work with 1.7.1
 	install(FILES ${OGRE_PLUGIN_DIR_REL}/OgreMain.dll
 		${OGRE_PLUGIN_DIR_REL}/RenderSystem_Direct3D9.dll
 		${OGRE_PLUGIN_DIR_REL}/RenderSystem_GL.dll
-		${OGRE_PLUGIN_DIR_REL}/libOIS.dll
+		${OGRE_PLUGIN_DIR_REL}/libSDL.dll
 		DESTINATION bin
 		CONFIGURATIONS Release RelWithDebInfo
 	)
@@ -168,7 +168,7 @@ if(WIN32)
 	install(FILES ${OGRE_PLUGIN_DIR_DBG}/OgreMain_d.dll
 		${OGRE_PLUGIN_DIR_DBG}/RenderSystem_Direct3D9_d.dll
 		${OGRE_PLUGIN_DIR_DBG}/RenderSystem_GL_d.dll
-		${OGRE_PLUGIN_DIR_DBG}/libOIS_d.dll
+		${OGRE_PLUGIN_DIR_DBG}/libSDL_d.dll
 		DESTINATION bin
 		CONFIGURATIONS Debug
 	)

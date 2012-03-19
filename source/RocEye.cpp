@@ -59,20 +59,62 @@ void RocEye::createCube(Ogre::Vector3 center, Ogre::Real diam, Ogre::String text
 	
 	mo->begin(texture, Ogre::RenderOperation::OT_TRIANGLE_LIST);
 	
+	int offset = 0; //we'll be using this to calculate vertices for the index buffer
+	
+	//first we create the top side
 	mo->position(diam/2, diam/2, diam/2);
 	mo->textureCoord(0,0);
-	
 	mo->position(-diam/2, diam/2, diam/2);
 	mo->textureCoord(1,0);
-	
 	mo->position(diam/2, diam/2, -diam/2);
 	mo->textureCoord(0,1);
-	
 	mo->position(-diam/2, diam/2, -diam/2);
 	mo->textureCoord(1,1);
 	
-	mo->triangle(0,2,1);
-	mo->triangle(1,2,3);
+	mo->triangle(offset + 0, offset + 2, offset + 1);
+	mo->triangle(offset + 1, offset + 2, offset + 3);
+	offset += 4;
+	
+	//now the bottom
+	mo->position(diam/2, -diam/2, diam/2);
+	mo->textureCoord(0,0);
+	mo->position(-diam/2, -diam/2, diam/2);
+	mo->textureCoord(1,0);
+	mo->position(diam/2, -diam/2, -diam/2);
+	mo->textureCoord(0,1);
+	mo->position(-diam/2, -diam/2, -diam/2);
+	mo->textureCoord(1,1);
+	
+	mo->triangle(offset + 0, offset + 2, offset + 1);
+	mo->triangle(offset + 1, offset + 2, offset + 3);
+	offset += 4;
+	
+	//set up a rotation for the for loop below
+	Ogre::Quaternion rot;
+	rot.FromAngleAxis(Ogre::Degree(90), Ogre::Vector3::UNIT_Y);
+	
+	//and set up a vector to rotate (this'll be the center point of each face)
+	//note that this vector doesn't NEED to be this length, but it'll save us a post-dot product multiplication
+	Ogre::Vector3 faceCenter(diam/2, 0, 0);
+	
+	//now we create all 4 sides
+	//that 6 represents the number of faces a cube has, btw
+	for (offset; offset <= 4 * 6; offset += 4)
+	{
+		mo->position(faceCenter.dotProduct(Ogre::Vector3::UNIT_Z), diam/2, faceCenter.dotProduct(Ogre::Vector3::UNIT_X));
+		mo->textureCoord(0,0);
+		mo->position(-faceCenter.dotProduct(Ogre::Vector3::UNIT_Z), diam/2, -faceCenter.dotProduct(Ogre::Vector3::UNIT_X));
+		mo->textureCoord(1,0);
+		mo->position(faceCenter.dotProduct(Ogre::Vector3::UNIT_Z), -diam/2, faceCenter.dotProduct(Ogre::Vector3::UNIT_X));
+		mo->textureCoord(0,1);
+		mo->position(-faceCenter.dotProduct(Ogre::Vector3::UNIT_Z), -diam/2, -faceCenter.dotProduct(Ogre::Vector3::UNIT_X));
+		mo->textureCoord(1,1);
+	
+		mo->triangle(offset + 0, offset + 3, offset + 1);
+		mo->triangle(offset + 0, offset + 2, offset + 3);
+		
+		faceCenter = rot * faceCenter;
+	}
 	
 	mo->end();
 	mo->convertToMesh(Ogre::String(name) + "Mesh");

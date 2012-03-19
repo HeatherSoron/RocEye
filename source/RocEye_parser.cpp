@@ -161,7 +161,6 @@ void RocEye::loadSceneFile(void)
 			}//end shadow
 			else if (key == "LIGHT")
 			{
-cout << "Starting light instantiation" << endl;
 				string type = val;
 				
 				float diffuse_red = NAN;
@@ -224,6 +223,58 @@ cout << "Starting light instantiation" << endl;
 					continue;
 				}
 			}//end light
+			else if (key == "CUBE")
+			{
+				Ogre::String material = "";
+				float x = NAN;
+				float y = NAN;
+				float z = NAN;
+				float diameter = NAN;
+				
+				while (sceneFile.good() && noError && line != "}")
+				{
+					GETLINE_SKIP_BLANK_AND_COMMENT(sceneFile, line)
+					SPLIT_STRING_ON_SEMICOLON(line)
+					
+					TRY_GET_STRING(key, material, val)
+					ELSE_TRY_GET_FLOAT(key, x, val)
+					ELSE_TRY_GET_FLOAT(key, y, val)
+					ELSE_TRY_GET_FLOAT(key, z, val)
+					ELSE_TRY_GET_FLOAT(key, diameter, val)
+				}
+				
+				Ogre::Vector3 center(x,y,z);
+				
+				if (material != "" && ! center.isNaN() && !isnan(diameter))
+				{
+					createCube(center, diameter, material);
+				}
+			}//end cube
+			else if (key == "PARTICLE")
+			{
+				Ogre::String script = "";
+				float x = NAN;
+				float y = NAN;
+				float z = NAN;
+				
+				while (sceneFile.good() && noError && line != "}")
+				{
+					GETLINE_SKIP_BLANK_AND_COMMENT(sceneFile, line)
+					SPLIT_STRING_ON_SEMICOLON(line)
+					
+					TRY_GET_STRING(key, script, val)
+					ELSE_TRY_GET_FLOAT(key, x, val)
+					ELSE_TRY_GET_FLOAT(key, y, val)
+					ELSE_TRY_GET_FLOAT(key, z, val)
+				}
+				
+				Ogre::Vector3 pos(x,y,z);
+				
+				if (script != "" && ! pos.isNaN())
+				{
+					createParticleSystem(pos, script);
+				}
+			}
 			
 		}
 	}

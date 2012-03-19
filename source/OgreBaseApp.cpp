@@ -183,75 +183,94 @@ void OgreBaseApp::setupInput(void)
 
 bool OgreBaseApp::frameRenderingQueued(const Ogre::FrameEvent& evt)
 {
-/*
 	if (mWindow->isClosed())
 	{
 		return false;
 	}
 
-	//need to capture/update each device
-	mKeyboard->capture();
-	mMouse->capture();
-
-	if (mKeyboard->isKeyDown(OIS::KC_ESCAPE))
+	//SDL wants us to pump the events periodically to keep them flowing
+	SDL_PumpEvents();
+	
+	Ogre::Vector3 moveVector(0,0,0);
+	
+	Uint8* keys = SDL_GetKeyState(NULL);
+	if (keys[SDLK_ESCAPE])
 	{
 		return false;
 	}
-*/
 	
-	//update camera position
-	moveCamera();
+	//wait, shouldn't we be moving along z with w/s...? oh, right, we remapped where the camera was looking, right.
+	if (keys[SDLK_w])
+	{
+		moveVector.z -= mCameraSpeed;
+	}
+	if (keys[SDLK_s])
+	{
+		moveVector.z += mCameraSpeed;
+	}
+	if (keys[SDLK_a])
+	{
+		moveVector.x -= mCameraSpeed;
+	}
+	if (keys[SDLK_d])
+	{
+		moveVector.x += mCameraSpeed;
+	}
+	if (keys[SDLK_r])
+	{
+		moveVector.y += mCameraSpeed;
+	}
+	if (keys[SDLK_f])
+	{
+		moveVector.y -= mCameraSpeed;
+	}
+	
+	if (keys[SDLK_e])
+	{
+		mCameraNode->roll(Ogre::Degree(-mKeyRotateSpeed), Ogre::SceneNode::TS_LOCAL);
+	}
+	if (keys[SDLK_q])
+	{
+		mCameraNode->roll(Ogre::Degree(mKeyRotateSpeed), Ogre::SceneNode::TS_LOCAL);
+	}
+	
+	if (keys[SDLK_DOWN])
+	{
+		mCameraNode->pitch(Ogre::Degree(-mKeyRotateSpeed), Ogre::SceneNode::TS_LOCAL);
+	}
+	if (keys[SDLK_UP])
+	{
+		mCameraNode->pitch(Ogre::Degree(mKeyRotateSpeed), Ogre::SceneNode::TS_LOCAL);
+	}
+	if (keys[SDLK_RIGHT])
+	{
+		mCameraNode->yaw(Ogre::Degree(-mKeyRotateSpeed), Ogre::SceneNode::TS_LOCAL);
+	}
+	if (keys[SDLK_LEFT])
+	{
+		mCameraNode->yaw(Ogre::Degree(mKeyRotateSpeed), Ogre::SceneNode::TS_LOCAL);
+	}
+	
+	mCameraNode->translate(moveVector, Ogre::SceneNode::TS_LOCAL);
 	
 	SDL_GL_SwapBuffers();
 	
 	return true;
 }
 
-void OgreBaseApp::moveCamera()
-{
-	mCameraNode->translate(mMovementVector, Ogre::SceneNode::TS_LOCAL);
-	mCameraNode->roll(Ogre::Degree(mRoll), Ogre::SceneNode::TS_LOCAL);
-}
-
 
 /*
 bool OgreBaseApp::mouseMoved(const OIS::MouseEvent& evt)
 {
-	mCameraNode->yaw(Ogre::Degree(-evt.state.X.rel * mRotateSpeed));
-    mCameraNode->pitch(Ogre::Degree(-evt.state.Y.rel * mRotateSpeed));
+	mCameraNode->yaw(Ogre::Degree(-evt.state.X.rel * mMouseRotateSpeed));
+    mCameraNode->pitch(Ogre::Degree(-evt.state.Y.rel * mMouseRotateSpeed));
 	return true;
 }
  
 bool OgreBaseApp::keyPressed(const OIS::KeyEvent& evt)
 {
 	switch(evt.key)
-	{
-		case OIS::KC_W:
-			mMovementVector.z = -mCameraSpeed;
-			break;
-		case OIS::KC_S:
-			mMovementVector.z = mCameraSpeed;
-			break;
-		case OIS::KC_A:
-			mMovementVector.x = -mCameraSpeed;
-			break;
-		case OIS::KC_D:
-			mMovementVector.x = mCameraSpeed;
-			break;
-		case OIS::KC_R:
-			mMovementVector.y = mCameraSpeed;
-			break;
-		case OIS::KC_F:
-			mMovementVector.y = -mCameraSpeed;
-			break;
-		
-		case OIS::KC_E:
-			mRoll = -mRollSpeed;
-			break;
-		case OIS::KC_Q:
-			mRoll = mRollSpeed;
-			break;
-	}
+
 	
 	return true;
 }

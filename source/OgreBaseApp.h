@@ -29,6 +29,7 @@
 // SDL initialization:
 #include "SDL/SDL.h"
 #include "SDL/SDL_syswm.h"
+#include "SDL/SDL_keyboard.h"
 
 class OgreBaseApp : public Ogre::FrameListener
 {
@@ -47,8 +48,6 @@ protected:
     virtual void setupInput(void);
     
     virtual void createScene(void) {};
-    
-    virtual void moveCamera(void);
 	
     Ogre::Root* mRoot;
     Ogre::String mPluginsCfg;
@@ -62,8 +61,8 @@ protected:
     Ogre::Vector3 mMovementVector; //used to manually translate the camera
     Ogre::Real mRoll;
     static const Ogre::Real mCameraSpeed = 4; //the speed of our camera
-    static const Ogre::Real mRotateSpeed = 0.2;
-    static const Ogre::Real mRollSpeed = 2;
+    static const Ogre::Real mMouseRotateSpeed = 0.2;
+    static const Ogre::Real mKeyRotateSpeed = 2;
     
 private:
 };

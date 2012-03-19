@@ -13,7 +13,8 @@ Q: rotate counterclockwise
 E: rotate clockwise
 R: move up
 F: move down
-Mouse movement: change camera direction
+Up/down/left/right: change camera direction (note: numpad doesn't work)
+Mouse movement (broken this version): change camera direction
 Escape: exit
 
 

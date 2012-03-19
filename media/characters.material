@@ -1,0 +1,18 @@
+material CharIcons/Van
+{
+    technique
+    {
+        // first pass
+        pass
+        {
+            ambient 0.5 0.5 0.5
+            diffuse 1.0 1.0 1.0
+			
+            // Texture unit 0
+            texture_unit 
+            {
+                texture VanIcon100.png
+            }
+        }
+    }
+}

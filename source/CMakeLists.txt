@@ -95,11 +95,13 @@ if (NOT OGRE_BUILD_PLATFORM_IPHONE)
 endif()
 
 set(HDRS
+	./BaseAppInput.h
 	./OgreBaseApp.h
 	./RocEye.h
 )
  
 set(SRCS
+	./BaseAppInput.cpp
 	./OgreBaseApp.cpp
 	./RocEye.cpp
 	./RocEye_parser.cpp

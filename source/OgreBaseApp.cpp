@@ -4,6 +4,8 @@
 #include <OgreEntity.h>
 #include <OgreWindowEventUtilities.h>
 
+#include "BaseAppInput.h"
+
 //-------------------------------------------------------------------------------------
 OgreBaseApp::OgreBaseApp(void)
 	:
@@ -160,25 +162,7 @@ void OgreBaseApp::createViewport(void)
 
 void OgreBaseApp::setupInput(void)
 {
-/*
-	//set up OIS for input handling
-	Ogre::LogManager::getSingletonPtr()->logMessage("*** Initializing OIS ***");
-	OIS::ParamList pl;
-	size_t windowHnd = 0;
-	std::ostringstream windowHndStr;
-
-	mWindow->getCustomAttribute("WINDOW", &windowHnd);
-	windowHndStr << windowHnd;
-	pl.insert(std::make_pair(std::string("WINDOW"), windowHndStr.str()));
-
-	mInputManager = OIS::InputManager::createInputSystem(pl);
-	//get unbuffered input here (set that last param to true for buffered input)
-	mKeyboard = static_cast<OIS::Keyboard*>(mInputManager->createInputObject(OIS::OISKeyboard, true));
-	mMouse = static_cast<OIS::Mouse*>(mInputManager->createInputObject(OIS::OISMouse, true));
-	
-	mMouse->setEventCallback(this);
-	mKeyboard->setEventCallback(this);
-*/
+	mInput.setup(mCameraNode);
 }
 
 bool OgreBaseApp::frameRenderingQueued(const Ogre::FrameEvent& evt)
@@ -187,126 +171,15 @@ bool OgreBaseApp::frameRenderingQueued(const Ogre::FrameEvent& evt)
 	{
 		return false;
 	}
-
-	//SDL wants us to pump the events periodically to keep them flowing
-	SDL_PumpEvents();
 	
-	Ogre::Vector3 moveVector(0,0,0);
-	
-	Uint8* keys = SDL_GetKeyState(NULL);
-	if (keys[SDLK_ESCAPE])
+	if (! mInput.handleKeyboard() || ! mInput.handleMouse())
 	{
 		return false;
 	}
 	
-	//wait, shouldn't we be moving along z with w/s...? oh, right, we remapped where the camera was looking, right.
-	if (keys[SDLK_w])
-	{
-		moveVector.z -= mCameraSpeed;
-	}
-	if (keys[SDLK_s])
-	{
-		moveVector.z += mCameraSpeed;
-	}
-	if (keys[SDLK_a])
-	{
-		moveVector.x -= mCameraSpeed;
-	}
-	if (keys[SDLK_d])
-	{
-		moveVector.x += mCameraSpeed;
-	}
-	if (keys[SDLK_r])
-	{
-		moveVector.y += mCameraSpeed;
-	}
-	if (keys[SDLK_f])
-	{
-		moveVector.y -= mCameraSpeed;
-	}
-	
-	if (keys[SDLK_e])
-	{
-		mCameraNode->roll(Ogre::Degree(-mKeyRotateSpeed), Ogre::SceneNode::TS_LOCAL);
-	}
-	if (keys[SDLK_q])
-	{
-		mCameraNode->roll(Ogre::Degree(mKeyRotateSpeed), Ogre::SceneNode::TS_LOCAL);
-	}
-	
-	if (keys[SDLK_DOWN])
-	{
-		mCameraNode->pitch(Ogre::Degree(-mKeyRotateSpeed), Ogre::SceneNode::TS_LOCAL);
-	}
-	if (keys[SDLK_UP])
-	{
-		mCameraNode->pitch(Ogre::Degree(mKeyRotateSpeed), Ogre::SceneNode::TS_LOCAL);
-	}
-	if (keys[SDLK_RIGHT])
-	{
-		mCameraNode->yaw(Ogre::Degree(-mKeyRotateSpeed), Ogre::SceneNode::TS_LOCAL);
-	}
-	if (keys[SDLK_LEFT])
-	{
-		mCameraNode->yaw(Ogre::Degree(mKeyRotateSpeed), Ogre::SceneNode::TS_LOCAL);
-	}
-	
-	mCameraNode->translate(moveVector, Ogre::SceneNode::TS_LOCAL);
+	mInput.frameDone();
 	
 	SDL_GL_SwapBuffers();
 	
 	return true;
 }
-
-
-/*
-bool OgreBaseApp::mouseMoved(const OIS::MouseEvent& evt)
-{
-	mCameraNode->yaw(Ogre::Degree(-evt.state.X.rel * mMouseRotateSpeed));
-    mCameraNode->pitch(Ogre::Degree(-evt.state.Y.rel * mMouseRotateSpeed));
-	return true;
-}
- 
-bool OgreBaseApp::keyPressed(const OIS::KeyEvent& evt)
-{
-	switch(evt.key)
-
-	
-	return true;
-}
- 
-bool OgreBaseApp::keyReleased(const OIS::KeyEvent& evt)
-{
-	switch(evt.key)
-	{
-		case OIS::KC_W:
-			mMovementVector.z = 0;
-			break;
-		case OIS::KC_S:
-			mMovementVector.z = 0;
-			break;
-		case OIS::KC_A:
-			mMovementVector.x = 0;
-			break;
-		case OIS::KC_D:
-			mMovementVector.x = 0;
-			break;
-		case OIS::KC_R:
-			mMovementVector.y = 0;
-			break;
-		case OIS::KC_F:
-			mMovementVector.y = 0;
-			break;
-			
-		
-		case OIS::KC_E:
-			mRoll = 0;
-			break;
-		case OIS::KC_Q:
-			mRoll = 0;
-			break;
-	}
-	
-	return true;
-}
-*/

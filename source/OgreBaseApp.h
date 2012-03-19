@@ -13,6 +13,8 @@
 #include <OgreSceneManager.h>
 #include <OgreMeshManager.h>
 
+#include "BaseAppInput.h"
+
 // OGRE initialization:
 #ifdef WIN32
 //Necessary to tell the mouse events to go to this window
@@ -48,6 +50,8 @@ protected:
     virtual void setupInput(void);
     
     virtual void createScene(void) {};
+    
+    BaseAppInput mInput;
 	
     Ogre::Root* mRoot;
     Ogre::String mPluginsCfg;
@@ -60,9 +64,6 @@ protected:
     
     Ogre::Vector3 mMovementVector; //used to manually translate the camera
     Ogre::Real mRoll;
-    static const Ogre::Real mCameraSpeed = 4; //the speed of our camera
-    static const Ogre::Real mMouseRotateSpeed = 0.2;
-    static const Ogre::Real mKeyRotateSpeed = 2;
     
 private:
 };

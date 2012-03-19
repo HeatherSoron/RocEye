@@ -106,14 +106,15 @@ void OgreBaseApp::createCamera(void)
 {
 	mCamera = mSceneMgr->createCamera("PlayerCam");
 
-	//position the camera at 80 along the z axis
-	mCamera->setPosition(Ogre::Vector3(0,0,80));
 	//look back along -z
 	mCamera->lookAt(Ogre::Vector3(0,0,-300));
 	mCamera->setNearClipDistance(5);
 	
 	mCameraNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
 	mCameraNode->attachObject(mCamera);
+	
+	//position the camera at 80 along the z axis
+	mCameraNode->setPosition(Ogre::Vector3(0,0,80));
 }
 
 void OgreBaseApp::createViewport(void)

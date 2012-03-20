@@ -26,14 +26,17 @@ public:
 	BaseAppInput(void);
 	virtual ~BaseAppInput(void);
 	void setup(Ogre::SceneNode* cameraNode);
-	void frameDone(void);
-	bool handleKeyboard(void);
-	bool handleMouse(void);
+	bool runFrame(void);
 	
     static const Ogre::Real mCameraSpeed = 4; //the speed of our camera
     static const Ogre::Real mMouseRotateSpeed = 0.2;
     static const Ogre::Real mKeyRotateSpeed = 2;
 protected:
+	
+	void frameDone(void);
+	bool handleKeyboard(void);
+	bool handleMouse(void);
+	
 	Ogre::SceneNode* mCameraNode;
 };
 

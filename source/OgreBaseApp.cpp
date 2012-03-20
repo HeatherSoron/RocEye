@@ -172,12 +172,10 @@ bool OgreBaseApp::frameRenderingQueued(const Ogre::FrameEvent& evt)
 		return false;
 	}
 	
-	if (! mInput.handleKeyboard() || ! mInput.handleMouse())
+	if (! mInput.runFrame() )
 	{
 		return false;
 	}
-	
-	mInput.frameDone();
 	
 	SDL_GL_SwapBuffers();
 	

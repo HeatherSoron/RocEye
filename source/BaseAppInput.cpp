@@ -14,6 +14,20 @@ void BaseAppInput::setup(Ogre::SceneNode* cameraNode)
 	mCameraNode = cameraNode;
 }
 
+bool BaseAppInput::runFrame(void)
+{
+	//ideally, we would be using events. However, that tended to result in either segfaults or a hang when I tried it. *sigh*
+	//so, we'll fake events on our own
+	if (! handleKeyboard() || ! handleMouse())
+	{
+		return false;
+	}
+	
+	frameDone();
+	
+	return true;
+}
+
 void BaseAppInput::frameDone(void)
 {
 	//SDL wants us to pump the events periodically to keep them flowing

@@ -1,6 +1,6 @@
 #include "InputHandler.h"
 
-InputHandler::InputHandler(void) : mRaySceneQuery(0), mSceneMgr(0), mSelectedObject(0)
+InputHandler::InputHandler(void) : mRaySceneQuery(0), mSceneMgr(0), mSelectedObject(0), mPointerDown(false)
 {
 	resetState();
 }
@@ -79,6 +79,8 @@ void InputHandler::changeSpeed(float numSteps)
 
 bool InputHandler::onPrimaryPointerDown(void)
 {
+	mPointerDown = true;
+	
 	clickOnObjects();
 	
 	return true;
@@ -86,7 +88,7 @@ bool InputHandler::onPrimaryPointerDown(void)
 
 bool InputHandler::onPrimaryPointerUp(void)
 {
-	deselectObject();
+	mPointerDown = false;
 	
 	return true;
 }
@@ -98,6 +100,10 @@ void InputHandler::resetCamera(void)
 
 void InputHandler::clickOnObjects(void)
 {
+	Ogre::SceneNode* oldObject = mSelectedObject;
+	
+	deselectObject();
+	
 	//we need to perform a scene query, first of all
 	Ogre::Ray mouseRay(mCamera->getParentSceneNode()->getPosition(), mCamera->getDerivedDirection());
 	mRaySceneQuery->setRay(mouseRay);
@@ -115,6 +121,11 @@ void InputHandler::clickOnObjects(void)
 			selectObject(iter->movable->getParentSceneNode());
 			break; //return early if we've found what we want
 		}
+	}
+	
+	if (mSelectedObject == oldObject)
+	{
+		deselectObject();
 	}
 }
 
@@ -136,9 +147,29 @@ void InputHandler::deselectObject(void)
 
 void InputHandler::execute(void)
 {
-	Ogre::SceneNode* transObject = mSelectedObject ? mSelectedObject : mCamera->getParentSceneNode();
+	Ogre::Vector3 trans = mTransVector * mCameraSpeed * mSpeedMult;
 	
-	transObject->translate(mTransVector * mCameraSpeed * mSpeedMult, Ogre::SceneNode::TS_LOCAL);
+	if (mPointerDown)
+	{
+		//save typing and function calls
+		Ogre::SceneNode* node = mCamera->getParentSceneNode();
+		
+		//track where we move
+		Ogre::Vector3 oldPos = node->_getDerivedPosition();
+		node->translate(trans, Ogre::SceneNode::TS_LOCAL);
+		Ogre::Vector3 newPos = node->_getDerivedPosition();
+		
+		if (mSelectedObject)
+		{
+			mSelectedObject->translate(newPos - oldPos, Ogre::SceneNode::TS_LOCAL);
+		}
+	}
+	else
+	{
+		Ogre::SceneNode* transObject = mSelectedObject ? mSelectedObject : mCamera->getParentSceneNode();
+		
+		transObject->translate(trans, Ogre::SceneNode::TS_LOCAL);
+	}
 	
 	mCamera->getParentSceneNode()->pitch(Ogre::Degree(mRotVector.x * mSpeedMult));
 	mCamera->getParentSceneNode()->yaw(Ogre::Degree(mRotVector.y * mSpeedMult));

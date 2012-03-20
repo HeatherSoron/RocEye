@@ -51,6 +51,8 @@ protected:
 	virtual void selectObject(Ogre::SceneNode* object);
 	virtual void deselectObject(void);
 	
+	bool mPointerDown;
+	
 	bool mCameraNeedsReset;
 	Ogre::Vector3 mTransVector;
 	Ogre::Vector3 mRotVector; // pitch/yaw/roll are stored on the corresponding axis (be sure to convert to degrees!)

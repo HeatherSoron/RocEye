@@ -37,6 +37,8 @@ protected:
 	bool handleKeyboard(void);
 	bool handleMouse(void);
 	
+	float mSpeedMult;
+	
 	Ogre::SceneNode* mCameraNode;
 };
 

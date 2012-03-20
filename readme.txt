@@ -13,6 +13,9 @@ Q: rotate counterclockwise
 E: rotate clockwise
 R: move up
 F: move down
+shift: speed up movement
+ctrl: slow down movement
+space: point camera straight down
 Up/down/left/right: change camera direction (note: numpad doesn't work)
 Mouse movement: change camera direction
 Escape: exit

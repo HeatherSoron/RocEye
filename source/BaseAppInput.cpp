@@ -48,6 +48,17 @@ bool BaseAppInput::handleKeyboard(void)
 		return false;
 	}
 	
+	mSpeedMult = 1;
+	
+	if (keys[SDLK_LSHIFT] || keys[SDLK_RSHIFT])
+	{
+		mSpeedMult *= 5;
+	}
+	if (keys[SDLK_LCTRL] || keys[SDLK_RCTRL])
+	{
+		mSpeedMult /= 5;
+	}
+	
 	//wait, shouldn't we be moving along z with w/s...? oh, right, we remapped where the camera was looking, right.
 	if (keys[SDLK_w])
 	{
@@ -76,31 +87,36 @@ bool BaseAppInput::handleKeyboard(void)
 	
 	if (keys[SDLK_e])
 	{
-		mCameraNode->roll(Ogre::Degree(-mKeyRotateSpeed), Ogre::SceneNode::TS_LOCAL);
+		mCameraNode->roll(Ogre::Degree(-mKeyRotateSpeed*mSpeedMult), Ogre::SceneNode::TS_LOCAL);
 	}
 	if (keys[SDLK_q])
 	{
-		mCameraNode->roll(Ogre::Degree(mKeyRotateSpeed), Ogre::SceneNode::TS_LOCAL);
+		mCameraNode->roll(Ogre::Degree(mKeyRotateSpeed*mSpeedMult), Ogre::SceneNode::TS_LOCAL);
 	}
 	
 	if (keys[SDLK_DOWN])
 	{
-		mCameraNode->pitch(Ogre::Degree(-mKeyRotateSpeed), Ogre::SceneNode::TS_LOCAL);
+		mCameraNode->pitch(Ogre::Degree(-mKeyRotateSpeed*mSpeedMult), Ogre::SceneNode::TS_LOCAL);
 	}
 	if (keys[SDLK_UP])
 	{
-		mCameraNode->pitch(Ogre::Degree(mKeyRotateSpeed), Ogre::SceneNode::TS_LOCAL);
+		mCameraNode->pitch(Ogre::Degree(mKeyRotateSpeed*mSpeedMult), Ogre::SceneNode::TS_LOCAL);
 	}
 	if (keys[SDLK_RIGHT])
 	{
-		mCameraNode->yaw(Ogre::Degree(-mKeyRotateSpeed), Ogre::SceneNode::TS_LOCAL);
+		mCameraNode->yaw(Ogre::Degree(-mKeyRotateSpeed*mSpeedMult), Ogre::SceneNode::TS_LOCAL);
 	}
 	if (keys[SDLK_LEFT])
 	{
-		mCameraNode->yaw(Ogre::Degree(mKeyRotateSpeed), Ogre::SceneNode::TS_LOCAL);
+		mCameraNode->yaw(Ogre::Degree(mKeyRotateSpeed*mSpeedMult), Ogre::SceneNode::TS_LOCAL);
+	}
+	if (keys[SDLK_SPACE])
+	{
+		Ogre::Quaternion orient(1,-1,0,0); //point straight down
+		mCameraNode->setOrientation(orient);
 	}
 	
-	mCameraNode->translate(moveVector, Ogre::SceneNode::TS_LOCAL);
+	mCameraNode->translate(moveVector*mSpeedMult, Ogre::SceneNode::TS_LOCAL);
 	
 	return true;
 }
@@ -119,8 +135,8 @@ bool BaseAppInput::handleMouse(void)
 	dx = x - CENTER_X;
 	dy = y - CENTER_Y;
 	
-	mCameraNode->yaw(Ogre::Degree(-dx * mMouseRotateSpeed));
-    mCameraNode->pitch(Ogre::Degree(-dy * mMouseRotateSpeed));	
+	mCameraNode->yaw(Ogre::Degree(-dx * mMouseRotateSpeed*mSpeedMult));
+    mCameraNode->pitch(Ogre::Degree(-dy * mMouseRotateSpeed*mSpeedMult));	
 	
 	//ideally, we would tell SDL to use relative mouse mode directly. Unfortunately, that seems not to be present in 1.2.15? At least, the Linux header I have doesn't seem to have SDL_SetRelativeMouseMode.
 	if (dx || dy)

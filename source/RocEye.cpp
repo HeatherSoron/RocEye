@@ -11,6 +11,7 @@ RocEye::~RocEye(void)
 void RocEye::setupInput(void)
 {
 	RocEyeInput* input = new RocEyeInput();
+	input->setup();
 	input->setHandler(&mHandler);
 	
 	mInput = input;

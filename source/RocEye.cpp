@@ -238,6 +238,162 @@ void RocEye::createPortraitPillar(Ogre::Vector3 center, Ogre::Real diam, Ogre::S
     boxNode->setPosition(center);
 }
 
+void RocEye::createSphere(Ogre::Vector3 center, Ogre::Real radius, Ogre::Real stepSize)
+{
+	static unsigned int id = 0;
+	
+	char name[16];
+	sprintf(name, "Sphere%d", id++);
+	
+	Ogre::SceneNode* sphereNode = mSceneMgr->getRootSceneNode()->createChildSceneNode(Ogre::String(name) + "node");
+	
+	Ogre::ManualObject* mo = mSceneMgr->createManualObject(Ogre::String(name) + "Object");
+	
+	mo->begin("", Ogre::RenderOperation::OT_TRIANGLE_LIST);
+	
+	int offset = 0; //we'll be using this to calculate vertices for the index buffer
+	
+	for (Ogre::Real x = -radius; x < radius; x += stepSize)
+	{
+		for (Ogre::Real y = -radius; y < radius; y += stepSize)
+		{
+			for (Ogre::Real z = -radius; z < radius; z += stepSize)
+			{
+				//skip any cells outside of the sphere
+				if (Ogre::Vector3(x, y, z).length() > radius)
+				{
+					continue;
+				}
+				
+				//check the top
+				if (Ogre::Vector3(x, y + stepSize, z).length() >= radius)
+				{
+					mo->position(x + stepSize/2, y + stepSize/2, z + stepSize/2);
+					mo->textureCoord(0,0);
+					mo->position(x - stepSize/2, y + stepSize/2, z + stepSize/2);
+					mo->textureCoord(1,0);
+					mo->position(x + stepSize/2, y + stepSize/2, z - stepSize/2);
+					mo->textureCoord(0,1);
+					mo->position(x - stepSize/2, y + stepSize/2, z - stepSize/2);
+					mo->textureCoord(1,1);
+	
+					mo->triangle(offset + 0, offset + 2, offset + 1);
+					mo->triangle(offset + 1, offset + 2, offset + 3);
+					//double-sided
+					mo->triangle(offset + 0, offset + 1, offset + 2);
+					mo->triangle(offset + 1, offset + 3, offset + 2);
+					offset += 4;
+				}
+				
+				//check the bottom
+				if (Ogre::Vector3(x, y - stepSize, z).length() > radius)
+				{
+					mo->position(x + stepSize/2, y - stepSize/2, z + stepSize/2);
+					mo->textureCoord(0,0);
+					mo->position(x - stepSize/2, y - stepSize/2, z + stepSize/2);
+					mo->textureCoord(1,0);
+					mo->position(x + stepSize/2, y - stepSize/2, z - stepSize/2);
+					mo->textureCoord(0,1);
+					mo->position(x - stepSize/2, y - stepSize/2, z - stepSize/2);
+					mo->textureCoord(1,1);
+	
+					mo->triangle(offset + 0, offset + 2, offset + 1);
+					mo->triangle(offset + 1, offset + 2, offset + 3);
+					//double-sided
+					mo->triangle(offset + 0, offset + 1, offset + 2);
+					mo->triangle(offset + 1, offset + 3, offset + 2);
+					offset += 4;
+				}
+				
+				//one of the sides
+				if (Ogre::Vector3(x + stepSize, y, z).length() >= radius)
+				{
+					mo->position(x + stepSize/2, y + stepSize/2, z + stepSize/2);
+					mo->textureCoord(0,0);
+					mo->position(x + stepSize/2, y - stepSize/2, z + stepSize/2);
+					mo->textureCoord(1,0);
+					mo->position(x + stepSize/2, y + stepSize/2, z - stepSize/2);
+					mo->textureCoord(0,1);
+					mo->position(x + stepSize/2, y - stepSize/2, z - stepSize/2);
+					mo->textureCoord(1,1);
+	
+					mo->triangle(offset + 0, offset + 2, offset + 1);
+					mo->triangle(offset + 1, offset + 2, offset + 3);
+					//double-sided
+					mo->triangle(offset + 0, offset + 1, offset + 2);
+					mo->triangle(offset + 1, offset + 3, offset + 2);
+					offset += 4;
+				}
+				
+				//one of the sides
+				if (Ogre::Vector3(x - stepSize, y, z).length() > radius)
+				{
+					mo->position(x - stepSize/2, y + stepSize/2, z + stepSize/2);
+					mo->textureCoord(0,0);
+					mo->position(x - stepSize/2, y - stepSize/2, z + stepSize/2);
+					mo->textureCoord(1,0);
+					mo->position(x - stepSize/2, y + stepSize/2, z - stepSize/2);
+					mo->textureCoord(0,1);
+					mo->position(x - stepSize/2, y - stepSize/2, z - stepSize/2);
+					mo->textureCoord(1,1);
+	
+					mo->triangle(offset + 0, offset + 2, offset + 1);
+					mo->triangle(offset + 1, offset + 2, offset + 3);
+					//double-sided
+					mo->triangle(offset + 0, offset + 1, offset + 2);
+					mo->triangle(offset + 1, offset + 3, offset + 2);
+					offset += 4;
+				}
+				
+				//one of the sides
+				if (Ogre::Vector3(x, y, z + stepSize).length() >= radius)
+				{
+					mo->position(x + stepSize/2, y + stepSize/2, z + stepSize/2);
+					mo->textureCoord(0,0);
+					mo->position(x + stepSize/2, y - stepSize/2, z + stepSize/2);
+					mo->textureCoord(1,0);
+					mo->position(x - stepSize/2, y + stepSize/2, z + stepSize/2);
+					mo->textureCoord(0,1);
+					mo->position(x - stepSize/2, y - stepSize/2, z + stepSize/2);
+					mo->textureCoord(1,1);
+	
+					mo->triangle(offset + 0, offset + 2, offset + 1);
+					mo->triangle(offset + 1, offset + 2, offset + 3);
+					//double-sided
+					mo->triangle(offset + 0, offset + 1, offset + 2);
+					mo->triangle(offset + 1, offset + 3, offset + 2);
+					offset += 4;
+				}
+				
+				//one of the sides
+				if (Ogre::Vector3(x, y, z - stepSize).length() > radius)
+				{
+					mo->position(x + stepSize/2, y + stepSize/2, z - stepSize/2);
+					mo->textureCoord(0,0);
+					mo->position(x + stepSize/2, y - stepSize/2, z - stepSize/2);
+					mo->textureCoord(1,0);
+					mo->position(x - stepSize/2, y + stepSize/2, z - stepSize/2);
+					mo->textureCoord(0,1);
+					mo->position(x - stepSize/2, y - stepSize/2, z - stepSize/2);
+					mo->textureCoord(1,1);
+	
+					mo->triangle(offset + 0, offset + 2, offset + 1);
+					mo->triangle(offset + 1, offset + 2, offset + 3);
+					//double-sided
+					mo->triangle(offset + 0, offset + 1, offset + 2);
+					mo->triangle(offset + 1, offset + 3, offset + 2);
+					offset += 4;
+				}
+			}
+		}
+	}
+	
+	mo->end();
+	
+	sphereNode->attachObject(mo);
+	sphereNode->setPosition(center);
+}
+
 void RocEye::createParticleSystem(Ogre::Vector3 position, Ogre::String source)
 {
 	static unsigned int id = 0;

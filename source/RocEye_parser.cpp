@@ -284,6 +284,34 @@ void RocEye::loadSceneFile(void)
 					createParticleSystem(pos, script);
 				}
 			}
+			else if (key == "SPHERE")
+			{
+				float x = NAN;
+				float y = NAN;
+				float z = NAN;
+				float radius = NAN;
+				float step_size = NAN;
+				
+				while (sceneFile.good() && noError && line != "}")
+				{
+					GETLINE_SKIP_BLANK_AND_COMMENT(sceneFile, line)
+					SPLIT_STRING_ON_SEMICOLON(line)
+					
+					TRY_GET_FLOAT(key, x, val)
+					ELSE_TRY_GET_FLOAT(key, y, val)
+					ELSE_TRY_GET_FLOAT(key, z, val)
+					ELSE_TRY_GET_FLOAT(key, radius, val)
+					ELSE_TRY_GET_FLOAT(key, step_size, val)
+				}
+				
+				Ogre::Vector3 center(x,y,z);
+				
+				if (!center.isNaN() && !isnan(radius) && !isnan(step_size))
+				{
+					createSphere(center, radius, step_size);
+				}
+				
+			}
 			
 		}
 	}

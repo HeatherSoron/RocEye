@@ -21,6 +21,7 @@ protected:
     virtual void createPlane(Ogre::Vector3 normal, Ogre::Real distFromOrigin, Ogre::Real width, Ogre::Real height, Ogre::String materialName, Ogre::Vector3 upDir);
     virtual void createPortraitCube(Ogre::Vector3 center, Ogre::Real diam, Ogre::String texture);
     virtual void createPortraitPillar(Ogre::Vector3 center, Ogre::Real diam, Ogre::String texture);
+	virtual void createSphere(Ogre::Vector3 center, Ogre::Real radius, Ogre::Real stepSize);
     virtual void createParticleSystem(Ogre::Vector3 position, Ogre::String source);
 	virtual void createPointLight(Ogre::Vector3 position, Ogre::ColourValue dColour, Ogre::ColourValue sColour);
 	virtual void createDirectionalLight(Ogre::Vector3 direction, Ogre::ColourValue dColour, Ogre::ColourValue sColour);

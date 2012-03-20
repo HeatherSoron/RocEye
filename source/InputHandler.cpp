@@ -1,6 +1,6 @@
 #include "InputHandler.h"
 
-InputHandler::InputHandler(void) : mRaySceneQuery(0), mSceneMgr(0), mSelectedObject(0), mPointerDown(false)
+InputHandler::InputHandler(void) : mRaySceneQuery(0), mSceneMgr(0), mSelectedObject(0), mPointerDown(false), mPickingMeshes(true)
 {
 	resetState();
 }
@@ -98,16 +98,32 @@ void InputHandler::resetCamera(void)
 	mCameraNeedsReset = true;
 }
 
+void InputHandler::toggleObjectMode(void)
+{
+	mPickingMeshes = !mPickingMeshes;
+}
+
 void InputHandler::clickOnObjects(void)
 {
 	Ogre::SceneNode* oldObject = mSelectedObject;
 	
 	deselectObject();
 	
+	tryPickObjects();
+	
+	if (mSelectedObject == oldObject)
+	{
+		deselectObject();
+	}
+}
+
+void InputHandler::tryPickObjects(void)
+{
 	//we need to perform a scene query, first of all
 	Ogre::Ray mouseRay(mCamera->getParentSceneNode()->getPosition(), mCamera->getDerivedDirection());
 	mRaySceneQuery->setRay(mouseRay);
 	mRaySceneQuery->setSortByDistance(true);
+	mRaySceneQuery->setQueryTypeMask(mPickingMeshes ? Ogre::SceneManager::FX_TYPE_MASK : Ogre::SceneManager::ENTITY_TYPE_MASK);
 	
 	//execute the query
 	Ogre::RaySceneQueryResult &result = mRaySceneQuery->execute();
@@ -121,11 +137,6 @@ void InputHandler::clickOnObjects(void)
 			selectObject(iter->movable->getParentSceneNode());
 			break; //return early if we've found what we want
 		}
-	}
-	
-	if (mSelectedObject == oldObject)
-	{
-		deselectObject();
 	}
 }
 

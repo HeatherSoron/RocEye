@@ -1,6 +1,6 @@
 #include "RocEyeInput.h"
 
-RocEyeInput::RocEyeInput(void)
+RocEyeInput::RocEyeInput(void) : mWasKeyDownO(false)
 {
 	BaseAppInput();
 }
@@ -23,7 +23,15 @@ bool RocEyeInput::handleKeyboard(void)
 	
 	Uint8* keys = SDL_GetKeyState(NULL);
 	
-	
+	if (keys[SDLK_o] && !mWasKeyDownO)
+	{
+		mWasKeyDownO = true;
+		mHandler->toggleObjectMode();
+	}
+	else if (!keys[SDLK_o])
+	{
+		mWasKeyDownO = false;
+	}
 	
 	
 	if (keys[SDLK_LSHIFT] || keys[SDLK_RSHIFT])

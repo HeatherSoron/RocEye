@@ -21,6 +21,8 @@ protected:
 	virtual bool fireLeftMouseDown(void);
 	virtual bool fireLeftMouseUp(void);
 	
+	bool mWasKeyDownO;
+	
 	InputHandler* mHandler;
 };
 

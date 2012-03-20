@@ -38,6 +38,8 @@ public:
 	virtual bool onPrimaryPointerDown(void);
 	virtual bool onPrimaryPointerUp(void);
 	
+	virtual void toggleObjectMode(void);
+	
 	virtual void execute(void);
 	
     static const Ogre::Real mCameraSpeed = 4; //the speed of our camera
@@ -48,10 +50,12 @@ public:
 protected:
 	virtual void resetState(void);
 	virtual void clickOnObjects(void);
+	virtual void tryPickObjects(void);
 	virtual void selectObject(Ogre::SceneNode* object);
 	virtual void deselectObject(void);
 	
 	bool mPointerDown;
+	bool mPickingMeshes;
 	
 	bool mCameraNeedsReset;
 	Ogre::Vector3 mTransVector;

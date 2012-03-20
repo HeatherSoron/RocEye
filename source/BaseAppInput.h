@@ -38,8 +38,6 @@ protected:
 	bool handleMouse(void);
 	
 	Ogre::SceneNode* mCameraNode;
-	int mLastMouseX;
-	int mLastMouseY;
 };
 
 #endif

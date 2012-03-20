@@ -7,18 +7,15 @@ BaseAppInput::BaseAppInput(void)
 
 BaseAppInput::~BaseAppInput(void)
 {
+	SDL_ShowCursor(1);
+	
 	//do NOT need to destroy the camera pointer, since we assume it's handled elsewhere
 }
 
 void BaseAppInput::setup(Ogre::SceneNode* cameraNode)
 {
 	mCameraNode = cameraNode;
-	
-	int x, y;
-	SDL_GetMouseState(&x,&y);
-	
-	mLastMouseX = x;
-	mLastMouseY = y;
+	SDL_ShowCursor(0);
 }
 
 bool BaseAppInput::runFrame(void)
@@ -110,18 +107,26 @@ bool BaseAppInput::handleKeyboard(void)
 
 bool BaseAppInput::handleMouse(void)
 {
+	static const int CENTER_X = 320;
+	static const int CENTER_Y = 240;
+	
 	int x, y;
 	SDL_GetMouseState(&x,&y);
 	
+	std::cout << x << ", " << y << std::endl;
+	
 	int dx, dy; //deltas
-	dx = x - mLastMouseX;
-	dy = y - mLastMouseY;
+	dx = x - CENTER_X;
+	dy = y - CENTER_Y;
 	
 	mCameraNode->yaw(Ogre::Degree(-dx * mMouseRotateSpeed));
-    mCameraNode->pitch(Ogre::Degree(-dy * mMouseRotateSpeed));
+    mCameraNode->pitch(Ogre::Degree(-dy * mMouseRotateSpeed));	
 	
-	mLastMouseX = x;
-	mLastMouseY = y;
+	//ideally, we would tell SDL to use relative mouse mode directly. Unfortunately, that seems not to be present in 1.2.15? At least, the Linux header I have doesn't seem to have SDL_SetRelativeMouseMode.
+	if (dx || dy)
+	{
+		SDL_WarpMouse(CENTER_X, CENTER_Y);
+	}
 	
 	return true;
 }

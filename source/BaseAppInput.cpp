@@ -1,4 +1,5 @@
 #include "BaseAppInput.h"
+#include <SDL/SDL_mouse.h>
 
 BaseAppInput::BaseAppInput(void)
 {
@@ -12,6 +13,12 @@ BaseAppInput::~BaseAppInput(void)
 void BaseAppInput::setup(Ogre::SceneNode* cameraNode)
 {
 	mCameraNode = cameraNode;
+	
+	int x, y;
+	SDL_GetMouseState(&x,&y);
+	
+	mLastMouseX = x;
+	mLastMouseY = y;
 }
 
 bool BaseAppInput::runFrame(void)
@@ -103,6 +110,19 @@ bool BaseAppInput::handleKeyboard(void)
 
 bool BaseAppInput::handleMouse(void)
 {
+	int x, y;
+	SDL_GetMouseState(&x,&y);
+	
+	int dx, dy; //deltas
+	dx = x - mLastMouseX;
+	dy = y - mLastMouseY;
+	
+	mCameraNode->yaw(Ogre::Degree(-dx * mMouseRotateSpeed));
+    mCameraNode->pitch(Ogre::Degree(-dy * mMouseRotateSpeed));
+	
+	mLastMouseX = x;
+	mLastMouseY = y;
+	
 	return true;
 }
 
@@ -110,8 +130,6 @@ bool BaseAppInput::handleMouse(void)
 /*
 bool OgreBaseApp::mouseMoved(const OIS::MouseEvent& evt)
 {
-	mCameraNode->yaw(Ogre::Degree(-evt.state.X.rel * mMouseRotateSpeed));
-    mCameraNode->pitch(Ogre::Degree(-evt.state.Y.rel * mMouseRotateSpeed));
 	return true;
 }
 */

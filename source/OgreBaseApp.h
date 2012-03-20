@@ -51,7 +51,7 @@ protected:
     
     virtual void createScene(void) {};
     
-    BaseAppInput mInput;
+    BaseAppInput* mInput;
 	
     Ogre::Root* mRoot;
     Ogre::String mPluginsCfg;

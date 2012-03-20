@@ -97,12 +97,16 @@ endif()
 set(HDRS
 	./BaseAppInput.h
 	./OgreBaseApp.h
+	./RocEyeInput.h
+	./InputHandler.h
 	./RocEye.h
 )
  
 set(SRCS
 	./BaseAppInput.cpp
 	./OgreBaseApp.cpp
+	./RocEyeInput.cpp
+	./InputHandler.cpp
 	./RocEye.cpp
 	./RocEye_parser.cpp
 	./RocEye_runner.cpp

@@ -8,6 +8,17 @@ RocEye::~RocEye(void)
 {
 }
 
+void RocEye::setupInput(void)
+{
+	RocEyeInput* input = new RocEyeInput();
+	input->setHandler(&mHandler);
+	
+	mInput = input;
+	
+	mHandler.setCamera(mCameraNode);
+	mHandler.resetCamera();
+}
+
 void RocEye::createScene(void)
 {
 	loadSceneFile();

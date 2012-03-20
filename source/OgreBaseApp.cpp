@@ -25,6 +25,7 @@ OgreBaseApp::~OgreBaseApp(void)
 	windowClosed(mWindow);
 */
 	delete mRoot;
+	delete mInput;
 	
 	SDL_Quit();
 }
@@ -162,7 +163,7 @@ void OgreBaseApp::createViewport(void)
 
 void OgreBaseApp::setupInput(void)
 {
-	mInput.setup(mCameraNode);
+	mInput = new BaseAppInput();
 }
 
 bool OgreBaseApp::frameRenderingQueued(const Ogre::FrameEvent& evt)
@@ -172,7 +173,7 @@ bool OgreBaseApp::frameRenderingQueued(const Ogre::FrameEvent& evt)
 		return false;
 	}
 	
-	if (! mInput.runFrame() )
+	if (! mInput->runFrame() )
 	{
 		return false;
 	}

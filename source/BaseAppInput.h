@@ -1,8 +1,6 @@
 #ifndef BASE_APP_INPUT_H
 #define BASE_APP_INPUT_H
 
-#include <Ogre.h>
-
 #ifdef WIN32
 //Necessary to tell the mouse events to go to this window
 #if (_WIN32_WINNT < 0x0501)
@@ -25,21 +23,13 @@ class BaseAppInput
 public:
 	BaseAppInput(void);
 	virtual ~BaseAppInput(void);
-	void setup(Ogre::SceneNode* cameraNode);
-	bool runFrame(void);
-	
-    static const Ogre::Real mCameraSpeed = 4; //the speed of our camera
-    static const Ogre::Real mMouseRotateSpeed = 0.2;
-    static const Ogre::Real mKeyRotateSpeed = 2;
+	virtual void setup(void);
+	virtual bool runFrame(void);
 protected:
 	
-	void frameDone(void);
-	bool handleKeyboard(void);
-	bool handleMouse(void);
-	
-	float mSpeedMult;
-	
-	Ogre::SceneNode* mCameraNode;
+	virtual void frameDone(void);
+	virtual bool handleKeyboard(void);
+	virtual bool handleMouse(void);
 };
 
 #endif

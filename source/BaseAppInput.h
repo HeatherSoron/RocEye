@@ -30,6 +30,18 @@ protected:
 	virtual void frameDone(void);
 	virtual bool handleKeyboard(void);
 	virtual bool handleMouse(void);
+	
+	virtual bool fireLeftMouseDown(void);
+	virtual bool fireLeftMouseUp(void);
+	virtual bool fireRightMouseDown(void);
+	virtual bool fireRightMouseUp(void);
+	virtual bool fireMiddleMouseDown(void);
+	virtual bool fireMiddleMouseUp(void);
+	
+	
+	bool mWasLeftDown;
+	bool mWasRightDown;
+	bool mWasMiddleDown;
 };
 
 #endif

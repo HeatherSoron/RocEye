@@ -1,17 +1,27 @@
 #include "InputHandler.h"
 
-InputHandler::InputHandler(void)
+InputHandler::InputHandler(void) : mRaySceneQuery(0), mSceneMgr(0), mSelectedObject(0)
 {
 	resetState();
 }
 
 InputHandler::~InputHandler(void)
 {
+	mSceneMgr->destroyQuery(mRaySceneQuery);
 }
 
-void InputHandler::setCamera(Ogre::SceneNode* cameraNode)
+void InputHandler::setCamera(Ogre::Camera* camera)
 {
-	mCameraNode = cameraNode;
+	mCamera = camera;
+	
+	//we assume that we ALWAYS have a scene manager, if we also have a ray scene query
+	if (mRaySceneQuery != NULL && mSceneMgr != NULL)
+	{
+		mSceneMgr->destroyQuery(mRaySceneQuery);
+	}
+	
+	mSceneMgr = mCamera->getParentSceneNode()->getCreator();
+	mRaySceneQuery = mSceneMgr->createRayQuery(Ogre::Ray());
 }
 
 void InputHandler::translate(InputHandler::Direction dir)
@@ -67,23 +77,77 @@ void InputHandler::changeSpeed(float numSteps)
 	}
 }
 
+bool InputHandler::onPrimaryPointerDown(void)
+{
+	clickOnObjects();
+	
+	return true;
+}
+
+bool InputHandler::onPrimaryPointerUp(void)
+{
+	deselectObject();
+	
+	return true;
+}
+
 void InputHandler::resetCamera(void)
 {
 	mCameraNeedsReset = true;
 }
 
+void InputHandler::clickOnObjects(void)
+{
+	//we need to perform a scene query, first of all
+	Ogre::Ray mouseRay(mCamera->getParentSceneNode()->getPosition(), mCamera->getDerivedDirection());
+	mRaySceneQuery->setRay(mouseRay);
+	mRaySceneQuery->setSortByDistance(true);
+	
+	//execute the query
+	Ogre::RaySceneQueryResult &result = mRaySceneQuery->execute();
+	Ogre::RaySceneQueryResult::iterator iter = result.begin();
+	
+	//iterate through the results, and select the closest object
+	for (iter; iter != result.end(); iter++)
+	{
+		if (iter->movable && iter->movable->getName().substr(0,5) != "tile[");
+		{
+			selectObject(iter->movable->getParentSceneNode());
+			break; //return early if we've found what we want
+		}
+	}
+}
+
+void InputHandler::selectObject(Ogre::SceneNode* object)
+{
+	mSelectedObject = object;
+	mSelectedObject->showBoundingBox(true);
+}
+
+void InputHandler::deselectObject(void)
+{
+	if (mSelectedObject)
+	{
+		mSelectedObject->showBoundingBox(false);
+	}
+	
+	mSelectedObject = NULL;
+}
+
 void InputHandler::execute(void)
 {
-	mCameraNode->translate(mTransVector * mCameraSpeed * mSpeedMult, Ogre::SceneNode::TS_LOCAL);
+	Ogre::SceneNode* transObject = mSelectedObject ? mSelectedObject : mCamera->getParentSceneNode();
 	
-	mCameraNode->pitch(Ogre::Degree(mRotVector.x * mSpeedMult));
-	mCameraNode->yaw(Ogre::Degree(mRotVector.y * mSpeedMult));
-	mCameraNode->roll(Ogre::Degree(mRotVector.z * mSpeedMult));
+	transObject->translate(mTransVector * mCameraSpeed * mSpeedMult, Ogre::SceneNode::TS_LOCAL);
+	
+	mCamera->getParentSceneNode()->pitch(Ogre::Degree(mRotVector.x * mSpeedMult));
+	mCamera->getParentSceneNode()->yaw(Ogre::Degree(mRotVector.y * mSpeedMult));
+	mCamera->getParentSceneNode()->roll(Ogre::Degree(mRotVector.z * mSpeedMult));
 	
 	if (mCameraNeedsReset)
 	{
 		Ogre::Quaternion orient(1,-1,0,0); //point straight down
-		mCameraNode->setOrientation(orient);
+		mCamera->getParentSceneNode()->setOrientation(orient);
 	}
 	
 	resetState();

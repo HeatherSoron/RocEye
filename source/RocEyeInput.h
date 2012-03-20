@@ -17,6 +17,10 @@ protected:
 	virtual bool handleMouse(void);
 	virtual void frameDone(void);
 	
+	//just going to overwrite the left button for now
+	virtual bool fireLeftMouseDown(void);
+	virtual bool fireLeftMouseUp(void);
+	
 	InputHandler* mHandler;
 };
 

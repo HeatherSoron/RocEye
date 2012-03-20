@@ -18,6 +18,7 @@ ctrl: slow down movement
 space: point camera straight down
 Up/down/left/right: change camera direction (note: numpad doesn't work)
 Mouse movement: change camera direction
+Left click: select an object for movement
 Escape: exit
 
 

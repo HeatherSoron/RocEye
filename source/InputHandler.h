@@ -25,15 +25,20 @@ public:
     	ROT_CW
     };
 	
-	void setCamera(Ogre::SceneNode* mCameraNode);
+	virtual void setCamera(Ogre::Camera* mCamera);
 	
-	void translate(Direction dir);
-	void rotate(Direction rot, bool isMouse = false, float mult = 1);
-	void changeSpeed(float numSteps); //has to be called every frame, or it'll return to normal speed
+	virtual void translate(Direction dir);
+	virtual void rotate(Direction rot, bool isMouse = false, float mult = 1);
+	virtual void changeSpeed(float numSteps); //has to be called every frame, or it'll return to normal speed
 	
-	void resetCamera(void); //makes the camera point down. Note that this is still buffered, and overrides rotations
+	virtual void resetCamera(void); //makes the camera point down. Note that this is still buffered, and overrides rotations
 	
-	void execute(void);
+	//we're not calling this "left mouse down", because we might port to iOS or something eventually
+	//and yes, an iOS port HAS been requested
+	virtual bool onPrimaryPointerDown(void);
+	virtual bool onPrimaryPointerUp(void);
+	
+	virtual void execute(void);
 	
     static const Ogre::Real mCameraSpeed = 4; //the speed of our camera
     static const Ogre::Real mMouseRotateSpeed = 0.2;
@@ -41,13 +46,21 @@ public:
     static const Ogre::Real SPEED_PER_STEP = 5; //gets multiplied with stuff
     
 protected:
-	void resetState(void);
+	virtual void resetState(void);
+	virtual void clickOnObjects(void);
+	virtual void selectObject(Ogre::SceneNode* object);
+	virtual void deselectObject(void);
 	
 	bool mCameraNeedsReset;
 	Ogre::Vector3 mTransVector;
 	Ogre::Vector3 mRotVector; // pitch/yaw/roll are stored on the corresponding axis (be sure to convert to degrees!)
 	Ogre::Real mSpeedMult;
 	
-	Ogre::SceneNode* mCameraNode;
+	Ogre::RaySceneQuery* mRaySceneQuery;
+	Ogre::SceneManager* mSceneMgr;
+	
+	Ogre::Camera* mCamera;
+	
+	Ogre::SceneNode* mSelectedObject;
 };
 #endif

@@ -95,7 +95,11 @@ bool RocEyeInput::handleKeyboard(void)
 
 bool RocEyeInput::handleMouse(void)
 {
-	//don't need to call the superclass's handler, since it doesn't do anything we want
+	if (! BaseAppInput::handleMouse() )
+	{
+		return false;
+	}
+	
 	static const int CENTER_X = 320;
 	static const int CENTER_Y = 240;
 	
@@ -117,6 +121,16 @@ bool RocEyeInput::handleMouse(void)
 		SDL_WarpMouse(CENTER_X, CENTER_Y);
 	}
 	return true;
+}
+
+bool RocEyeInput::fireLeftMouseDown(void)
+{
+	return mHandler->onPrimaryPointerDown();	
+}
+
+bool RocEyeInput::fireLeftMouseUp(void)
+{
+	return mHandler->onPrimaryPointerUp();
 }
 
 void RocEyeInput::frameDone(void)

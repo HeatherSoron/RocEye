@@ -16,7 +16,7 @@ void RocEye::setupInput(void)
 	
 	mInput = input;
 	
-	mHandler.setCamera(mCameraNode);
+	mHandler.setCamera(mCamera);
 	mHandler.resetCamera();
 }
 

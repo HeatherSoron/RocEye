@@ -239,7 +239,7 @@ void RocEye::createPortraitPillar(Ogre::Vector3 center, Ogre::Real diam, Ogre::S
     boxNode->setPosition(center);
 }
 
-void RocEye::createSphere(Ogre::Vector3 center, Ogre::Real radius, Ogre::Real stepSize)
+void RocEye::createSphere(Ogre::Vector3 center, Ogre::String material, Ogre::Real radius, Ogre::Real stepSize)
 {
 	static unsigned int id = 0;
 	
@@ -250,7 +250,7 @@ void RocEye::createSphere(Ogre::Vector3 center, Ogre::Real radius, Ogre::Real st
 	
 	Ogre::ManualObject* mo = mSceneMgr->createManualObject(Ogre::String(name) + "Object");
 	
-	mo->begin("", Ogre::RenderOperation::OT_TRIANGLE_LIST);
+	mo->begin(material, Ogre::RenderOperation::OT_TRIANGLE_LIST);
 	
 	int offset = 0; //we'll be using this to calculate vertices for the index buffer
 	
@@ -403,6 +403,9 @@ void RocEye::createParticleSystem(Ogre::Vector3 position, Ogre::String source)
 	sprintf(name, "PartSys%d", id++);
 	
 	Ogre::ParticleSystem* system = mSceneMgr->createParticleSystem(name, source);
+	//we're going to be moving particle systems around in order to place them, and we don't want bounding boxes expanding (at least, not if they stay expanded)
+	system->setKeepParticlesInLocalSpace(true);
+	
 	Ogre::SceneNode* node = mSceneMgr->getRootSceneNode()->createChildSceneNode(Ogre::String(name) + "Node");
 	node->attachObject(system);
 	node->setPosition(position);

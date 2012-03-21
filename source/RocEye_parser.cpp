@@ -286,6 +286,7 @@ void RocEye::loadSceneFile(void)
 			}
 			else if (key == "SPHERE")
 			{
+				string material;
 				float x = NAN;
 				float y = NAN;
 				float z = NAN;
@@ -297,7 +298,8 @@ void RocEye::loadSceneFile(void)
 					GETLINE_SKIP_BLANK_AND_COMMENT(sceneFile, line)
 					SPLIT_STRING_ON_SEMICOLON(line)
 					
-					TRY_GET_FLOAT(key, x, val)
+					TRY_GET_STRING(key, material, val)
+					ELSE_TRY_GET_FLOAT(key, x, val)
 					ELSE_TRY_GET_FLOAT(key, y, val)
 					ELSE_TRY_GET_FLOAT(key, z, val)
 					ELSE_TRY_GET_FLOAT(key, radius, val)
@@ -306,9 +308,9 @@ void RocEye::loadSceneFile(void)
 				
 				Ogre::Vector3 center(x,y,z);
 				
-				if (!center.isNaN() && !isnan(radius) && !isnan(step_size))
+				if (material != "" && !center.isNaN() && !isnan(radius) && !isnan(step_size))
 				{
-					createSphere(center, radius, step_size);
+					createSphere(center, material, radius, step_size);
 				}
 				
 			}

@@ -1,6 +1,4 @@
-Dependencies: Ogre, OIS, CMake
-
-Note: due to lack of support for recent versions of OS X, OIS will be replaced with another library very soon.
+Dependencies: Ogre, SDL, CMake
 
 Windows:
 ========
@@ -9,9 +7,9 @@ Build instructions will come as soon as I prep binaries for the non-programmers 
 
 Linux:
 ======
-1. Install Ogre 1.7.2+ (may have to build from source) and CMake.
+1. Install Ogre 1.7.2+ (may have to build from source) and CMake. Libraries should be installed in /usr/local/lib/OGRE or /usr/lib/OGRE.
 
-2. Navigate to this directory and run the following commands:
+2. Navigate to the main RocEye directory and run the following commands:
 
 cmake source/
 make
@@ -21,4 +19,4 @@ make
 
 Mac OS X:
 =========
-Erm... this could take a bit. It's tricky. Ogre might be hard to build, and OIS does *not* work on Lion. Give us a bit of time to figure this out (since we DO have Mac users in our group!).
+Erm... this could take a bit. It's tricky. Ogre is apparently hard to build, and the Macports version may or may not work. Give us a bit of time to figure this out (since we DO have Mac users in our group!).

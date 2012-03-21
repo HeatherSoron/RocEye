@@ -132,7 +132,7 @@ void InputHandler::tryPickObjects(void)
 	//iterate through the results, and select the closest object
 	for (iter; iter != result.end(); iter++)
 	{
-		if (iter->movable && iter->movable->getName().substr(0,5) != "tile[");
+		if (iter->movable && iter->movable->getName().substr(0,5) != "tile[")
 		{
 			selectObject(iter->movable->getParentSceneNode());
 			break; //return early if we've found what we want

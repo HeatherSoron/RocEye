@@ -1,6 +1,6 @@
 #include "InputHandler.h"
 
-InputHandler::InputHandler(void) : mPointerDown(false), mPickingMeshes(true), mRaySceneQuery(0), mSceneMgr(0), mCamera(0) mSelectedObject(0)
+InputHandler::InputHandler(void) : mPointerDown(false), mPickingMeshes(true), mRaySceneQuery(0), mSceneMgr(0), mCamera(0), mSelectedObject(0)
 {
 	resetState();
 }

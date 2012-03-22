@@ -97,7 +97,10 @@ endif()
 set(HDRS
 	./BaseAppInput.h
 	./OgreBaseApp.h
+	./GridHelper.h
 	./RocEyeInput.h
+	./ColouredLine.h
+	./GridLineFactory.h
 	./InputHandler.h
 	./RocEye.h
 )
@@ -105,7 +108,10 @@ set(HDRS
 set(SRCS
 	./BaseAppInput.cpp
 	./OgreBaseApp.cpp
+	./GridHelper.cpp
 	./RocEyeInput.cpp
+	./ColouredLine.cpp
+	./GridLineFactory.cpp
 	./InputHandler.cpp
 	./RocEye.cpp
 	./RocEye_parser.cpp

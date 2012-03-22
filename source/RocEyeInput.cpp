@@ -1,6 +1,10 @@
 #include "RocEyeInput.h"
 
-RocEyeInput::RocEyeInput(void) : BaseAppInput(), mWasKeyDownO(false)
+RocEyeInput::RocEyeInput(void) : BaseAppInput(),
+	mWasKeyDownC(false),
+	mWasKeyDownG(false),
+	mWasKeyDownH(false),
+	mWasKeyDownO(false)
 {
 }
 
@@ -96,9 +100,10 @@ bool RocEyeInput::handleKeyboard(void)
 	{
 		mHandler->resetCamera();
 	}
+	
 	if (keys[SDLK_c])
 	{
-		if (keys[SDLK_LSHIFT] || keys[SDLK_RSHIFT])
+		if (!mWasKeyDownC && (keys[SDLK_LSHIFT] || keys[SDLK_RSHIFT]))
 		{
 			mHandler->toggleObjectLock();
 		}
@@ -106,7 +111,13 @@ bool RocEyeInput::handleKeyboard(void)
 		{
 			mHandler->centerObject();
 		}
+		mWasKeyDownC = true;
 	}
+	else
+	{
+		mWasKeyDownC = false;
+	}
+	
 	if (keys[SDLK_h])
 	{
 		if (!mWasKeyDownH && (keys[SDLK_LSHIFT] || keys[SDLK_RSHIFT]))
@@ -122,6 +133,16 @@ bool RocEyeInput::handleKeyboard(void)
 	else
 	{
 		mWasKeyDownH = false;
+	}
+	
+	if (keys[SDLK_g] && !mWasKeyDownG)
+	{
+		mHandler->toggleGridLines(keys[SDLK_LSHIFT] || keys[SDLK_RSHIFT]);
+		mWasKeyDownG = true;
+	}
+	else if (!keys[SDLK_g])
+	{
+		mWasKeyDownG = false;
 	}
 	
 	return true;

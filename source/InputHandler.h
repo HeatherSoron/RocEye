@@ -2,6 +2,7 @@
 #define INPUT_HANDLER_H
 
 #include <Ogre.h>
+#include "GridLineFactory.h"
 
 class InputHandler
 {
@@ -46,6 +47,8 @@ public:
 	
 	virtual void toggleObjectMode(void);
 	
+	virtual void toggleGridLines(bool centerOnTarget);
+	
 	virtual void execute(void);
 	
     static const Ogre::Real mCameraSpeed = 4; //the speed of our camera
@@ -77,5 +80,7 @@ protected:
 	Ogre::Camera* mCamera;
 	
 	Ogre::SceneNode* mSelectedObject;
+	
+	GridLineFactory* mGridLineFactory;
 };
 #endif

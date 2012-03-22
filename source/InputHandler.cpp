@@ -1,6 +1,7 @@
 #include "InputHandler.h"
+#include "GridHelper.h"
 
-InputHandler::InputHandler(void) : mPointerDown(false), mPickingMeshes(true), mRaySceneQuery(0), mSceneMgr(0), mCamera(0), mSelectedObject(0), mCenterObject(false), mTracking(false), mHorizonLocked(false)
+InputHandler::InputHandler(void) : mPointerDown(false), mPickingMeshes(true), mRaySceneQuery(0), mSceneMgr(0), mCamera(0), mSelectedObject(0), mCenterObject(false), mTracking(false), mHorizonLocked(false), mGridLineFactory(0)
 {
 	resetState();
 }
@@ -8,10 +9,16 @@ InputHandler::InputHandler(void) : mPointerDown(false), mPickingMeshes(true), mR
 InputHandler::~InputHandler(void)
 {
 	mSceneMgr->destroyQuery(mRaySceneQuery);
+	delete mGridLineFactory;
 }
 
 void InputHandler::setCamera(Ogre::Camera* camera)
 {
+	if (mGridLineFactory)
+	{
+		delete mGridLineFactory;
+	}
+	
 	mCamera = camera;
 	
 	//we assume that we ALWAYS have a scene manager, if we also have a ray scene query
@@ -22,6 +29,8 @@ void InputHandler::setCamera(Ogre::Camera* camera)
 	
 	mSceneMgr = mCamera->getParentSceneNode()->getCreator();
 	mRaySceneQuery = mSceneMgr->createRayQuery(Ogre::Ray());
+	
+	mGridLineFactory = new GridLineFactory(mSceneMgr);
 }
 
 void InputHandler::translate(InputHandler::Direction dir)
@@ -55,13 +64,13 @@ void InputHandler::rotate(InputHandler::Direction rot, bool isMouse, float mult)
 		case ROT_DOWN:
 			mRotVector.x -= speed; break;
 		case ROT_LEFT:
-			mRotVector.y += speed; if (!isMouse) {std::cout << mCamera->getParentSceneNode()->getOrientation().getRoll() << ", yaw: " << mCamera->getParentSceneNode()->getOrientation().getYaw() << std::endl;} break;
+			mRotVector.y += speed; break;
 		case ROT_RIGHT:
-			mRotVector.y -= speed; if (!isMouse) {std::cout << mCamera->getParentSceneNode()->getOrientation().getRoll() << ", yaw: " << mCamera->getParentSceneNode()->getOrientation().getYaw() << std::endl;} break;
+			mRotVector.y -= speed; break;
 		case ROT_CCW:
-			mRotVector.z += speed; std::cout << mCamera->getParentSceneNode()->getOrientation().getRoll() << std::endl; break;
+			mRotVector.z += speed; break;
 		case ROT_CW:
-			mRotVector.z -= speed; std::cout << mCamera->getParentSceneNode()->getOrientation().getRoll() << std::endl; break;
+			mRotVector.z -= speed; break;
 	}
 }
 
@@ -166,6 +175,25 @@ void InputHandler::toggleObjectLock(void)
 	mTracking = !mTracking;
 	Ogre::SceneNode* target = mTracking ? mSelectedObject : NULL;
 	mCamera->getParentSceneNode()->setAutoTracking(mTracking, target);
+}
+
+void InputHandler::toggleGridLines(bool centerOnTarget)
+{
+	
+	if (!mGridLineFactory->isGridEmpty())
+	{
+		mGridLineFactory->removeGrid();
+		return;
+	}
+	
+	if (centerOnTarget && !mSelectedObject)
+	{
+		return;
+	}
+	
+	Ogre::SceneNode* node = centerOnTarget ? mSelectedObject : mCamera->getParentSceneNode();
+	Ogre::Vector3 centerPosition = GridHelper::roundToGrid(node->getPosition());
+	mGridLineFactory->addGrid(centerPosition, 50, 3);
 }
 
 void InputHandler::levelHorizon(void)

@@ -36,6 +36,7 @@ public:
 	
 	virtual void centerObject(void);
 	virtual void toggleObjectLock(void);
+	virtual void toggleMovementTarget(void) { mReverseMovementTarget = !mReverseMovementTarget; }; //switches between controlling the camera and the selected object
 	
 	virtual void levelHorizon(void);
 	virtual void toggleHorizonLock(void);
@@ -73,6 +74,7 @@ protected:
 	bool mCenterObject;
 	bool mTracking;
 	bool mHorizonLocked;
+	bool mReverseMovementTarget;
 	
 	Ogre::RaySceneQuery* mRaySceneQuery;
 	Ogre::SceneManager* mSceneMgr;

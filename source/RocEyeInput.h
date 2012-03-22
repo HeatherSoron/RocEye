@@ -25,6 +25,7 @@ protected:
 	bool mWasKeyDownG;
 	bool mWasKeyDownH;
 	bool mWasKeyDownO;
+	bool mWasKeyDownT;
 	
 	InputHandler* mHandler;
 };

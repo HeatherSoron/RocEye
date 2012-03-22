@@ -4,7 +4,8 @@ RocEyeInput::RocEyeInput(void) : BaseAppInput(),
 	mWasKeyDownC(false),
 	mWasKeyDownG(false),
 	mWasKeyDownH(false),
-	mWasKeyDownO(false)
+	mWasKeyDownO(false),
+	mWasKeyDownT(false)
 {
 }
 
@@ -143,6 +144,16 @@ bool RocEyeInput::handleKeyboard(void)
 	else if (!keys[SDLK_g])
 	{
 		mWasKeyDownG = false;
+	}
+	
+	if (keys[SDLK_t] && !mWasKeyDownT)
+	{
+		mHandler->toggleMovementTarget();
+		mWasKeyDownT = true;
+	}
+	else if (!keys[SDLK_t])
+	{
+		mWasKeyDownT = false;
 	}
 	
 	return true;

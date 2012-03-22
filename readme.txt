@@ -24,6 +24,9 @@ C: Center camera on currently selected object
 Shift-C: force camera to rotate about currently selected object
 H: level the horizon (jittery when camera is aligned with x-axis)
 Shift-H: lock the horizon to a level position
+G: turn on/off gridlines centered on the camera
+Shift-G: turn on/off gridlines centered on the target
+T: toggle whether you're moving the camera or the selected object, when one is selected
 Escape: exit
 
 

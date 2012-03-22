@@ -1,7 +1,7 @@
 #include "InputHandler.h"
 #include "GridHelper.h"
 
-InputHandler::InputHandler(void) : mPointerDown(false), mPickingMeshes(true), mRaySceneQuery(0), mSceneMgr(0), mCamera(0), mSelectedObject(0), mCenterObject(false), mTracking(false), mHorizonLocked(false), mGridLineFactory(0)
+InputHandler::InputHandler(void) : mPointerDown(false), mPickingMeshes(true), mRaySceneQuery(0), mSceneMgr(0), mCamera(0), mSelectedObject(0), mCenterObject(false), mTracking(false), mHorizonLocked(false), mReverseMovementTarget(false), mGridLineFactory(0)
 {
 	resetState();
 }
@@ -276,7 +276,8 @@ void InputHandler::execute(void)
 	}
 	else
 	{
-		Ogre::SceneNode* transObject = mSelectedObject && !mTracking ? mSelectedObject : mCamera->getParentSceneNode();
+		bool forceCameraMovement = (mTracking && !mReverseMovementTarget) || (!mTracking && mReverseMovementTarget);
+		Ogre::SceneNode* transObject = mSelectedObject && !forceCameraMovement ? mSelectedObject : mCamera->getParentSceneNode();
 		
 		transObject->translate(trans, Ogre::SceneNode::TS_LOCAL);
 	}

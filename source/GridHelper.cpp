@@ -7,5 +7,10 @@ Ogre::Vector3 GridHelper::roundToGrid(const Ogre::Vector3 vec)
 
 Ogre::Real GridHelper::roundToGrid(const Ogre::Real num)
 {
-	return static_cast<int>(num / GRID_SIZE) * GRID_SIZE;
+	int roundedNum = static_cast<int>(num / GRID_SIZE) * GRID_SIZE;
+	if (num - roundedNum >= GRID_SIZE / 2)
+	{
+		roundedNum += GRID_SIZE;
+	}
+	return roundedNum;
 }

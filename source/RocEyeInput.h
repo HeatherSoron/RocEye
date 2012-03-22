@@ -22,6 +22,7 @@ protected:
 	virtual bool fireLeftMouseUp(void);
 	
 	bool mWasKeyDownO;
+	bool mWasKeyDownH;
 	
 	InputHandler* mHandler;
 };

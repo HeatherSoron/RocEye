@@ -1,6 +1,6 @@
 #include "InputHandler.h"
 
-InputHandler::InputHandler(void) : mPointerDown(false), mPickingMeshes(true), mRaySceneQuery(0), mSceneMgr(0), mCamera(0), mSelectedObject(0), mCenterObject(false), mTracking(false)
+InputHandler::InputHandler(void) : mPointerDown(false), mPickingMeshes(true), mRaySceneQuery(0), mSceneMgr(0), mCamera(0), mSelectedObject(0), mCenterObject(false), mTracking(false), mHorizonLocked(false)
 {
 	resetState();
 }
@@ -55,13 +55,13 @@ void InputHandler::rotate(InputHandler::Direction rot, bool isMouse, float mult)
 		case ROT_DOWN:
 			mRotVector.x -= speed; break;
 		case ROT_LEFT:
-			mRotVector.y += speed; break;
+			mRotVector.y += speed; if (!isMouse) {std::cout << mCamera->getParentSceneNode()->getOrientation().getRoll() << ", yaw: " << mCamera->getParentSceneNode()->getOrientation().getYaw() << std::endl;} break;
 		case ROT_RIGHT:
-			mRotVector.y -= speed; break;
+			mRotVector.y -= speed; if (!isMouse) {std::cout << mCamera->getParentSceneNode()->getOrientation().getRoll() << ", yaw: " << mCamera->getParentSceneNode()->getOrientation().getYaw() << std::endl;} break;
 		case ROT_CCW:
-			mRotVector.z += speed; break;
+			mRotVector.z += speed; std::cout << mCamera->getParentSceneNode()->getOrientation().getRoll() << std::endl; break;
 		case ROT_CW:
-			mRotVector.z -= speed; break;
+			mRotVector.z -= speed; std::cout << mCamera->getParentSceneNode()->getOrientation().getRoll() << std::endl; break;
 	}
 }
 
@@ -168,6 +168,65 @@ void InputHandler::toggleObjectLock(void)
 	mCamera->getParentSceneNode()->setAutoTracking(mTracking, target);
 }
 
+void InputHandler::levelHorizon(void)
+{
+	//WHY could I not make this a one-line function? Gah, I'll have to do some thinking about rotations, see if there's a shorter way to do this.
+	//I think there are also floating point errors that get amplified somewhere...
+	
+	int count = 0;
+	do
+	{
+		const Ogre::Quaternion orient = mCamera->getParentSceneNode()->getOrientation();
+		const Ogre::Radian roll = orient.getRoll();
+		const Ogre::Degree yaw = orient.getYaw();
+	
+		Ogre::Degree finalRoll;
+		if (yaw < Ogre::Degree(-90) || yaw > Ogre::Degree(90))
+		{
+			if ( (roll - Ogre::Radian(Ogre::Math::PI)) < Ogre::Radian(0.0001) && (roll - Ogre::Radian(Ogre::Math::PI)) > Ogre::Radian(-0.0001) )
+			{
+				break;
+			}
+			const Ogre::Degree targetRoll(180);
+			if (roll < Ogre::Degree(0))
+			{
+				finalRoll = (targetRoll - roll);
+			}
+			else
+			{
+				finalRoll = -(targetRoll - roll);
+			}
+			if (finalRoll > Ogre::Degree(359.9)) //we DO NOT want to oscillate!
+			{
+				finalRoll = Ogre::Degree(0);
+			}
+		}
+		else
+		{
+			if (roll < Ogre::Radian(0.0001)  && roll > Ogre::Radian(-0.0001))
+			{
+				break;
+			}
+			finalRoll = -roll;
+		}
+	
+		const int dampFactor = 8; //this is important, otherwise we get oscillation
+		mCamera->getParentSceneNode()->roll((finalRoll)/dampFactor);
+	} while (++count < 10000); //make sure that we don't freeze
+}
+
+void InputHandler::toggleHorizonLock(void)
+{
+	mHorizonLocked = !mHorizonLocked;
+	//this is required for rotate-about-target, but for some reason we seem to require TS_WORLD later on anyway for pure yaw
+	mCamera->getParentSceneNode()->setFixedYawAxis(mHorizonLocked);
+	
+	if (mHorizonLocked)
+	{
+		levelHorizon();
+	}
+}
+
 void InputHandler::execute(void)
 {
 	Ogre::Vector3 trans = mTransVector * mCameraSpeed * mSpeedMult;
@@ -194,9 +253,14 @@ void InputHandler::execute(void)
 		transObject->translate(trans, Ogre::SceneNode::TS_LOCAL);
 	}
 	
+	Ogre::SceneNode::TransformSpace yawSpace = mHorizonLocked ? Ogre::SceneNode::TS_WORLD : Ogre::SceneNode::TS_LOCAL;
+	
 	mCamera->getParentSceneNode()->pitch(Ogre::Degree(mRotVector.x * mSpeedMult));
-	mCamera->getParentSceneNode()->yaw(Ogre::Degree(mRotVector.y * mSpeedMult));
-	mCamera->getParentSceneNode()->roll(Ogre::Degree(mRotVector.z * mSpeedMult));
+	mCamera->getParentSceneNode()->yaw(Ogre::Degree(mRotVector.y * mSpeedMult), yawSpace);
+	if (!mHorizonLocked)
+	{
+		mCamera->getParentSceneNode()->roll(Ogre::Degree(mRotVector.z * mSpeedMult));
+	}
 	
 	if (mCameraNeedsReset)
 	{

@@ -18,7 +18,7 @@ cmake_minimum_required(VERSION 2.6)
  
 project(RocEye)
  
-if(WIN32)
+if(WIN32 OR )
 	set(CMAKE_MODULE_PATH "$ENV{OGRE_HOME}/CMake/;${CMAKE_MODULE_PATH}")
 	set(OGRE_SAMPLES_INCLUDEPATH
 		$ENV{OGRE_HOME}/Samples/include

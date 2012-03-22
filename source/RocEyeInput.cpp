@@ -107,6 +107,22 @@ bool RocEyeInput::handleKeyboard(void)
 			mHandler->centerObject();
 		}
 	}
+	if (keys[SDLK_h])
+	{
+		if (!mWasKeyDownH && (keys[SDLK_LSHIFT] || keys[SDLK_RSHIFT]))
+		{
+			mHandler->toggleHorizonLock();
+		}
+		else
+		{
+			mHandler->levelHorizon();
+		}
+		mWasKeyDownH = true;
+	}
+	else
+	{
+		mWasKeyDownH = false;
+	}
 	
 	return true;
 }

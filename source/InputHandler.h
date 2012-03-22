@@ -36,6 +36,9 @@ public:
 	virtual void centerObject(void);
 	virtual void toggleObjectLock(void);
 	
+	virtual void levelHorizon(void);
+	virtual void toggleHorizonLock(void);
+	
 	//we're not calling this "left mouse down", because we might port to iOS or something eventually
 	//and yes, an iOS port HAS been requested
 	virtual bool onPrimaryPointerDown(void);
@@ -66,6 +69,7 @@ protected:
 	Ogre::Real mSpeedMult;
 	bool mCenterObject;
 	bool mTracking;
+	bool mHorizonLocked;
 	
 	Ogre::RaySceneQuery* mRaySceneQuery;
 	Ogre::SceneManager* mSceneMgr;

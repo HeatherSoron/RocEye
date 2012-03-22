@@ -1,6 +1,6 @@
 #include "InputHandler.h"
 
-InputHandler::InputHandler(void) : mPointerDown(false), mPickingMeshes(true), mRaySceneQuery(0), mSceneMgr(0), mCamera(0), mSelectedObject(0)
+InputHandler::InputHandler(void) : mPointerDown(false), mPickingMeshes(true), mRaySceneQuery(0), mSceneMgr(0), mCamera(0), mSelectedObject(0), mCenterObject(false), mTracking(false)
 {
 	resetState();
 }
@@ -156,6 +156,18 @@ void InputHandler::deselectObject(void)
 	mSelectedObject = NULL;
 }
 
+void InputHandler::centerObject(void)
+{
+	mCenterObject = true;
+}
+
+void InputHandler::toggleObjectLock(void)
+{
+	mTracking = !mTracking;
+	Ogre::SceneNode* target = mTracking ? mSelectedObject : NULL;
+	mCamera->getParentSceneNode()->setAutoTracking(mTracking, target);
+}
+
 void InputHandler::execute(void)
 {
 	Ogre::Vector3 trans = mTransVector * mCameraSpeed * mSpeedMult;
@@ -177,7 +189,7 @@ void InputHandler::execute(void)
 	}
 	else
 	{
-		Ogre::SceneNode* transObject = mSelectedObject ? mSelectedObject : mCamera->getParentSceneNode();
+		Ogre::SceneNode* transObject = mSelectedObject && !mTracking ? mSelectedObject : mCamera->getParentSceneNode();
 		
 		transObject->translate(trans, Ogre::SceneNode::TS_LOCAL);
 	}
@@ -192,12 +204,18 @@ void InputHandler::execute(void)
 		mCamera->getParentSceneNode()->setOrientation(orient);
 	}
 	
+	if (mCenterObject && mSelectedObject)
+	{
+		mCamera->getParentSceneNode()->lookAt(mSelectedObject->getPosition(), Ogre::SceneNode::TS_WORLD);
+	}
+	
 	resetState();
 }
 
 void InputHandler::resetState(void)
 {
 	mCameraNeedsReset = false;
+	mCenterObject = false;
 	mTransVector = Ogre::Vector3(0,0,0);
 	mRotVector = Ogre::Vector3(0,0,0);
 	mSpeedMult = 1;

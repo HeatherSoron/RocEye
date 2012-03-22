@@ -1,8 +1,7 @@
 #include "RocEyeInput.h"
 
-RocEyeInput::RocEyeInput(void) : mWasKeyDownO(false)
+RocEyeInput::RocEyeInput(void) : BaseAppInput(), mWasKeyDownO(false)
 {
-	BaseAppInput();
 }
 
 RocEyeInput::~RocEyeInput(void)
@@ -96,6 +95,17 @@ bool RocEyeInput::handleKeyboard(void)
 	if (keys[SDLK_SPACE])
 	{
 		mHandler->resetCamera();
+	}
+	if (keys[SDLK_c])
+	{
+		if (keys[SDLK_LSHIFT] || keys[SDLK_RSHIFT])
+		{
+			mHandler->toggleObjectLock();
+		}
+		else
+		{
+			mHandler->centerObject();
+		}
 	}
 	
 	return true;

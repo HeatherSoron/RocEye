@@ -33,6 +33,9 @@ public:
 	
 	virtual void resetCamera(void); //makes the camera point down. Note that this is still buffered, and overrides rotations
 	
+	virtual void centerObject(void);
+	virtual void toggleObjectLock(void);
+	
 	//we're not calling this "left mouse down", because we might port to iOS or something eventually
 	//and yes, an iOS port HAS been requested
 	virtual bool onPrimaryPointerDown(void);
@@ -61,6 +64,8 @@ protected:
 	Ogre::Vector3 mTransVector;
 	Ogre::Vector3 mRotVector; // pitch/yaw/roll are stored on the corresponding axis (be sure to convert to degrees!)
 	Ogre::Real mSpeedMult;
+	bool mCenterObject;
+	bool mTracking;
 	
 	Ogre::RaySceneQuery* mRaySceneQuery;
 	Ogre::SceneManager* mSceneMgr;

@@ -20,6 +20,8 @@ Up/down/left/right: change camera direction (note: numpad doesn't work)
 Mouse movement: change camera direction
 O: toggle object picking mode (either normal entities, or particle systems/etc.)
 Left click: select an object for movement
+C: Center camera on currently selected object
+Shift-C: force camera to rotate about currently selected object
 Escape: exit
 
 

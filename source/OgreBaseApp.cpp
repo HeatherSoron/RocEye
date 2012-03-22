@@ -6,6 +6,8 @@
 
 #include "BaseAppInput.h"
 
+#include <iostream>
+
 //-------------------------------------------------------------------------------------
 OgreBaseApp::OgreBaseApp(void)
 	:
@@ -13,8 +15,8 @@ OgreBaseApp::OgreBaseApp(void)
 		mWindow(0),
 		mPluginsCfg(Ogre::StringUtil::BLANK),
 		mResourcesCfg(Ogre::StringUtil::BLANK),
-		mMovementVector(0,0,0),
-		mRoll(0)
+		mWindowWidth(640),
+		mWindowHeight(480)
 {
 }
 //-------------------------------------------------------------------------------------
@@ -32,8 +34,19 @@ OgreBaseApp::~OgreBaseApp(void)
 
 bool OgreBaseApp::setup(void)
 {
+	std::ifstream videoFile;
+	videoFile.open("screen_size.cfg");
+	if (videoFile.good())
+	{
+		std::string width, height;
+		getline(videoFile, width);
+		getline(videoFile, height);
+		
+		mWindowWidth = atoi(width.c_str());
+		mWindowHeight = atoi(height.c_str());
+	}
 	SDL_Init(SDL_INIT_VIDEO);
-	SDL_Surface *screen = SDL_SetVideoMode(640, 480, 0, SDL_OPENGL);
+	SDL_Surface *screen = SDL_SetVideoMode(mWindowWidth, mWindowHeight, 0, SDL_OPENGL);
 	
 	//construct the Ogre::Root object
 	mRoot = new Ogre::Root(mPluginsCfg);
@@ -100,7 +113,7 @@ bool OgreBaseApp::go(void)
 #endif
 	
 	//NOW we make a RenderWindow!
-	mWindow = mRoot->createRenderWindow("MainRenderWindow", 640, 480, false, &misc);
+	mWindow = mRoot->createRenderWindow("MainRenderWindow", mWindowWidth, mWindowHeight, false, &misc);
 	mWindow->setVisible(true);
 	
 	//just have Ogre create our window for us
@@ -120,14 +133,6 @@ bool OgreBaseApp::go(void)
 	createScene();
 	
 	setupInput();
-
-/*
-	//set initial mouse clipping area
-	windowResized(mWindow);
-
-	//register this app as a window listener
-	Ogre::WindowEventUtilities::addWindowEventListener(mWindow, this);
-*/
 
 	mRoot->addFrameListener(this);
 

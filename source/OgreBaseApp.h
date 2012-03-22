@@ -62,8 +62,8 @@ protected:
     Ogre::Camera* mCamera;
     Ogre::Viewport* mViewport;
     
-    Ogre::Vector3 mMovementVector; //used to manually translate the camera
-    Ogre::Real mRoll;
+    int mWindowWidth;
+    int mWindowHeight;
     
 private:
 };

@@ -1,6 +1,8 @@
 #include "RocEyeInput.h"
 
-RocEyeInput::RocEyeInput(void) : BaseAppInput(),
+RocEyeInput::RocEyeInput(int width, int height) : BaseAppInput(),
+	mWindowWidth(width),
+	mWindowHeight(height),
 	mWasKeyDownC(false),
 	mWasKeyDownG(false),
 	mWasKeyDownH(false),
@@ -166,8 +168,8 @@ bool RocEyeInput::handleMouse(void)
 		return false;
 	}
 	
-	static const int CENTER_X = 320;
-	static const int CENTER_Y = 240;
+	static const int CENTER_X = mWindowWidth/2;
+	static const int CENTER_Y = mWindowHeight/2;
 	
 	int x, y;
 	SDL_GetMouseState(&x,&y);

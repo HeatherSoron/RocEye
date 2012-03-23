@@ -25,30 +25,30 @@ void GridLineFactory::addGrid(Ogre::Vector3 center, Ogre::Real cellSize, int lin
 {
 	removeGrid();
 	
-	mLineList = new ColouredLine*[(linesPerDirection * 2) * (linesPerDirection * 2) * 3];
+	mLineList = new ColouredLine*[((linesPerDirection+1) * 2) * ((linesPerDirection+1) * 2) * 3];
 	
 	const Ogre::Real boundaryOffset = cellSize * linesPerDirection + cellSize / 2;
-	const Ogre::Real startOffset = boundaryOffset - cellSize;
+	const Ogre::Real startOffset = boundaryOffset;
 	
 	//make the x and y lines
-	for (Ogre::Real z = center.z - startOffset; z < center.z + boundaryOffset; z += cellSize)
+	for (Ogre::Real z = center.z - startOffset; z <= center.z + boundaryOffset; z += cellSize)
 	{
 		//add the x lines here
-		for (Ogre::Real y = center.y - startOffset; y < center.y + boundaryOffset; y += cellSize)
+		for (Ogre::Real y = center.y - startOffset; y <= center.y + boundaryOffset; y += cellSize)
 		{
 			addLine("RedGridLine", Ogre::Vector3(center.x, y, z), Ogre::Vector3(boundaryOffset, 0, 0));
 		}
 		//add the y lines here
-		for (Ogre::Real x = center.x - startOffset; x < center.x + boundaryOffset; x += cellSize)
+		for (Ogre::Real x = center.x - startOffset; x <= center.x + boundaryOffset; x += cellSize)
 		{
 			addLine("GreenGridLine", Ogre::Vector3(x, center.y, z), Ogre::Vector3(0, boundaryOffset, 0));
 		}
 	}
 	
 	//make the z lines
-	for (Ogre::Real x = center.x - startOffset; x < center.x + boundaryOffset; x += cellSize)
+	for (Ogre::Real x = center.x - startOffset; x <= center.x + boundaryOffset; x += cellSize)
 	{
-		for (Ogre::Real y = center.y - startOffset; y < center.y + boundaryOffset; y += cellSize)
+		for (Ogre::Real y = center.y - startOffset; y <= center.y + boundaryOffset; y += cellSize)
 		{
 			addLine("BlueGridLine", Ogre::Vector3(x, y, center.z), Ogre::Vector3(0, 0, boundaryOffset));
 		}

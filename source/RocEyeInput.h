@@ -29,6 +29,7 @@ protected:
 	bool mWasKeyDownH;
 	bool mWasKeyDownO;
 	bool mWasKeyDownT;
+	bool mWasKeyDownENTER;
 	
 	InputHandler* mHandler;
 };

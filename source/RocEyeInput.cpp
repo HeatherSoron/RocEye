@@ -7,7 +7,8 @@ RocEyeInput::RocEyeInput(int width, int height) : BaseAppInput(),
 	mWasKeyDownG(false),
 	mWasKeyDownH(false),
 	mWasKeyDownO(false),
-	mWasKeyDownT(false)
+	mWasKeyDownT(false),
+	mWasKeyDownENTER(false)
 {
 }
 
@@ -159,6 +160,17 @@ KeyArray* RocEyeInput::handleKeyboard(KeyArray* keys)
 	else if (!keys[SDLK_t])
 	{
 		mWasKeyDownT = false;
+	}
+	
+	if (keys[SDLK_RETURN] && !mWasKeyDownENTER)
+	{
+		mHandler->onPrimaryPointerDown();
+		mWasKeyDownENTER = true;
+	}
+	else if (!keys[SDLK_RETURN] && mWasKeyDownENTER)
+	{
+		mHandler->onPrimaryPointerUp();
+		mWasKeyDownENTER = false;
 	}
 	
 	return keys;

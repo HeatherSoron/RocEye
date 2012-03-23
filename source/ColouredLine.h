@@ -7,7 +7,7 @@ class ColouredLine
 {
 public:
 	ColouredLine(Ogre::SceneManager* sceneMgr, Ogre::String name, Ogre::String material, Ogre::Vector3 start, Ogre::Vector3 end);
-	~ColouredLine(void);
+	virtual ~ColouredLine(void);
 	Ogre::SceneNode* getNode(void) { return mSceneNode; };
 protected:
 	virtual void init(Ogre::String material, Ogre::Vector3 start, Ogre::Vector3 end);

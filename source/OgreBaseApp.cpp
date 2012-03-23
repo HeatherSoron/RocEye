@@ -12,9 +12,9 @@
 OgreBaseApp::OgreBaseApp(void)
 	:
 		mRoot(0),
-		mWindow(0),
 		mPluginsCfg(Ogre::StringUtil::BLANK),
 		mResourcesCfg(Ogre::StringUtil::BLANK),
+		mWindow(0),
 		mWindowWidth(640),
 		mWindowHeight(480)
 {
@@ -46,7 +46,7 @@ bool OgreBaseApp::setup(void)
 		mWindowHeight = atoi(height.c_str());
 	}
 	SDL_Init(SDL_INIT_VIDEO);
-	SDL_Surface *screen = SDL_SetVideoMode(mWindowWidth, mWindowHeight, 0, SDL_OPENGL);
+	SDL_SetVideoMode(mWindowWidth, mWindowHeight, 0, SDL_OPENGL);
 	
 	//construct the Ogre::Root object
 	mRoot = new Ogre::Root(mPluginsCfg);

@@ -8,7 +8,7 @@ class GridLineFactory
 public:
 	GridLineFactory();
 	GridLineFactory(Ogre::SceneManager* sceneMgr);
-	~GridLineFactory();
+	virtual ~GridLineFactory();
 	
 	void setSceneManager(Ogre::SceneManager* sceneMgr) { removeGrid(); mSceneMgr = sceneMgr; };
 	void addGrid(Ogre::Vector3 center, Ogre::Real cellSize, int linesPerDirection);

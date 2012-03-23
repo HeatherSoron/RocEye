@@ -110,7 +110,7 @@ void RocEye::createPortraitCube(Ogre::Vector3 center, Ogre::Real diam, Ogre::Str
 	
 	//now we create all 4 sides
 	//that 6 represents the number of faces a cube has, btw
-	for (offset; offset < 4 * 6; offset += 4)
+	for (; offset < 4 * 6; offset += 4)
 	{
 		mo->position(
 			faceCenter.dotProduct(Ogre::Vector3::UNIT_X) + faceCenter.dotProduct(Ogre::Vector3::UNIT_Z),
@@ -210,7 +210,7 @@ void RocEye::createPortraitPillar(Ogre::Vector3 center, Ogre::Real diam, Ogre::S
 	
 	//now we create all 4 sides
 	//that 6 represents the number of faces a cube has, btw
-	for (offset; offset < 4 * 6; offset += 4)
+	for (; offset < 4 * 6; offset += 4)
 	{
 		mo->position(faceCenter.dotProduct(Ogre::Vector3::UNIT_Z), diam/2, faceCenter.dotProduct(Ogre::Vector3::UNIT_X));
 		mo->textureCoord(0,0);

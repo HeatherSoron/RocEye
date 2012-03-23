@@ -17,6 +17,8 @@
 cmake_minimum_required(VERSION 2.6)
  
 project(RocEye)
+
+option(STRICT_WARNINGS "Turns on -Wall and -Werror. Recommended for developers." ON)
  
 if(WIN32 OR )
 	set(CMAKE_MODULE_PATH "$ENV{OGRE_HOME}/CMake/;${CMAKE_MODULE_PATH}")
@@ -39,12 +41,17 @@ if(UNIX)
 	else ()
 	  message(SEND_ERROR "Failed to find module path.")
 	endif(EXISTS "/usr/local/lib/OGRE")
+	
 endif(UNIX)
  
 if (CMAKE_BUILD_TYPE STREQUAL "")
   # CMake defaults to leaving CMAKE_BUILD_TYPE empty. This screws up
   # differentiation between debug and release builds.
   set(CMAKE_BUILD_TYPE "RelWithDebInfo" CACHE STRING "Choose the type of build, options are: None (CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) Debug Release RelWithDebInfo MinSizeRel." FORCE)
+endif ()
+
+if (STRICT_WARNINGS)
+	set(CMAKE_CXX_FLAGS "-g -Wall -Werror")
 endif ()
  
 set(CMAKE_DEBUG_POSTFIX "_d")

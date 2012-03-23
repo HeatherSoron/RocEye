@@ -1,7 +1,18 @@
 #include "InputHandler.h"
 #include "GridHelper.h"
 
-InputHandler::InputHandler(void) : mPointerDown(false), mPickingMeshes(true), mRaySceneQuery(0), mSceneMgr(0), mCamera(0), mSelectedObject(0), mCenterObject(false), mTracking(false), mHorizonLocked(false), mReverseMovementTarget(false), mGridLineFactory(0)
+InputHandler::InputHandler(void) :
+	mPointerDown(false),
+	mPickingMeshes(true),
+	mCenterObject(false),
+	mTracking(false),
+	mHorizonLocked(false),
+	mReverseMovementTarget(false),
+	mRaySceneQuery(0),
+	mSceneMgr(0),
+	mCamera(0),
+	mSelectedObject(0),
+	mGridLineFactory(0)
 {
 	resetState();
 }
@@ -49,6 +60,8 @@ void InputHandler::translate(InputHandler::Direction dir)
 			mTransVector.y -= 1; break;
 		case DIR_UP:
 			mTransVector.y += 1; break;
+		default:
+			std::cerr << "Warning: rotation used in InputHandler::translate" << std::endl;
 	}
 }
 
@@ -71,6 +84,8 @@ void InputHandler::rotate(InputHandler::Direction rot, bool isMouse, float mult)
 			mRotVector.z += speed; break;
 		case ROT_CW:
 			mRotVector.z -= speed; break;
+		default:
+			std::cerr << "Warning: direction used in InputHandler::rotate" << std::endl;
 	}
 }
 
@@ -139,7 +154,7 @@ void InputHandler::tryPickObjects(void)
 	Ogre::RaySceneQueryResult::iterator iter = result.begin();
 	
 	//iterate through the results, and select the closest object
-	for (iter; iter != result.end(); iter++)
+	for (; iter != result.end(); iter++)
 	{
 		if (iter->movable && iter->movable->getName().substr(0,5) != "tile[")
 		{

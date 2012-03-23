@@ -52,10 +52,10 @@ public:
 	
 	virtual void execute(void);
 	
-    static const Ogre::Real mCameraSpeed = 4; //the speed of our camera
-    static const Ogre::Real mMouseRotateSpeed = 0.2;
-    static const Ogre::Real mKeyRotateSpeed = 2;
-    static const Ogre::Real SPEED_PER_STEP = 5; //gets multiplied with stuff
+    static const int mCameraSpeed = 4; //the speed of our camera
+    static const int mMouseRotateSpeedDivisor = 5;
+    static const int mKeyRotateSpeed = 2;
+    static const int SPEED_PER_STEP = 5; //gets multiplied with stuff
     
 protected:
 	virtual void resetState(void);

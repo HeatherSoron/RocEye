@@ -67,7 +67,7 @@ void InputHandler::translate(InputHandler::Direction dir)
 
 void InputHandler::rotate(InputHandler::Direction rot, bool isMouse, float mult)
 {
-	Ogre::Real speed = isMouse ? mMouseRotateSpeed : mKeyRotateSpeed;
+	Ogre::Real speed = isMouse ? 1.0f / mMouseRotateSpeedDivisor : mKeyRotateSpeed;
 	speed *= mult;
 	
 	switch (rot)

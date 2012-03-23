@@ -37,7 +37,15 @@ if(UNIX)
  
 	  set(CMAKE_MODULE_PATH "/usr/lib/OGRE/cmake/;${CMAKE_MODULE_PATH}")
 	  set(OGRE_SAMPLES_INCLUDEPATH "/usr/share/OGRE/samples/Common/include/") # Otherwise, this one
- 
+	elseif(EXISTS /opt/local/share/cmake/modules/) # Hack for one of the devs.
+	
+		set(CMAKE_MODULE_PATH "$ENV{OGRE_HOME}/CMake/;${CMAKE_MODULE_PATH}")
+		set(OGRE_SAMPLES_INCLUDEPATH
+			$ENV{OGRE_HOME}/Samples/include
+		)
+	set(CMAKE_MODULE_PATH "/opt/local/share/cmake/modules/;${CMAKE_MODULE_PATH}")
+	
+	
 	else ()
 	  message(SEND_ERROR "Failed to find module path.")
 	endif(EXISTS "/usr/local/lib/OGRE")

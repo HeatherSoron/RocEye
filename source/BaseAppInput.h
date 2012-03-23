@@ -26,6 +26,8 @@
 #include <SDL/SDL_mouse.h>
 #endif
 
+typedef Uint8 KeyArray; // to make return values readable
+
 class BaseAppInput
 {
 public:
@@ -36,7 +38,7 @@ public:
 protected:
 	
 	virtual void frameDone(void);
-	virtual bool handleKeyboard(void);
+	virtual KeyArray* handleKeyboard(KeyArray*); // Do not free the return value.
 	virtual bool handleMouse(void);
 	
 	virtual bool fireLeftMouseDown(void);

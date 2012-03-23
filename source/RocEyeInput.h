@@ -13,7 +13,7 @@ public:
 	virtual void setHandler(InputHandler* handler);
 	
 protected:
-	virtual bool handleKeyboard(void);
+	virtual KeyArray* handleKeyboard(KeyArray*); // Do not free the return value.
 	virtual bool handleMouse(void);
 	virtual void frameDone(void);
 	

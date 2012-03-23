@@ -18,7 +18,7 @@ bool BaseAppInput::runFrame(void)
 {
 	//ideally, we would be using events. However, that tended to result in either segfaults or a hang when I tried it. *sigh*
 	//so, we'll fake events on our own
-	if (! handleKeyboard() || ! handleMouse())
+	if (! handleKeyboard(NULL) || ! handleMouse())
 	{
 		return false;
 	}
@@ -31,18 +31,23 @@ bool BaseAppInput::runFrame(void)
 void BaseAppInput::frameDone(void)
 {
 	//SDL wants us to pump the events periodically to keep them flowing
-	SDL_PumpEvents();
+	for(int i = 0; i < 1000; ++i) SDL_PumpEvents();
+	// We seem to need to pump "a few" times, at least on mac, to keep keys from sticking.
 }
 
-bool BaseAppInput::handleKeyboard(void)
+KeyArray* BaseAppInput::handleKeyboard(KeyArray* keys)
 {
-	Uint8* keys = SDL_GetKeyState(NULL);
-	if (keys[SDLK_ESCAPE])
+	if(!keys)
 	{
-		return false;
+		keys = SDL_GetKeyState(NULL);	
 	}
 	
-	return true;
+	if (keys[SDLK_ESCAPE])
+	{
+		return NULL;
+	}
+	
+	return keys;
 }
 
 bool BaseAppInput::handleMouse(void)

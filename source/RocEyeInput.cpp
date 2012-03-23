@@ -20,14 +20,17 @@ void RocEyeInput::setHandler(InputHandler* handler)
 	mHandler = handler;
 }
 
-bool RocEyeInput::handleKeyboard(void)
+KeyArray* RocEyeInput::handleKeyboard(KeyArray* keys)
 {
-	if (!BaseAppInput::handleKeyboard())
+	if (!BaseAppInput::handleKeyboard(keys))
 	{
-		return false;
+		return NULL;
 	}
 	
-	Uint8* keys = SDL_GetKeyState(NULL);
+	if (!keys)
+	{
+		keys = SDL_GetKeyState(NULL);
+	}
 	
 	if (keys[SDLK_o] && !mWasKeyDownO)
 	{
@@ -158,7 +161,7 @@ bool RocEyeInput::handleKeyboard(void)
 		mWasKeyDownT = false;
 	}
 	
-	return true;
+	return keys;
 }
 
 bool RocEyeInput::handleMouse(void)
@@ -168,15 +171,15 @@ bool RocEyeInput::handleMouse(void)
 		return false;
 	}
 	
-	static const int CENTER_X = mWindowWidth/2;
-	static const int CENTER_Y = mWindowHeight/2;
+	const int CENTER_X = mWindowWidth/2;
+	const int CENTER_Y = mWindowHeight/2;
 	
 	int x, y;
 	SDL_GetMouseState(&x,&y);
 	
-	int dx, dy; //deltas
-	dx = x - CENTER_X;
-	dy = y - CENTER_Y;
+	//deltas
+	int dx = x - CENTER_X;
+	int dy = y - CENTER_Y;
 	
 	
 	mHandler->rotate(InputHandler::ROT_RIGHT, true, dx);

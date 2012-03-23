@@ -2,11 +2,17 @@
 
 #include <iostream>
 
+#ifdef WIN32
+//windows uses a different name for isnan(), and defines it in float.h
+#define isnan _isnan
+#include <float.h>
+#endif
+
 #define GETLINE_SKIP_BLANK_AND_COMMENT(x,y) getline(x, y); if (y == "" || y[0] == '#') continue;
 
 #define SPLIT_STRING_ON_SEMICOLON(x) int first_of = x.find_first_of(':'); if (first_of < 0) {first_of = 0;} string key = x.substr(1, first_of - 1); string val = x.substr(first_of+1);
 
-#define TRY_GET_FLOAT(x,y,z) if (x == #y) y = strtof(z.c_str(), NULL);
+#define TRY_GET_FLOAT(x,y,z) if (x == #y) y = static_cast<float>(strtod(z.c_str(), NULL));
 #define ELSE_TRY_GET_FLOAT(x, y, z) else TRY_GET_FLOAT(x,y,z)
 
 #define TRY_GET_STRING(x,y,z) if (x == #y) y = z;
@@ -40,9 +46,9 @@ void RocEye::loadSceneFile(void)
 			if (key == "MODEL")
 			{
 				string mesh = "";
-				float x = NAN; //this is not a valid value
-				float y = NAN;
-				float z = NAN;
+				float x = std::numeric_limits<float>::quiet_NaN(); //this is not a valid value
+				float y = std::numeric_limits<float>::quiet_NaN();
+				float z = std::numeric_limits<float>::quiet_NaN();
 			
 				while (sceneFile.good() && noError && line != "}")
 				{
@@ -70,15 +76,15 @@ void RocEye::loadSceneFile(void)
 				string type = val;
 				
 				string material = "";
-				float normal_x = NAN;
-				float normal_y = NAN;
-				float normal_z = NAN;
-				float updir_x = NAN;
-				float updir_y = NAN;
-				float updir_z = NAN;
-				float height = NAN;
-				float width = NAN;
-				float dist_from_origin = NAN;
+				float normal_x = std::numeric_limits<float>::quiet_NaN();
+				float normal_y = std::numeric_limits<float>::quiet_NaN();
+				float normal_z = std::numeric_limits<float>::quiet_NaN();
+				float updir_x = std::numeric_limits<float>::quiet_NaN();
+				float updir_y = std::numeric_limits<float>::quiet_NaN();
+				float updir_z = std::numeric_limits<float>::quiet_NaN();
+				float height = std::numeric_limits<float>::quiet_NaN();
+				float width = std::numeric_limits<float>::quiet_NaN();
+				float dist_from_origin = std::numeric_limits<float>::quiet_NaN();
 				
 				while (sceneFile.good() && noError && line != "}")
 				{
@@ -116,9 +122,9 @@ void RocEye::loadSceneFile(void)
 			}//end plane
 			else if (key == "VIEWPORT_COLOUR")
 			{
-				float red = NAN;
-				float green = NAN;
-				float blue = NAN;
+				float red = std::numeric_limits<float>::quiet_NaN();
+				float green = std::numeric_limits<float>::quiet_NaN();
+				float blue = std::numeric_limits<float>::quiet_NaN();
 				
 				while (sceneFile.good() && noError && line != "}")
 				{
@@ -163,20 +169,20 @@ void RocEye::loadSceneFile(void)
 			{
 				string type = val;
 				
-				float diffuse_red = NAN;
-				float diffuse_green = NAN;
-				float diffuse_blue = NAN;
-				float specular_red = NAN;
-				float specular_green = NAN;
-				float specular_blue = NAN;
-				float pos_x = NAN;
-				float pos_y = NAN;
-				float pos_z = NAN;
-				float dir_x = NAN;
-				float dir_y = NAN;
-				float dir_z = NAN;
-				float inner_angle = NAN;
-				float outer_angle = NAN;
+				float diffuse_red = std::numeric_limits<float>::quiet_NaN();
+				float diffuse_green = std::numeric_limits<float>::quiet_NaN();
+				float diffuse_blue = std::numeric_limits<float>::quiet_NaN();
+				float specular_red = std::numeric_limits<float>::quiet_NaN();
+				float specular_green = std::numeric_limits<float>::quiet_NaN();
+				float specular_blue = std::numeric_limits<float>::quiet_NaN();
+				float pos_x = std::numeric_limits<float>::quiet_NaN();
+				float pos_y = std::numeric_limits<float>::quiet_NaN();
+				float pos_z = std::numeric_limits<float>::quiet_NaN();
+				float dir_x = std::numeric_limits<float>::quiet_NaN();
+				float dir_y = std::numeric_limits<float>::quiet_NaN();
+				float dir_z = std::numeric_limits<float>::quiet_NaN();
+				float inner_angle = std::numeric_limits<float>::quiet_NaN();
+				float outer_angle = std::numeric_limits<float>::quiet_NaN();
 				
 				while (sceneFile.good() && noError && line != "}")
 				{
@@ -228,10 +234,10 @@ void RocEye::loadSceneFile(void)
 				string type = val;
 				
 				Ogre::String material = "";
-				float x = NAN;
-				float y = NAN;
-				float z = NAN;
-				float diameter = NAN;
+				float x = std::numeric_limits<float>::quiet_NaN();
+				float y = std::numeric_limits<float>::quiet_NaN();
+				float z = std::numeric_limits<float>::quiet_NaN();
+				float diameter = std::numeric_limits<float>::quiet_NaN();
 				
 				while (sceneFile.good() && noError && line != "}")
 				{
@@ -262,9 +268,9 @@ void RocEye::loadSceneFile(void)
 			else if (key == "PARTICLE")
 			{
 				Ogre::String script = "";
-				float x = NAN;
-				float y = NAN;
-				float z = NAN;
+				float x = std::numeric_limits<float>::quiet_NaN();
+				float y = std::numeric_limits<float>::quiet_NaN();
+				float z = std::numeric_limits<float>::quiet_NaN();
 				
 				while (sceneFile.good() && noError && line != "}")
 				{
@@ -287,11 +293,11 @@ void RocEye::loadSceneFile(void)
 			else if (key == "SPHERE")
 			{
 				string material;
-				float x = NAN;
-				float y = NAN;
-				float z = NAN;
-				float radius = NAN;
-				float step_size = NAN;
+				float x = std::numeric_limits<float>::quiet_NaN();
+				float y = std::numeric_limits<float>::quiet_NaN();
+				float z = std::numeric_limits<float>::quiet_NaN();
+				float radius = std::numeric_limits<float>::quiet_NaN();
+				float step_size = std::numeric_limits<float>::quiet_NaN();
 				
 				while (sceneFile.good() && noError && line != "}")
 				{

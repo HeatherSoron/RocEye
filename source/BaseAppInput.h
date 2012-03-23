@@ -12,11 +12,19 @@
 #include "windows.h"
 #include "SDL_getenv.h"
 #endif
- 
+
+#ifdef WIN32
+//the Windows SDL package seems to use a slightly different path
+#include <SDL.h>
+#include <SDL_syswm.h>
+#include <SDL_keyboard.h>
+#else
 // SDL initialization:
-#include "SDL/SDL.h"
-#include "SDL/SDL_syswm.h"
-#include "SDL/SDL_keyboard.h"
+#include <SDL/SDL.h>
+#include <SDL/SDL_syswm.h>
+#include <SDL/SDL_keyboard.h>
+#include <SDL/SDL_mouse.h>
+#endif
 
 class BaseAppInput
 {

@@ -1,5 +1,4 @@
 #include "BaseAppInput.h"
-#include <SDL/SDL_mouse.h>
 
 BaseAppInput::BaseAppInput(void) : mWasLeftDown(false), mWasRightDown(false), mWasMiddleDown(false)
 {

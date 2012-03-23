@@ -98,7 +98,7 @@ bool OgreBaseApp::go(void)
 	
 	//connect SDL and Ogre here
 	Ogre::NameValuePairList misc;
-#ifdef WINDOWS
+#ifdef WIN32
 	SDL_SysWMinfo wmInfo;
 	SDL_VERSION(&wmInfo.version);
 	SDL_GetWMInfo(&wmInfo);

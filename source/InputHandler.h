@@ -43,6 +43,8 @@ public:
 	virtual void levelHorizon(void);
 	virtual void toggleHorizonLock(void);
 	
+	virtual void toggleSnapToGrid(void);
+	
 	//we're not calling this "left mouse down", because we might port to iOS or something eventually
 	//and yes, an iOS port HAS been requested
 	virtual bool onPrimaryPointerDown(void);

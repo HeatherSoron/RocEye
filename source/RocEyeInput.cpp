@@ -3,9 +3,11 @@
 RocEyeInput::RocEyeInput(int width, int height) : BaseAppInput(),
 	mWindowWidth(width),
 	mWindowHeight(height),
+	mHandler(NULL),
 	mWasKeyDownC(false),
 	mWasKeyDownG(false),
 	mWasKeyDownH(false),
+	mWasKeyDownL(false),
 	mWasKeyDownO(false),
 	mWasKeyDownT(false),
 	mWasKeyDownENTER(false)
@@ -171,6 +173,16 @@ KeyArray* RocEyeInput::handleKeyboard(KeyArray* keys)
 	{
 		mHandler->onPrimaryPointerUp();
 		mWasKeyDownENTER = false;
+	}
+	
+	if (keys[SDLK_l] && !mWasKeyDownL)
+	{
+		mHandler->toggleSnapToGrid();
+		mWasKeyDownL = true;
+	}
+	else if (!keys[SDLK_l])
+	{
+		mWasKeyDownL = false;
 	}
 	
 	return keys;

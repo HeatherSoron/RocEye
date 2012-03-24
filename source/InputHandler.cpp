@@ -274,6 +274,14 @@ void InputHandler::toggleHorizonLock(void)
 	}
 }
 
+void InputHandler::toggleSnapToGrid(void)
+{
+	if (mSelectedObject)
+	{
+		mSelectedObject->setSnapToGrid(!mSelectedObject->getSnapToGrid());
+	}
+}
+
 void InputHandler::execute(void)
 {
 	Ogre::Vector3 trans = mTransVector * mCameraSpeed * mSpeedMult;

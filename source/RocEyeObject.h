@@ -13,7 +13,7 @@ public:
 	virtual Ogre::SceneNode* getSceneNode(void) { return mNode; };
 	virtual void setSceneNode(Ogre::SceneNode* node);
 	virtual bool getSnapToGrid(void) { return mSnapToGrid; };
-	virtual void setSnapToGrid(bool snap) { mSnapToGrid = snap; };
+	virtual void setSnapToGrid(bool snap) { mSnapToGrid = snap; updateNodePosition(); };
 	virtual Ogre::Vector3 getPosition(void) { return mPosition; };
 	virtual void setPosition(Ogre::Vector3 pos);
 	virtual void translate(Ogre::Vector3 offset);

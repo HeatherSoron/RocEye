@@ -24,14 +24,16 @@ protected:
 	int mWindowWidth;
 	int mWindowHeight;
 	
+	InputHandler* mHandler;
+	
 	bool mWasKeyDownC;
 	bool mWasKeyDownG;
 	bool mWasKeyDownH;
+	bool mWasKeyDownL;
 	bool mWasKeyDownO;
 	bool mWasKeyDownT;
 	bool mWasKeyDownENTER;
 	
-	InputHandler* mHandler;
 };
 
 #endif

@@ -1,0 +1,14 @@
+# ignore compiled code
+*.o
+*.exe
+RocEye
+
+#ignore various things that CMake generates
+CMakeFiles/*
+Makefile
+CMakeCache.txt
+cmake_install.cmake
+
+#ignore files that Ogre generates at runtime
+Ogre.log
+ogre.cfg

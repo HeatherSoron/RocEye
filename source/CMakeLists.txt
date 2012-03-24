@@ -58,8 +58,7 @@ if (CMAKE_BUILD_TYPE STREQUAL "")
   set(CMAKE_BUILD_TYPE "RelWithDebInfo" CACHE STRING "Choose the type of build, options are: None (CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) Debug Release RelWithDebInfo MinSizeRel." FORCE)
 endif ()
 
-if (STRICT_WARNINGS)
-	set(CMAKE_CXX_FLAGS "-g -Wall -Werror")
+if (STRICT_WARNINGS STREQUAL "ON")
 endif ()
  
 set(CMAKE_DEBUG_POSTFIX "_d")
@@ -110,6 +109,7 @@ if (NOT OGRE_BUILD_PLATFORM_IPHONE)
 endif()
 
 set(HDRS
+	./Gorilla.h
 	./BaseAppInput.h
 	./OgreBaseApp.h
 	./GridHelper.h
@@ -118,11 +118,13 @@ set(HDRS
 	./ObjectManager.h
 	./ColouredLine.h
 	./GridLineFactory.h
+	./RocEyeGui.h
 	./InputHandler.h
 	./RocEye.h
 )
  
 set(SRCS
+	./Gorilla.cpp
 	./BaseAppInput.cpp
 	./OgreBaseApp.cpp
 	./GridHelper.cpp
@@ -131,6 +133,7 @@ set(SRCS
 	./ObjectManager.cpp
 	./ColouredLine.cpp
 	./GridLineFactory.cpp
+	./RocEyeGui.cpp
 	./InputHandler.cpp
 	./RocEye.cpp
 	./RocEye_parser.cpp

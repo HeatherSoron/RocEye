@@ -25,6 +25,7 @@ void RocEye::setupInput(void)
 
 void RocEye::createScene(void)
 {
+	mGui.initialise(mSceneMgr, mViewport);
 	mObjectMgr = new ObjectManager(mSceneMgr);
 	mHandler.setObjectManager(mObjectMgr);
 	

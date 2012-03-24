@@ -5,6 +5,7 @@
 #include "InputHandler.h"
 #include "RocEyeInput.h"
 #include "ObjectManager.h"
+#include "RocEyeGui.h"
 
 class RocEye : public OgreBaseApp
 {
@@ -30,6 +31,7 @@ protected:
 	
 	virtual Ogre::String getObjectBaseName(RocEyeObject* obj);
 	
+	RocEyeGui mGui;
 	InputHandler mHandler;
 	ObjectManager* mObjectMgr;
 };

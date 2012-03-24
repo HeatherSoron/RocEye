@@ -18,7 +18,7 @@ cmake_minimum_required(VERSION 2.6)
  
 project(RocEye)
 
-option(STRICT_WARNINGS "Turns on -Wall and -Werror. Recommended for developers." ON)
+option(STRICT_WARNINGS "Turns on -Wall and -Werror. Recommended for developers." OFF)
  
 if(WIN32 OR )
 	set(CMAKE_MODULE_PATH "$ENV{OGRE_HOME}/CMake/;${CMAKE_MODULE_PATH}")
@@ -58,7 +58,8 @@ if (CMAKE_BUILD_TYPE STREQUAL "")
   set(CMAKE_BUILD_TYPE "RelWithDebInfo" CACHE STRING "Choose the type of build, options are: None (CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) Debug Release RelWithDebInfo MinSizeRel." FORCE)
 endif ()
 
-if (STRICT_WARNINGS STREQUAL "ON")
+if (STRICT_WARNINGS)
+	set(CMAKE_CXX_FLAGS "-g -Wall -Werror -Wno-unknown-pragmas") #need to turn off unknown pragma warnings for Gorilla
 endif ()
  
 set(CMAKE_DEBUG_POSTFIX "_d")

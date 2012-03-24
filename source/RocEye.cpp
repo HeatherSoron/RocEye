@@ -35,6 +35,19 @@ void RocEye::createScene(void)
 	mSceneMgr->setAmbientLight(Ogre::ColourValue(0.5, 0.5, 0.5));
 }
 
+bool RocEye::frameRenderingQueued(const Ogre::FrameEvent& evt)
+{
+	//make sure to exit the program if the parent app tells us to
+	if (!OgreBaseApp::frameRenderingQueued(evt))
+	{
+		return false;
+	}
+	
+	mGui.update(mCameraNode);
+	
+	return true;
+}
+
 Ogre::String RocEye::getObjectBaseName(RocEyeObject* obj)
 {
 	Ogre::String name = obj->getSceneNode()->getName();

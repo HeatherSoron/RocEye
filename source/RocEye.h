@@ -18,6 +18,8 @@ protected:
 	
 	virtual void createScene(void);
 	
+	virtual bool frameRenderingQueued(const Ogre::FrameEvent& evt);
+	
     virtual void loadSceneFile(void);
     virtual void createEntity(Ogre::String mesh, Ogre::Vector3 pos);
     virtual void createPlane(Ogre::Vector3 normal, Ogre::Real distFromOrigin, Ogre::Real width, Ogre::Real height, Ogre::String materialName, Ogre::Vector3 upDir);

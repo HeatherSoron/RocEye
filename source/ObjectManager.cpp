@@ -55,7 +55,7 @@ RocEyeObject* ObjectManager::getObjectByName(Ogre::String nodeName)
 		return NULL;
 	}
 	
-	if (nodeName.substr(nodeName.length() - 5, 4) != "Node")
+	if (nodeName.substr(nodeName.length() - 4, 4) != "Node")
 	{
 		return NULL;
 	}
@@ -119,7 +119,7 @@ bool ObjectManager::removeObjectByName(Ogre::String nodeName)
 		return false;
 	}
 	
-	if (nodeName.substr(nodeName.length() - 5, 4) != "Node")
+	if (nodeName.substr(nodeName.length() - 4, 4) != "Node")
 	{
 		return false;
 	}

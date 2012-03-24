@@ -3,6 +3,7 @@
 
 #include <Ogre.h>
 #include "GridLineFactory.h"
+#include "ObjectManager.h"
 
 class InputHandler
 {
@@ -27,6 +28,7 @@ public:
     };
 	
 	virtual void setCamera(Ogre::Camera* mCamera);
+	virtual void setObjectManager(ObjectManager* manager) { mObjectMgr = manager; };
 	
 	virtual void translate(Direction dir);
 	virtual void rotate(Direction rot, bool isMouse = false, float mult = 1);
@@ -78,10 +80,11 @@ protected:
 	
 	Ogre::RaySceneQuery* mRaySceneQuery;
 	Ogre::SceneManager* mSceneMgr;
+	ObjectManager* mObjectMgr;
 	
 	Ogre::Camera* mCamera;
 	
-	Ogre::SceneNode* mSelectedObject;
+	RocEyeObject* mSelectedObject;
 	
 	GridLineFactory* mGridLineFactory;
 };

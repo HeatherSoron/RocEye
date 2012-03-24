@@ -10,6 +10,7 @@ InputHandler::InputHandler(void) :
 	mReverseMovementTarget(false),
 	mRaySceneQuery(0),
 	mSceneMgr(0),
+	mObjectMgr(0),
 	mCamera(0),
 	mSelectedObject(0),
 	mGridLineFactory(0)
@@ -129,7 +130,7 @@ void InputHandler::toggleObjectMode(void)
 
 void InputHandler::clickOnObjects(void)
 {
-	Ogre::SceneNode* oldObject = mSelectedObject;
+	RocEyeObject* oldObject = mSelectedObject;
 	
 	deselectObject();
 	
@@ -166,15 +167,18 @@ void InputHandler::tryPickObjects(void)
 
 void InputHandler::selectObject(Ogre::SceneNode* object)
 {
-	mSelectedObject = object;
-	mSelectedObject->showBoundingBox(true);
+	mSelectedObject = mObjectMgr->getObjectByName(object->getName());
+	if (mSelectedObject)
+	{
+		mSelectedObject->getSceneNode()->showBoundingBox(true);
+	}
 }
 
 void InputHandler::deselectObject(void)
 {
 	if (mSelectedObject)
 	{
-		mSelectedObject->showBoundingBox(false);
+		mSelectedObject->getSceneNode()->showBoundingBox(false);
 	}
 	
 	mSelectedObject = NULL;
@@ -188,7 +192,7 @@ void InputHandler::centerObject(void)
 void InputHandler::toggleObjectLock(void)
 {
 	mTracking = !mTracking;
-	Ogre::SceneNode* target = mTracking ? mSelectedObject : NULL;
+	Ogre::SceneNode* target = mTracking ? mSelectedObject->getSceneNode() : NULL;
 	mCamera->getParentSceneNode()->setAutoTracking(mTracking, target);
 }
 
@@ -206,7 +210,7 @@ void InputHandler::toggleGridLines(bool centerOnTarget)
 		return;
 	}
 	
-	Ogre::SceneNode* node = centerOnTarget ? mSelectedObject : mCamera->getParentSceneNode();
+	Ogre::SceneNode* node = centerOnTarget ? mSelectedObject->getSceneNode() : mCamera->getParentSceneNode();
 	Ogre::Vector3 centerPosition = GridHelper::roundToGrid(node->getPosition());
 	mGridLineFactory->addGrid(centerPosition, 50, 3);
 }
@@ -286,15 +290,24 @@ void InputHandler::execute(void)
 		
 		if (mSelectedObject)
 		{
-			mSelectedObject->translate(newPos - oldPos, Ogre::SceneNode::TS_LOCAL);
+			mSelectedObject->translate(newPos - oldPos);
 		}
 	}
 	else
 	{
 		bool forceCameraMovement = (mTracking && !mReverseMovementTarget) || (!mTracking && mReverseMovementTarget);
-		Ogre::SceneNode* transObject = mSelectedObject && !forceCameraMovement ? mSelectedObject : mCamera->getParentSceneNode();
+		//Ogre::SceneNode* transObject = mSelectedObject && !forceCameraMovement ? mSelectedObject : mCamera->getParentSceneNode();
+		//
+		//transObject->translate(trans, Ogre::SceneNode::TS_LOCAL);
 		
-		transObject->translate(trans, Ogre::SceneNode::TS_LOCAL);
+		if (mSelectedObject && !forceCameraMovement)
+		{
+			mSelectedObject->translate(trans);
+		}
+		else
+		{
+			mCamera->getParentSceneNode()->translate(trans, Ogre::SceneNode::TS_LOCAL);
+		}
 	}
 	
 	Ogre::SceneNode::TransformSpace yawSpace = mHorizonLocked ? Ogre::SceneNode::TS_WORLD : Ogre::SceneNode::TS_LOCAL;

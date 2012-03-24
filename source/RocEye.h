@@ -4,6 +4,7 @@
 #include "OgreBaseApp.h"
 #include "InputHandler.h"
 #include "RocEyeInput.h"
+#include "ObjectManager.h"
 
 class RocEye : public OgreBaseApp
 {
@@ -27,7 +28,10 @@ protected:
 	virtual void createDirectionalLight(Ogre::Vector3 direction, Ogre::ColourValue dColour, Ogre::ColourValue sColour);
 	virtual void createSpotLight(Ogre::Vector3 position, Ogre::Vector3 direction, Ogre::ColourValue dColour, Ogre::ColourValue sColour, Ogre::Degree innerAngle, Ogre::Degree outerAngle);
 	
+	virtual Ogre::String getObjectBaseName(RocEyeObject* obj);
+	
 	InputHandler mHandler;
+	ObjectManager* mObjectMgr;
 };
 
 #endif

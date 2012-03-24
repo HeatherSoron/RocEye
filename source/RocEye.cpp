@@ -1,11 +1,14 @@
 #include "RocEye.h"
 
+#include "ObjectManager.h"
+
 RocEye::RocEye(void)
 {
 }
 
 RocEye::~RocEye(void)
 {
+	delete mObjectMgr;
 }
 
 void RocEye::setupInput(void)
@@ -22,51 +25,53 @@ void RocEye::setupInput(void)
 
 void RocEye::createScene(void)
 {
+	mObjectMgr = new ObjectManager(mSceneMgr);
+	
 	loadSceneFile();
 
 	//set a decent ambient light level
 	mSceneMgr->setAmbientLight(Ogre::ColourValue(0.5, 0.5, 0.5));
 }
 
+Ogre::String RocEye::getObjectBaseName(RocEyeObject* obj)
+{
+	Ogre::String name = obj->getSceneNode()->getName();
+	return name.substr(0, name.length() - 4);
+}
+
 void RocEye::createEntity(Ogre::String mesh, Ogre::Vector3 pos)
 {
-	static unsigned int id = 0; //keep a unique ID of every node we instantiate
-	Ogre::Entity* entity = mSceneMgr->createEntity("Entity" + id, mesh);
+	RocEyeObject* obj = mObjectMgr->createObject(ObjectManager::GAME);
+	obj->setPosition(pos);
+	
+	Ogre::Entity* entity = mSceneMgr->createEntity(getObjectBaseName(obj), mesh);
 	entity->setCastShadows(true);
 	
-	Ogre::SceneNode* node = mSceneMgr->getRootSceneNode()->createChildSceneNode("EntityNode" + id, pos);
-	node->attachObject(entity);
-	
-	++id;
+	obj->getSceneNode()->attachObject(entity);
 }
 
 void RocEye::createPlane(Ogre::Vector3 normal, Ogre::Real distFromOrigin, Ogre::Real width, Ogre::Real height, Ogre::String materialName, Ogre::Vector3 upDir)
 {
-	static unsigned int id = 0; //keep a unique ID of our planes
+	RocEyeObject* obj = mObjectMgr->createObject(ObjectManager::GAME);
+	Ogre::String name = getObjectBaseName(obj);
 	
 	Ogre::Plane plane(normal, distFromOrigin);
-	Ogre::MeshManager::getSingleton().createPlane("plane" + id, Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
+	Ogre::MeshManager::getSingleton().createPlane(name, Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
     plane, width, height, 20, 20, true, 1, 5, 5, upDir);
     
-    Ogre::Entity* entGround = mSceneMgr->createEntity("PlaneEntity" + id, "plane" + id);
-	mSceneMgr->getRootSceneNode()->createChildSceneNode()->attachObject(entGround);
+    Ogre::Entity* entGround = mSceneMgr->createEntity(name, name);
+	obj->getSceneNode()->attachObject(entGround);
 	
 	entGround->setMaterialName(materialName);
 	entGround->setCastShadows(false);
-	
-	++id;
 }
 
 void RocEye::createPortraitCube(Ogre::Vector3 center, Ogre::Real diam, Ogre::String texture)
 {
-	static unsigned int id = 0;
+	RocEyeObject* obj = mObjectMgr->createObject(ObjectManager::GAME);
+	Ogre::String name = getObjectBaseName(obj);
 	
-	char name[16];
-	sprintf(name, "Cube%d", id++);
-	
-	Ogre::SceneNode* boxNode = mSceneMgr->getRootSceneNode()->createChildSceneNode(Ogre::String(name) + "node");
-	
-	Ogre::ManualObject* mo = mSceneMgr->createManualObject(Ogre::String(name) + "Object");
+	Ogre::ManualObject* mo = mSceneMgr->createManualObject(name);
 	
 	mo->begin(texture, Ogre::RenderOperation::OT_TRIANGLE_LIST);
 	
@@ -146,21 +151,17 @@ void RocEye::createPortraitCube(Ogre::Vector3 center, Ogre::Real diam, Ogre::Str
 	//mo->convertToMesh(Ogre::String(name) + "Mesh");
 	//Ogre::Entity* ent = mSceneMgr->createEntity(Ogre::String(name), Ogre::String(name) + "Mesh");
 	
-	boxNode->attachObject(mo);
+	obj->getSceneNode()->attachObject(mo);
     
-    boxNode->setPosition(center);
+    obj->setPosition(center);
 }
 
 void RocEye::createPortraitPillar(Ogre::Vector3 center, Ogre::Real diam, Ogre::String texture)
 {
-	static unsigned int id = 0;
+	RocEyeObject* obj = mObjectMgr->createObject(ObjectManager::GAME);
+	Ogre::String name = getObjectBaseName(obj);
 	
-	char name[16];
-	sprintf(name, "Pillar%d", id++);
-	
-	Ogre::SceneNode* boxNode = mSceneMgr->getRootSceneNode()->createChildSceneNode(Ogre::String(name) + "node");
-	
-	Ogre::ManualObject* mo = mSceneMgr->createManualObject(Ogre::String(name) + "Object");
+	Ogre::ManualObject* mo = mSceneMgr->createManualObject(name);
 	
 	mo->begin(texture, Ogre::RenderOperation::OT_TRIANGLE_LIST);
 	
@@ -234,21 +235,17 @@ void RocEye::createPortraitPillar(Ogre::Vector3 center, Ogre::Real diam, Ogre::S
 	//mo->convertToMesh(Ogre::String(name) + "Mesh");
 	//Ogre::Entity* ent = mSceneMgr->createEntity(Ogre::String(name), Ogre::String(name) + "Mesh");
 	
-	boxNode->attachObject(mo);
+	obj->getSceneNode()->attachObject(mo);
     
-    boxNode->setPosition(center);
+    obj->setPosition(center);
 }
 
 void RocEye::createSphere(Ogre::Vector3 center, Ogre::String material, Ogre::Real radius, Ogre::Real stepSize)
 {
-	static unsigned int id = 0;
+	RocEyeObject* obj = mObjectMgr->createObject(ObjectManager::GAME);
+	Ogre::String name = getObjectBaseName(obj);
 	
-	char name[16];
-	sprintf(name, "Sphere%d", id++);
-	
-	Ogre::SceneNode* sphereNode = mSceneMgr->getRootSceneNode()->createChildSceneNode(Ogre::String(name) + "node");
-	
-	Ogre::ManualObject* mo = mSceneMgr->createManualObject(Ogre::String(name) + "Object");
+	Ogre::ManualObject* mo = mSceneMgr->createManualObject(name);
 	
 	mo->begin(material, Ogre::RenderOperation::OT_TRIANGLE_LIST);
 	
@@ -391,24 +388,22 @@ void RocEye::createSphere(Ogre::Vector3 center, Ogre::String material, Ogre::Rea
 	
 	mo->end();
 	
-	sphereNode->attachObject(mo);
-	sphereNode->setPosition(center);
+	obj->getSceneNode()->attachObject(mo);
+    
+    obj->setPosition(center);
 }
 
 void RocEye::createParticleSystem(Ogre::Vector3 position, Ogre::String source)
 {
-	static unsigned int id = 0;
-	
-	char name[16];
-	sprintf(name, "PartSys%d", id++);
+	RocEyeObject* obj = mObjectMgr->createObject(ObjectManager::GAME);
+	Ogre::String name = getObjectBaseName(obj);
 	
 	Ogre::ParticleSystem* system = mSceneMgr->createParticleSystem(name, source);
 	//we're going to be moving particle systems around in order to place them, and we don't want bounding boxes expanding (at least, not if they stay expanded)
 	system->setKeepParticlesInLocalSpace(true);
 	
-	Ogre::SceneNode* node = mSceneMgr->getRootSceneNode()->createChildSceneNode(Ogre::String(name) + "Node");
-	node->attachObject(system);
-	node->setPosition(position);
+	obj->getSceneNode()->attachObject(system);
+	obj->setPosition(position);
 }
 
 void RocEye::createPointLight(Ogre::Vector3 position, Ogre::ColourValue dColour, Ogre::ColourValue sColour)

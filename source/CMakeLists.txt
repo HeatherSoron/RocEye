@@ -114,6 +114,8 @@ set(HDRS
 	./OgreBaseApp.h
 	./GridHelper.h
 	./RocEyeInput.h
+	./RocEyeObject.h
+	./ObjectManager.h
 	./ColouredLine.h
 	./GridLineFactory.h
 	./InputHandler.h
@@ -125,6 +127,8 @@ set(SRCS
 	./OgreBaseApp.cpp
 	./GridHelper.cpp
 	./RocEyeInput.cpp
+	./RocEyeObject.cpp
+	./ObjectManager.cpp
 	./ColouredLine.cpp
 	./GridLineFactory.cpp
 	./InputHandler.cpp

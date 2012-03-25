@@ -4,6 +4,7 @@
 #include <Ogre.h>
 #include "GridLineFactory.h"
 #include "ObjectManager.h"
+#include "RocEyeGui.h"
 
 class InputHandler
 {
@@ -29,6 +30,11 @@ public:
 	
 	virtual void setCamera(Ogre::Camera* mCamera);
 	virtual void setObjectManager(ObjectManager* manager) { mObjectMgr = manager; };
+	virtual void setGui(RocEyeGui* gui) { mGui = gui; };
+	
+	virtual void activateConsole(void) { mGui->activateConsole(); };
+	virtual bool isConsoleActive(void) { return mGui->isConsoleActive(); };
+	virtual bool sendConsoleMessage(Ogre::String keyName) { return mGui->sendConsoleMessage(keyName); };
 	
 	virtual void translate(Direction dir);
 	virtual void rotate(Direction rot, bool isMouse = false, float mult = 1);
@@ -89,5 +95,7 @@ protected:
 	RocEyeObject* mSelectedObject;
 	
 	GridLineFactory* mGridLineFactory;
+	
+	RocEyeGui* mGui;
 };
 #endif

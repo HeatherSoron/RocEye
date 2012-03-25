@@ -160,11 +160,20 @@ bool RocEyeInput::onKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode)
 			mHandler->resetCamera();
 			break;
 		}
+		case SDLK_SLASH:
+		{
+			mHandler->activateConsole();
+		}
 		default:
 		{
 			//un-implemented key if we get here
 			break;
 		}
+	}
+	
+	if (mHandler->isConsoleActive())
+	{
+		mHandler->sendConsoleMessage(SDL_GetKeyName(sym));
 	}
 	
 	return true;

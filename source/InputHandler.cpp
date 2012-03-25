@@ -8,12 +8,13 @@ InputHandler::InputHandler(void) :
 	mTracking(false),
 	mHorizonLocked(false),
 	mReverseMovementTarget(false),
-	mRaySceneQuery(0),
-	mSceneMgr(0),
-	mObjectMgr(0),
-	mCamera(0),
-	mSelectedObject(0),
-	mGridLineFactory(0)
+	mRaySceneQuery(NULL),
+	mSceneMgr(NULL),
+	mObjectMgr(NULL),
+	mCamera(NULL),
+	mSelectedObject(NULL),
+	mGridLineFactory(NULL),
+	mGui(NULL)
 {
 	resetState();
 }

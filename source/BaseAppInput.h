@@ -37,6 +37,8 @@ public:
 	virtual bool runFrame(void);
 protected:
 	
+	virtual bool processEvent(SDL_Event* evt);
+	
 	virtual void frameDone(void);
 	virtual KeyArray* handleKeyboard(KeyArray*); // Do not free the return value.
 	virtual bool handleMouse(void);
@@ -47,6 +49,10 @@ protected:
 	virtual bool fireRightMouseUp(void);
 	virtual bool fireMiddleMouseDown(void);
 	virtual bool fireMiddleMouseUp(void);
+	
+	//the functions below are all pure virtual
+	virtual bool onKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode) { return true; };
+	virtual bool onKeyUp(SDLKey sym, SDLMod mod, Uint16 unicode) { return true; };
 	
 	
 	bool mWasLeftDown;

@@ -71,3 +71,21 @@ void RocEyeGui::update(Ogre::SceneNode* cameraNode)
 	mYReadout->text(y);
 	mZReadout->text(z);
 }
+
+bool RocEyeGui::sendConsoleMessage(Ogre::String keyName)
+{
+	if (keyName == "space")
+	{
+		mConsole.onKeyPressed(" ");
+	}
+	else
+	{
+		mConsole.onKeyPressed(keyName);
+	}
+	return true;
+}
+
+void RocEyeGui::addConsoleCommand(Ogre::String name, OgreConsoleFunctionPtr func)
+{
+	mConsole.addCommand(name, func);
+}

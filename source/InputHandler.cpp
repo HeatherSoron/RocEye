@@ -1,6 +1,23 @@
 #include "InputHandler.h"
 #include "GridHelper.h"
 
+InputHandler* handler;
+
+//bunch of functions which handle console commands
+void setNumCells(Ogre::StringVector& vec)
+{
+	if (vec.size() >= 2)
+	{
+		unsigned int count = atoi(vec[1].c_str());
+		OgreConsole::getSingleton().print("Cell number changed");
+		handler->setCellNumber(count);
+	}
+	else
+	{
+		OgreConsole::getSingleton().print("Invalid arguments: too few");
+	}
+}
+
 InputHandler::InputHandler(void) :
 	mPointerDown(false),
 	mPickingMeshes(true),
@@ -17,6 +34,7 @@ InputHandler::InputHandler(void) :
 	mGui(NULL)
 {
 	resetState();
+	handler = this;
 }
 
 InputHandler::~InputHandler(void)
@@ -213,7 +231,7 @@ void InputHandler::toggleGridLines(bool centerOnTarget)
 	
 	Ogre::SceneNode* node = centerOnTarget ? mSelectedObject->getSceneNode() : mCamera->getParentSceneNode();
 	Ogre::Vector3 centerPosition = GridHelper::roundToGrid(node->getPosition());
-	mGridLineFactory->addGrid(centerPosition, 50, 3);
+	mGridLineFactory->addGrid(centerPosition, 50);
 }
 
 void InputHandler::levelHorizon(void)
@@ -349,4 +367,9 @@ void InputHandler::resetState(void)
 	mTransVector = Ogre::Vector3(0,0,0);
 	mRotVector = Ogre::Vector3(0,0,0);
 	mSpeedMult = 1;
+}
+
+void InputHandler::addConsoleCommands(void)
+{
+	mGui->addConsoleCommand("/setnumcells", setNumCells);
 }

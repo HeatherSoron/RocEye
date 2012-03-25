@@ -15,10 +15,11 @@ public:
 	
 	virtual void activateConsole(void) { mConsole.setVisible(true); };
 	virtual bool isConsoleActive(void) { return mConsole.isVisible(); };
-	virtual bool sendConsoleMessage(Ogre::String keyName) { mConsole.onKeyPressed(keyName); return true; };
+	virtual bool sendConsoleMessage(Ogre::String keyName);
 	virtual void toggleConsole(void) { mConsole.setVisible(!isConsoleActive()); };
-	
+	virtual void addConsoleCommand(Ogre::String name, OgreConsoleFunctionPtr func);
 protected:
+	
   Gorilla::Silverback*    mSilverback;
   Gorilla::Screen*        mHUD;
   Gorilla::Layer*         mHUDLayer;

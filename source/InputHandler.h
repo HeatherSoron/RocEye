@@ -30,7 +30,7 @@ public:
 	
 	virtual void setCamera(Ogre::Camera* mCamera);
 	virtual void setObjectManager(ObjectManager* manager) { mObjectMgr = manager; };
-	virtual void setGui(RocEyeGui* gui) { mGui = gui; };
+	virtual void setGui(RocEyeGui* gui) { mGui = gui; addConsoleCommands(); };
 	
 	virtual void activateConsole(void) { mGui->activateConsole(); };
 	virtual bool isConsoleActive(void) { return mGui->isConsoleActive(); };
@@ -60,6 +60,8 @@ public:
 	virtual void toggleObjectMode(void);
 	
 	virtual void toggleGridLines(bool centerOnTarget);
+	virtual void setCellNumber(unsigned int count) { mGridLineFactory->setCellNumber(count); };
+	
 	
 	virtual void execute(void);
 	
@@ -74,6 +76,8 @@ protected:
 	virtual void tryPickObjects(void);
 	virtual void selectObject(Ogre::SceneNode* object);
 	virtual void deselectObject(void);
+	
+	virtual void addConsoleCommands(void);
 	
 	bool mPointerDown;
 	bool mPickingMeshes;

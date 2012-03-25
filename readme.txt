@@ -34,7 +34,9 @@ Escape: exit
 
 Console commands:
 =================
-/setnumcells [number]: sets the number of cells per direction displayed when you toggle the grid on. Number >= 0. Protip: number <= 10 as well, if you don't want single-digit (or lower!) FPS. 
+/setnumcells [number]: sets the number of cells per direction displayed when you toggle the grid on. Number >= 0. Protip: number <= 10 as well, if you don't want single-digit (or lower!) FPS.
+
+/goto [num] [num] [num]: go to a specific point in 3D space.
 
 
 License:

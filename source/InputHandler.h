@@ -37,6 +37,8 @@ public:
 	virtual bool sendConsoleMessage(Ogre::String keyName) { return mGui->sendConsoleMessage(keyName); };
 	virtual void toggleConsole(void) { mGui->toggleConsole(); };
 	
+	virtual void setCameraPosition(Ogre::Vector3 point) { mCamera->getParentSceneNode()->setPosition(point); };
+	
 	virtual void translate(Direction dir);
 	virtual void rotate(Direction rot, bool isMouse = false, float mult = 1);
 	virtual void changeSpeed(float numSteps); //has to be called every frame, or it'll return to normal speed

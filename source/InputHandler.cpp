@@ -18,6 +18,21 @@ void setNumCells(Ogre::StringVector& vec)
 	}
 }
 
+void gotoPoint(Ogre::StringVector& vec)
+{
+	if (vec.size() >= 4)
+	{
+		int x = atoi(vec[1].c_str());
+		int y = atoi(vec[2].c_str());
+		int z = atoi(vec[3].c_str());
+		handler->setCameraPosition(Ogre::Vector3(x,y,z));
+	}
+	else
+	{
+		OgreConsole::getSingleton().print("Invalid arguments: too few");
+	}
+}
+
 InputHandler::InputHandler(void) :
 	mPointerDown(false),
 	mPickingMeshes(true),
@@ -372,4 +387,5 @@ void InputHandler::resetState(void)
 void InputHandler::addConsoleCommands(void)
 {
 	mGui->addConsoleCommand("/setnumcells", setNumCells);
+	mGui->addConsoleCommand("/goto", gotoPoint);
 }

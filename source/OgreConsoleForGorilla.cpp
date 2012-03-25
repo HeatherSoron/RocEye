@@ -7,6 +7,9 @@
    This is a straight port replacing all the Overlay code with Gorilla code, some changes have
    been added but they are minor and do not add to the actual functionality of the class.
    
+   Additionally, Ethan Kaminski made a few changes for compatibility with non-OIS input
+   methods.
+   
    
 */
 

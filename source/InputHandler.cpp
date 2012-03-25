@@ -192,7 +192,7 @@ void InputHandler::centerObject(void)
 void InputHandler::toggleObjectLock(void)
 {
 	mTracking = !mTracking;
-	Ogre::SceneNode* target = mTracking ? mSelectedObject->getSceneNode() : NULL;
+	Ogre::SceneNode* target = mTracking && mSelectedObject ? mSelectedObject->getSceneNode() : NULL;
 	mCamera->getParentSceneNode()->setAutoTracking(mTracking, target);
 }
 

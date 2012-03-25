@@ -20,7 +20,7 @@ project(RocEye)
 
 option(STRICT_WARNINGS "Turns on -Wall and -Werror. Recommended for developers." OFF)
  
-if(WIN32 OR )
+if(WIN32)
 	set(CMAKE_MODULE_PATH "$ENV{OGRE_HOME}/CMake/;${CMAKE_MODULE_PATH}")
 	set(OGRE_SAMPLES_INCLUDEPATH
 		$ENV{OGRE_HOME}/Samples/include

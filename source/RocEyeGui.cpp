@@ -9,6 +9,8 @@ RocEyeGui::RocEyeGui(void)
 	mYReadout(NULL),
 	mZReadout(NULL),
 	
+	mConsole(),
+	
 	mViewport(NULL),
 	mSceneMgr(NULL)
 {
@@ -28,6 +30,8 @@ void RocEyeGui::initialise(Ogre::SceneManager* sceneMgr, Ogre::Viewport* viewpor
 	
 	mHUD = mSilverback->createScreen(mViewport, "dejavu");
 	mHUDLayer = mHUD->createLayer();
+	
+	mConsole.init(mHUD);
 	
 	mCrosshairLayer = mHUD->createLayer();
 	mCrosshair = mCrosshairLayer->createRectangle((mViewport->getActualWidth() * 0.5f) - 11, (mViewport->getActualHeight() * 0.5f) - 11, 22, 22);

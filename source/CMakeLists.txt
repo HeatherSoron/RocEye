@@ -121,6 +121,7 @@ set(HDRS
 	./InputParser/InteractionController.h
 	./InputParser/InteractionOperatorNode.h
 	./InputParser/InteractionState.h
+	./OgreConsoleForGorilla.h
 	./BaseAppInput.h
 	./OgreBaseApp.h
 	./GridHelper.h
@@ -143,6 +144,7 @@ set(SRCS
 	./InputParser/InteractionBridge.cpp
 	./InputParser/InteractionController.cpp
 	./InputParser/InteractionOperatorNode.cpp
+	./OgreConsoleForGorilla.cpp
 	./BaseAppInput.cpp
 	./OgreBaseApp.cpp
 	./GridHelper.cpp

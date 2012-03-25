@@ -2,6 +2,7 @@
 
 GridLineFactory::GridLineFactory(void)
 {
+	mCellCount = mInitialCellCount;
 	mLineList = NULL;
 	mLineID = 0;
 	createMaterials();
@@ -21,13 +22,13 @@ GridLineFactory::~GridLineFactory(void)
 	removeGrid();
 }
 
-void GridLineFactory::addGrid(Ogre::Vector3 center, Ogre::Real cellSize, int linesPerDirection)
+void GridLineFactory::addGrid(Ogre::Vector3 center, Ogre::Real cellSize)
 {
 	removeGrid();
 	
-	mLineList = new ColouredLine*[((linesPerDirection+1) * 2) * ((linesPerDirection+1) * 2) * 3];
+	mLineList = new ColouredLine*[((mCellCount+1) * 2) * ((mCellCount+1) * 2) * 3];
 	
-	const Ogre::Real boundaryOffset = cellSize * linesPerDirection + cellSize / 2;
+	const Ogre::Real boundaryOffset = cellSize * mCellCount + cellSize / 2;
 	const Ogre::Real startOffset = boundaryOffset;
 	
 	//make the x and y lines

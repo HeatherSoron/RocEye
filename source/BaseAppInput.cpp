@@ -1,5 +1,7 @@
 #include "BaseAppInput.h"
 
+#include <iostream>
+
 BaseAppInput::BaseAppInput(void) : mWasLeftDown(false), mWasRightDown(false), mWasMiddleDown(false)
 {
 }
@@ -23,7 +25,80 @@ bool BaseAppInput::runFrame(void)
 		return false;
 	}
 	
+	SDL_Event evt;
+	while (SDL_PollEvent(&evt)) //need to make sure it's not null
+	{
+		if (!processEvent(&evt))
+		{
+			return false;
+		}
+	}
+	
 	frameDone();
+	
+	return true;
+}
+
+bool BaseAppInput::processEvent(SDL_Event* evt)
+{
+	switch (evt->type)
+	{
+		case SDL_ACTIVEEVENT:
+		{
+			switch (evt->active.state)
+			{
+				case SDL_APPMOUSEFOCUS:
+				{
+					if (evt->active.gain)
+					{
+						//TODO handle mouse focus
+					}
+					else
+					{
+						//TODO handle mouse blur
+					}
+					break;
+				}
+				case SDL_APPINPUTFOCUS:
+				{
+					if (evt->active.gain)
+					{
+						//TODO handle input focus
+					}
+					else
+					{
+						//TODO handle input blur
+					}
+					break;
+				}
+				case SDL_APPACTIVE:
+				{
+					if (evt->active.gain)
+					{
+						//TODO handle restore event
+					}
+					else
+					{
+						//TODO handle minimize event
+					}
+					break;
+				}
+			}
+			break;
+		}
+		
+		case SDL_KEYDOWN:
+		{
+			return onKeyDown(evt->key.keysym.sym, evt->key.keysym.mod, evt->key.keysym.unicode);
+			break;
+		}
+		
+		case SDL_KEYUP:
+		{
+			return onKeyUp(evt->key.keysym.sym, evt->key.keysym.mod, evt->key.keysym.unicode);
+			break;
+		}
+	}
 	
 	return true;
 }

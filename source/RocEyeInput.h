@@ -23,6 +23,9 @@ protected:
 	virtual bool fireLeftMouseDown(void);
 	virtual bool fireLeftMouseUp(void);
 	
+	virtual bool onKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode);
+	virtual bool onKeyUp(SDLKey sym, SDLMod mod, Uint16 unicode);
+	
 	__RocEye__::MasterInteractionController* mController;
 	
 	int mWindowWidth;

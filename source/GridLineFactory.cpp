@@ -10,6 +10,7 @@ GridLineFactory::GridLineFactory(void)
 
 GridLineFactory::GridLineFactory(Ogre::SceneManager* sceneManager)
 {
+	mCellCount = mInitialCellCount;
 	mLineList = NULL;
 	mLineID = 0;
 	createMaterials();

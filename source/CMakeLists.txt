@@ -111,6 +111,7 @@ endif()
 
 set(HDRS
 	./Gorilla.h
+	./OgreConsoleForGorilla.h
 	./BaseAppInput.h
 	./OgreBaseApp.h
 	./GridHelper.h
@@ -126,6 +127,7 @@ set(HDRS
  
 set(SRCS
 	./Gorilla.cpp
+	./OgreConsoleForGorilla.cpp
 	./BaseAppInput.cpp
 	./OgreBaseApp.cpp
 	./GridHelper.cpp

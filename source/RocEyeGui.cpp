@@ -9,6 +9,8 @@ RocEyeGui::RocEyeGui(void)
 	mYReadout(NULL),
 	mZReadout(NULL),
 	
+	mConsole(),
+	
 	mViewport(NULL),
 	mSceneMgr(NULL)
 {
@@ -28,6 +30,9 @@ void RocEyeGui::initialise(Ogre::SceneManager* sceneMgr, Ogre::Viewport* viewpor
 	
 	mHUD = mSilverback->createScreen(mViewport, "dejavu");
 	mHUDLayer = mHUD->createLayer();
+	
+	mConsole.init(mHUD);
+	mConsole.setVisible(false);
 	
 	mCrosshairLayer = mHUD->createLayer();
 	mCrosshair = mCrosshairLayer->createRectangle((mViewport->getActualWidth() * 0.5f) - 11, (mViewport->getActualHeight() * 0.5f) - 11, 22, 22);
@@ -65,4 +70,22 @@ void RocEyeGui::update(Ogre::SceneNode* cameraNode)
 	mXReadout->text(x);
 	mYReadout->text(y);
 	mZReadout->text(z);
+}
+
+bool RocEyeGui::sendConsoleMessage(Ogre::String keyName)
+{
+	if (keyName == "space")
+	{
+		mConsole.onKeyPressed(" ");
+	}
+	else
+	{
+		mConsole.onKeyPressed(keyName);
+	}
+	return true;
+}
+
+void RocEyeGui::addConsoleCommand(Ogre::String name, OgreConsoleFunctionPtr func)
+{
+	mConsole.addCommand(name, func);
 }

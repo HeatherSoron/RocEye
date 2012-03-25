@@ -27,7 +27,9 @@ void RocEye::createScene(void)
 {
 	mGui.initialise(mSceneMgr, mViewport);
 	mObjectMgr = new ObjectManager(mSceneMgr);
+	
 	mHandler.setObjectManager(mObjectMgr);
+	mHandler.setGui(&mGui);
 	
 	loadSceneFile();
 

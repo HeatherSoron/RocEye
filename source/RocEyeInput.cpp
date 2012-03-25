@@ -30,19 +30,16 @@ KeyArray* RocEyeInput::handleKeyboard(KeyArray* keys)
 		return NULL;
 	}
 	
+	
 	if (!keys)
 	{
 		keys = SDL_GetKeyState(NULL);
 	}
 	
-	if (keys[SDLK_o] && !mWasKeyDownO)
+	
+	if (mHandler->isConsoleActive())
 	{
-		mWasKeyDownO = true;
-		mHandler->toggleObjectMode();
-	}
-	else if (!keys[SDLK_o])
-	{
-		mWasKeyDownO = false;
+		return keys;
 	}
 	
 	
@@ -105,87 +102,116 @@ KeyArray* RocEyeInput::handleKeyboard(KeyArray* keys)
 	{
 		mHandler->rotate(InputHandler::ROT_LEFT, false);
 	}
-	if (keys[SDLK_SPACE])
-	{
-		mHandler->resetCamera();
-	}
 	
-	if (keys[SDLK_c])
-	{
-		if (!mWasKeyDownC && (keys[SDLK_LSHIFT] || keys[SDLK_RSHIFT]))
-		{
-			mHandler->toggleObjectLock();
-		}
-		else
-		{
-			mHandler->centerObject();
-		}
-		mWasKeyDownC = true;
-	}
-	else
-	{
-		mWasKeyDownC = false;
-	}
-	
-	if (keys[SDLK_h])
-	{
-		if (!mWasKeyDownH && (keys[SDLK_LSHIFT] || keys[SDLK_RSHIFT]))
-		{
-			mHandler->toggleHorizonLock();
-		}
-		else
-		{
-			mHandler->levelHorizon();
-		}
-		mWasKeyDownH = true;
-	}
-	else
-	{
-		mWasKeyDownH = false;
-	}
-	
-	if (keys[SDLK_g] && !mWasKeyDownG)
-	{
-		mHandler->toggleGridLines(keys[SDLK_LSHIFT] || keys[SDLK_RSHIFT]);
-		mWasKeyDownG = true;
-	}
-	else if (!keys[SDLK_g])
-	{
-		mWasKeyDownG = false;
-	}
-	
-	if (keys[SDLK_t] && !mWasKeyDownT)
-	{
-		mHandler->toggleMovementTarget();
-		mWasKeyDownT = true;
-	}
-	else if (!keys[SDLK_t])
-	{
-		mWasKeyDownT = false;
-	}
-	
-	if (keys[SDLK_RETURN] && !mWasKeyDownENTER)
-	{
-		mHandler->onPrimaryPointerDown();
-		mWasKeyDownENTER = true;
-	}
-	else if (!keys[SDLK_RETURN] && mWasKeyDownENTER)
-	{
-		mHandler->onPrimaryPointerUp();
-		mWasKeyDownENTER = false;
-	}
-	
-	if (keys[SDLK_l] && !mWasKeyDownL)
-	{
-		mHandler->toggleSnapToGrid();
-		mWasKeyDownL = true;
-	}
-	else if (!keys[SDLK_l])
-	{
-		mWasKeyDownL = false;
-	}
 	
 	return keys;
+}
+
+bool RocEyeInput::onKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode)
+{
+	bool shift = mod & (KMOD_LSHIFT | KMOD_RSHIFT);
+	
+	static const SDLKey consoleToggle = SDLK_F1;
+	
+	if (mHandler->isConsoleActive() && sym != consoleToggle) //MAKE SURE that you catch the consoleToggle here
+	{
+		return mHandler->sendConsoleMessage(SDL_GetKeyName(sym)); //return so that we don't send spurious signals to the input handler
+	}
+	
+	switch (sym)
+	{
+		case SDLK_c:
+		{
+			if (shift)
+			{
+				mHandler->toggleObjectLock();
+			}
+			else
+			{
+				mHandler->centerObject();
+			}
+			break;
+		}
+		case SDLK_g:
+		{
+			mHandler->toggleGridLines(shift);
+			break;
+		}
+		case SDLK_h:
+		{
+			if (shift)
+			{
+				mHandler->toggleHorizonLock();
+			}
+			else
+			{
+				mHandler->levelHorizon();
+			}
+			break;
+		}
+		case SDLK_l:
+		{
+			mHandler->toggleSnapToGrid();
+			break;
+		}
+		case SDLK_o:
+		{
+			mHandler->toggleObjectMode();
+			break;
+		}
+		case SDLK_t:
+		{
+			mHandler->toggleMovementTarget();
+			break;
+		}
+		case SDLK_RETURN:
+		{
+			mHandler->onPrimaryPointerDown();
+			break;
+		}
+		case SDLK_SPACE:
+		{
+			mHandler->resetCamera();
+			break;
+		}
+		case SDLK_SLASH:
+		{
+			mHandler->activateConsole();
+			mHandler->sendConsoleMessage(SDL_GetKeyName(sym)); //be sure to inject the keypress to the console, as well
+			break;
+		}
+		case consoleToggle:
+		{
+			mHandler->toggleConsole();
+			break;
+		}
+		default:
+		{
+			//un-implemented key if we get here
+			break;
+		}
+	}
+	
+	return true;
+}
+
+bool RocEyeInput::onKeyUp(SDLKey sym, SDLMod mod, Uint16 unicode)
+{
+	switch (sym)
+	{
+		case SDLK_RETURN:
+		{
+			mHandler->onPrimaryPointerUp();
+			break;
+		}
+		default:
+		{
+			//un-implemented key
+			break;
+		}
+	}
+	
+	return true;
 }
 
 bool RocEyeInput::handleMouse(void)

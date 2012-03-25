@@ -28,7 +28,15 @@ G: turn on/off gridlines centered on the camera
 Shift-G: turn on/off gridlines centered on the target
 T: toggle whether you're moving the camera or the selected object, when one is selected
 L: toggle whether the selected object snaps to the grid
+/: bring up the console window
+F1: toggle the console window
 Escape: exit
+
+Console commands:
+=================
+/setnumcells [number]: sets the number of cells per direction displayed when you toggle the grid on. Number >= 0. Protip: number <= 10 as well, if you don't want single-digit (or lower!) FPS.
+
+/goto [num] [num] [num]: go to a specific point in 3D space.
 
 
 License:

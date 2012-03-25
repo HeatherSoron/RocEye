@@ -4,6 +4,7 @@
 #include <Ogre.h>
 #include "GridLineFactory.h"
 #include "ObjectManager.h"
+#include "RocEyeGui.h"
 
 class InputHandler
 {
@@ -29,6 +30,14 @@ public:
 	
 	virtual void setCamera(Ogre::Camera* mCamera);
 	virtual void setObjectManager(ObjectManager* manager) { mObjectMgr = manager; };
+	virtual void setGui(RocEyeGui* gui) { mGui = gui; addConsoleCommands(); };
+	
+	virtual void activateConsole(void) { mGui->activateConsole(); };
+	virtual bool isConsoleActive(void) { return mGui->isConsoleActive(); };
+	virtual bool sendConsoleMessage(Ogre::String keyName) { return mGui->sendConsoleMessage(keyName); };
+	virtual void toggleConsole(void) { mGui->toggleConsole(); };
+	
+	virtual void setCameraPosition(Ogre::Vector3 point) { mCamera->getParentSceneNode()->setPosition(point); };
 	
 	virtual void translate(Direction dir);
 	virtual void rotate(Direction rot, bool isMouse = false, float mult = 1);
@@ -53,6 +62,8 @@ public:
 	virtual void toggleObjectMode(void);
 	
 	virtual void toggleGridLines(bool centerOnTarget);
+	virtual void setCellNumber(unsigned int count) { mGridLineFactory->setCellNumber(count); };
+	
 	
 	virtual void execute(void);
 	
@@ -67,6 +78,8 @@ protected:
 	virtual void tryPickObjects(void);
 	virtual void selectObject(Ogre::SceneNode* object);
 	virtual void deselectObject(void);
+	
+	virtual void addConsoleCommands(void);
 	
 	bool mPointerDown;
 	bool mPickingMeshes;
@@ -89,5 +102,7 @@ protected:
 	RocEyeObject* mSelectedObject;
 	
 	GridLineFactory* mGridLineFactory;
+	
+	RocEyeGui* mGui;
 };
 #endif

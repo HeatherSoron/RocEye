@@ -177,6 +177,7 @@ bool RocEyeInput::onKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode)
 		case SDLK_SLASH:
 		{
 			mHandler->activateConsole();
+			mHandler->sendConsoleMessage(SDL_GetKeyName(sym)); //be sure to inject the keypress to the console, as well
 			break;
 		}
 		case consoleToggle:

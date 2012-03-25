@@ -30,9 +30,16 @@ KeyArray* RocEyeInput::handleKeyboard(KeyArray* keys)
 		return NULL;
 	}
 	
+	
 	if (!keys)
 	{
 		keys = SDL_GetKeyState(NULL);
+	}
+	
+	
+	if (mHandler->isConsoleActive())
+	{
+		return keys;
 	}
 	
 	
@@ -104,6 +111,13 @@ bool RocEyeInput::onKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode)
 {
 	bool shift = mod & (KMOD_LSHIFT | KMOD_RSHIFT);
 	
+	static const SDLKey consoleToggle = SDLK_F1;
+	
+	if (mHandler->isConsoleActive() && sym != consoleToggle) //MAKE SURE that you catch the consoleToggle here
+	{
+		return mHandler->sendConsoleMessage(SDL_GetKeyName(sym)); //return so that we don't send spurious signals to the input handler
+	}
+	
 	switch (sym)
 	{
 		case SDLK_c:
@@ -163,17 +177,18 @@ bool RocEyeInput::onKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode)
 		case SDLK_SLASH:
 		{
 			mHandler->activateConsole();
+			break;
+		}
+		case consoleToggle:
+		{
+			mHandler->toggleConsole();
+			break;
 		}
 		default:
 		{
 			//un-implemented key if we get here
 			break;
 		}
-	}
-	
-	if (mHandler->isConsoleActive())
-	{
-		mHandler->sendConsoleMessage(SDL_GetKeyName(sym));
 	}
 	
 	return true;

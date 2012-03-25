@@ -16,6 +16,7 @@ public:
 	virtual void activateConsole(void) { mConsole.setVisible(true); };
 	virtual bool isConsoleActive(void) { return mConsole.isVisible(); };
 	virtual bool sendConsoleMessage(Ogre::String keyName) { mConsole.onKeyPressed(keyName); return true; };
+	virtual void toggleConsole(void) { mConsole.setVisible(!isConsoleActive()); };
 	
 protected:
   Gorilla::Silverback*    mSilverback;

@@ -32,6 +32,7 @@ void RocEyeGui::initialise(Ogre::SceneManager* sceneMgr, Ogre::Viewport* viewpor
 	mHUDLayer = mHUD->createLayer();
 	
 	mConsole.init(mHUD);
+	mConsole.setVisible(false);
 	
 	mCrosshairLayer = mHUD->createLayer();
 	mCrosshair = mCrosshairLayer->createRectangle((mViewport->getActualWidth() * 0.5f) - 11, (mViewport->getActualHeight() * 0.5f) - 11, 22, 22);

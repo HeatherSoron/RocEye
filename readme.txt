@@ -28,6 +28,8 @@ G: turn on/off gridlines centered on the camera
 Shift-G: turn on/off gridlines centered on the target
 T: toggle whether you're moving the camera or the selected object, when one is selected
 L: toggle whether the selected object snaps to the grid
+/: bring up the console window
+F1: toggle the console window
 Escape: exit
 
 

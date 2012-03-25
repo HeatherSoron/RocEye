@@ -35,6 +35,7 @@ public:
 	virtual void activateConsole(void) { mGui->activateConsole(); };
 	virtual bool isConsoleActive(void) { return mGui->isConsoleActive(); };
 	virtual bool sendConsoleMessage(Ogre::String keyName) { return mGui->sendConsoleMessage(keyName); };
+	virtual void toggleConsole(void) { mGui->toggleConsole(); };
 	
 	virtual void translate(Direction dir);
 	virtual void rotate(Direction rot, bool isMouse = false, float mult = 1);

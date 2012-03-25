@@ -133,7 +133,7 @@ void OgreConsole::onKeyPressed(const Ogre::String keyName)
  
  else
  {
- 	if (keyName.size() == 2) //make sure we've got a single char
+ 	if (keyName.size() == 1) //make sure we've got a single char
  	{
        for(unsigned int c=0;c<sizeof(legalchars);c++){
           if(legalchars[c]==keyName[0]){

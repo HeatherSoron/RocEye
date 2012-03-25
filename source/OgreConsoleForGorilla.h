@@ -22,7 +22,6 @@
 */
 
 #include "OGRE/Ogre.h"
-#include "OIS/OIS.h"
 #include "Gorilla.h"
 
 typedef void (*OgreConsoleFunctionPtr)(Ogre::StringVector&);
@@ -47,7 +46,7 @@ class OgreConsole : public Ogre::Singleton<OgreConsole>, Ogre::FrameListener, Og
     virtual bool frameStarted(const Ogre::FrameEvent &evt);
     virtual bool frameEnded(const Ogre::FrameEvent &evt);
     
-    void onKeyPressed(const OIS::KeyEvent &arg);
+    void onKeyPressed(const Ogre::String keyName);
     
     void addCommand(const Ogre::String &command, OgreConsoleFunctionPtr);
     void removeCommand(const Ogre::String &command);

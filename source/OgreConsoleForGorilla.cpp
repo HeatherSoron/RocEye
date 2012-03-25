@@ -76,13 +76,13 @@ void OgreConsole::shutdown()
 }
 
 
-void OgreConsole::onKeyPressed(const OIS::KeyEvent &arg)
+void OgreConsole::onKeyPressed(const Ogre::String keyName)
 {
  
  if(!mIsVisible)
   return;
 
- if (arg.key == OIS::KC_RETURN || arg.key == OIS::KC_NUMPADENTER)
+ if (keyName == "return" || keyName == "enter")
  {
   
   print("%3> " + prompt + "%R");
@@ -106,7 +106,7 @@ void OgreConsole::onKeyPressed(const OIS::KeyEvent &arg)
   }
  }
 
- else if (arg.key == OIS::KC_BACK)
+ else if (keyName == "backspace")
  {
   if (prompt.size())
   {
@@ -114,14 +114,14 @@ void OgreConsole::onKeyPressed(const OIS::KeyEvent &arg)
    mUpdatePrompt = true;
   }
  }
- else if (arg.key == OIS::KC_PGUP)
+ else if (keyName == "page up")
  {
     if(mStartline>0)
        mStartline--;
   mUpdateConsole = true;
  }
 
- else if (arg.key == OIS::KC_PGDOWN)
+ else if (keyName == "page down")
  {
     if(mStartline<lines.size())
        mStartline++;
@@ -130,14 +130,13 @@ void OgreConsole::onKeyPressed(const OIS::KeyEvent &arg)
  
  else
  {
-    for(unsigned int c=0;c<sizeof(legalchars);c++){
-       //note: the static cast below may or may not be the best way to handle
-       //this comparison, but it did at least make gcc happy that we weren't
-       //doing a signed/unsigned comparison. Plus, that SEEMS to be what's
-       //intended, anyway.
-       if(legalchars[c]==static_cast<char>(arg.text)){
-          prompt+=arg.text;
-          break;
+ 	if (keyName.size() == 2) //make sure we've got a single char
+ 	{
+       for(unsigned int c=0;c<sizeof(legalchars);c++){
+          if(legalchars[c]==keyName[0]){
+             prompt+=keyName[0];
+             break;
+          }
        }
     }
    mUpdatePrompt = true;

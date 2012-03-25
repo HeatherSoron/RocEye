@@ -1,6 +1,8 @@
 #include "RocEyeInput.h"
+#include "InputParser/InteractionState.h"
 
 RocEyeInput::RocEyeInput(int width, int height) : BaseAppInput(),
+	mController(__RocEye__::InteractionBridgeDictionary::InitializeInput()),
 	mWindowWidth(width),
 	mWindowHeight(height),
 	mHandler(NULL),
@@ -16,6 +18,7 @@ RocEyeInput::RocEyeInput(int width, int height) : BaseAppInput(),
 
 RocEyeInput::~RocEyeInput(void)
 {
+	delete(mController);
 }
 
 void RocEyeInput::setHandler(InputHandler* handler)
@@ -30,10 +33,15 @@ KeyArray* RocEyeInput::handleKeyboard(KeyArray* keys)
 		return NULL;
 	}
 	
+	
+	__RocEye__::InteractionState state=__RocEye__::InteractionState(mWindowWidth,mWindowHeight);
+	mController->Execute(mHandler,&state);
+	
 	if (!keys)
 	{
 		keys = SDL_GetKeyState(NULL);
 	}
+	return keys;
 	
 	if (keys[SDLK_o] && !mWasKeyDownO)
 	{

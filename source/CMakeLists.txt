@@ -111,6 +111,16 @@ endif()
 
 set(HDRS
 	./Gorilla.h
+	./InputParser/BoolStack.h
+	./InputParser/InputMethodParser.h
+	./InputParser/InputMethodTokens.h
+	./InputParser/InteractionBooleanExpression.h
+	./InputParser/InteractionBooleanNode.h
+	./InputParser/InteractionBridgeFunctions.h
+	./InputParser/InteractionBridge.h
+	./InputParser/InteractionController.h
+	./InputParser/InteractionOperatorNode.h
+	./InputParser/InteractionState.h
 	./BaseAppInput.h
 	./OgreBaseApp.h
 	./GridHelper.h
@@ -126,6 +136,13 @@ set(HDRS
  
 set(SRCS
 	./Gorilla.cpp
+	./InputParser/BoolStack.cpp
+	./InputParser/InputMethodParser.cpp
+	./InputParser/InteractionBooleanExpression.cpp
+	./InputParser/InteractionBooleanNode.cpp
+	./InputParser/InteractionBridge.cpp
+	./InputParser/InteractionController.cpp
+	./InputParser/InteractionOperatorNode.cpp
 	./BaseAppInput.cpp
 	./OgreBaseApp.cpp
 	./GridHelper.cpp

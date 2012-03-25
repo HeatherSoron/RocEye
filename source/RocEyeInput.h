@@ -3,6 +3,8 @@
 
 #include "BaseAppInput.h"
 #include "InputHandler.h"
+#include "InputParser/InteractionBridge.h"
+#include "InputParser/InteractionController.h"
 
 class RocEyeInput : public BaseAppInput
 {
@@ -20,6 +22,8 @@ protected:
 	//just going to overwrite the left button for now
 	virtual bool fireLeftMouseDown(void);
 	virtual bool fireLeftMouseUp(void);
+	
+	__RocEye__::MasterInteractionController* mController;
 	
 	int mWindowWidth;
 	int mWindowHeight;

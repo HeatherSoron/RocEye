@@ -171,6 +171,37 @@ void OgreBaseApp::setupInput(void)
 	mInput = new BaseAppInput();
 }
 
+bool OgreBaseApp::frameStarted(const Ogre::FrameEvent& evt)
+{
+	if (mWindow->isClosed())
+	{
+		return false;
+	}
+	
+	if (! mInput->runFrame() )
+	{
+		return false;
+	}
+	
+	return true;
+}
+
+
+bool OgreBaseApp::frameEnded(const Ogre::FrameEvent& evt)
+{
+	if (mWindow->isClosed())
+	{
+		return false;
+	}
+	
+	if (! mInput->runFrame() )
+	{
+		return false;
+	}
+	
+	return true;
+}
+
 bool OgreBaseApp::frameRenderingQueued(const Ogre::FrameEvent& evt)
 {
 	if (mWindow->isClosed())

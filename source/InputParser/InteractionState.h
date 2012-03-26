@@ -12,10 +12,17 @@ public:
 	int mouse_dx;
 	int mouse_dy; // Note: This is internally normalized to up as positive!
 	
-	
 	InteractionState(int screenWidth,int screenHeight) // ToDo use a Dimension. Or a global!
 	{
 		keys=SDL_GetKeyState(NULL);
+		mouseButtons=SDL_GetMouseState(&mouse_dx,&mouse_dy);
+		mouse_dx=screenWidth-mouse_dx;
+		mouse_dy-=screenHeight;
+	}
+	
+	InteractionState(Uint8* keyAr, int screenWidth,int screenHeight) // ToDo use a Dimension. Or a global!
+	{
+		keys=keyAr;
 		mouseButtons=SDL_GetMouseState(&mouse_dx,&mouse_dy);
 		mouse_dx=screenWidth-mouse_dx;
 		mouse_dy-=screenHeight;

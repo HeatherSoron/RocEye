@@ -4,30 +4,28 @@
 #include "InputMethodTokens.h"
 #include <iostream>
 
+#include "../KeyboardState.h"
+
+#define GENERATE_KEYBOARD_NODE(name) else if((m=s.find(name##_TOKEN))==0)_nodes[i]=new InteractionBooleanNodeKeyboard(s.substr(m+name##_TOKEN_LENGTH,s.size()-m-name##_TOKEN_LENGTH-1),KeyboardState::name##_MODE)
 namespace __RocEye__
 {
 	InteractionBooleanExpression::InteractionBooleanExpression(std::vector<std::string>* vec):
-		_len(vec->size()),
-		_nodes(new InteractionNode*[_len]),
-		_usesKeyboard(false),
-		_usesMouse(false)
+		_len(vec->size())
 	{
+		_nodes=new InteractionNode*[_len];
 		int m;
-		for(unsigned int i=0;i<vec->size();++i)
+		for(unsigned int i=0;i<_len;++i)
 		{
 			std::string s=vec->at(i);
 			if(s==AND_TOKEN)
 				_nodes[i]=new InteractionOperatorAndNode();
 			else if(s==OR_TOKEN)
 				_nodes[i]=new InteractionOperatorOrNode();
-			else if((m=s.find(MODIFIER_KEY_TOKEN))==0){
-				_usesKeyboard=true;
-				_nodes[i]=new InteractionBooleanNodeKeyboard(s.substr(m+12,s.size()-m-13),true);// true == modifier
-			}
-			else if((m=s.find(KEY_TOKEN))==0){
-				_usesKeyboard=true;
-				_nodes[i]=new InteractionBooleanNodeKeyboard(s.substr(m+4,s.size()-m-5));
-			}
+			GENERATE_KEYBOARD_NODE(MODIFIER_KEY);
+			GENERATE_KEYBOARD_NODE(NO_MODIFIER_KEY);
+			GENERATE_KEYBOARD_NODE(KEY_UP);
+			GENERATE_KEYBOARD_NODE(KEY_DOWN);
+			GENERATE_KEYBOARD_NODE(KEY_REPEAT);
 			else{
 				// THIS SHOULDN'T HAPPEN AND IS BAD
 				std::cerr << "Empty node in InteractionBooleanExpression. Later code is likely to crash." << std::endl;

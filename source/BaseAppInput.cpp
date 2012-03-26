@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-BaseAppInput::BaseAppInput(void) : mWasLeftDown(false), mWasRightDown(false), mWasMiddleDown(false)
+BaseAppInput::BaseAppInput(void) : mKeyState(KeyboardState()), mWasLeftDown(false), mWasRightDown(false), mWasMiddleDown(false)
 {
 }
 
@@ -24,7 +24,7 @@ bool BaseAppInput::runFrame(void)
 	{
 		return false;
 	}
-	
+	mKeyState.UpdateBeforeFrame();
 	SDL_Event evt;
 	while (SDL_PollEvent(&evt)) //need to make sure it's not null
 	{
@@ -33,10 +33,9 @@ bool BaseAppInput::runFrame(void)
 			return false;
 		}
 	}
-	
+	bool ret=runFrameInternal();
 	frameDone();
-	
-	return true;
+	return ret;
 }
 
 bool BaseAppInput::processEvent(SDL_Event* evt)
@@ -89,12 +88,14 @@ bool BaseAppInput::processEvent(SDL_Event* evt)
 		
 		case SDL_KEYDOWN:
 		{
+			mKeyState.UpdateForKeyDown(evt->key.keysym.sym);
 			return onKeyDown(evt->key.keysym.sym, evt->key.keysym.mod, evt->key.keysym.unicode);
 			break;
 		}
 		
 		case SDL_KEYUP:
 		{
+			mKeyState.UpdateForKeyUp(evt->key.keysym.sym);
 			return onKeyUp(evt->key.keysym.sym, evt->key.keysym.mod, evt->key.keysym.unicode);
 			break;
 		}

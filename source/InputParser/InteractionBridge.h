@@ -15,15 +15,15 @@
 #include "../InputHandler.h"
 #include "InputMethodParser.h"
 
-#define INTERACTION_BRIDGE_FUNCTION_POINTER(name) void (*name)(const InteractionController*,InputHandler*,const InteractionState*)
+#define INTERACTION_BRIDGE_FUNCTION_POINTER(name) void (*name)(InputHandler*,const InteractionState*)
 
 namespace __RocEye__
 {
 class InteractionBridge{
 public:
 // Do not move these!
-#define INTERACTION_FUNCTION(name,func,arg)   static void name(const InteractionController* p,InputHandler* h,const InteractionState* s){h->func(arg);}
-#define INTERACTION_FUNCTION_ROTATE(name,arg) static void name(const InteractionController* p,InputHandler* h,const InteractionState* s){h->rotate(arg,p->UsesMouse(),1/*p->ProjectMouseDelta(s)*/);}
+#define INTERACTION_FUNCTION(name,func,arg)   static void name(InputHandler* h,const InteractionState* s){h->func(arg);}
+#define INTERACTION_FUNCTION_ROTATE(name,arg) static void name(InputHandler* h,const InteractionState* s){h->rotate(arg,false,1);}
 	// todo: FIX the rotate above.
 #include "InteractionBridgeFunctions.h"
 	
@@ -40,9 +40,9 @@ public:
 	}
 	~InteractionBridgeNameMap(){}
 	
-	bool Execute(const InteractionController* i,InputHandler* h,const InteractionState* s)
+	bool Execute(InputHandler* h,const InteractionState* s)
 	{
-		(*_func)(i,h,s);
+		(*_func)(h,s);
 		return true;
 	}
 	std::string Name(){return *_name;}

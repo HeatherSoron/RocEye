@@ -17,15 +17,14 @@ public:
 	~InteractionController();
 	
 	inline bool IsActive(const InteractionState* state) const{return _exp->Evaluate(state);}
-	bool Execute(InputHandler* h,const InteractionState* s);
+	bool Execute(InputHandler* h,const InteractionState* s,bool m=false);
 	
-	inline bool UsesMouse() const{return _exp->UsesMouse();}
-	inline bool UsesKeyboard() const{return _exp->UsesKeyboard();}
-	
-	inline bool IsValid(){return !!_bridge && !!_exp;}
+	inline bool IsValid(){return !!_bridge && !!_exp;} // booleaniffy them 
 	
 	float ProjectMouseDelta(const InteractionState*) const; // This flattens the 2D mouse move into a direction along the direction this event cares about
+	std::string name;
 private:
+	
 	InteractionBooleanExpression* _exp;
 	InteractionBridgeNameMap* _bridge;
 	
@@ -40,6 +39,13 @@ public:
 		for(unsigned int i=0;i<_len;++i)
 			ret&=_controllers[i]->Execute(h,s);
 		return ret;
+	}
+	bool ExecuteIfNameMatches(const char* name,InputHandler* h,const InteractionState* s){
+		for(unsigned int i=0;i<_len;++i)
+			if(_controllers[i]->name==name){
+				return _controllers[i]->Execute(h,s,true);
+			}
+		return false;
 	}
 	~MasterInteractionController()
 	{

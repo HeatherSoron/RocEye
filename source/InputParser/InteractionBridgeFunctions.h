@@ -33,4 +33,14 @@ INTERACTION_FUNCTION(LevelHorizon,levelHorizon,)
 INTERACTION_FUNCTION(ToggleLocalGridLines,toggleGridLines,false)
 INTERACTION_FUNCTION(ToggleObjectGridLines,toggleGridLines,true)
 
+INTERACTION_FUNCTION(ToggleSnapToGrid,toggleSnapToGrid,)
+INTERACTION_FUNCTION(ToggleObjectMode,toggleObjectMode,)
+
 INTERACTION_FUNCTION(ToggleMovementTarget,toggleMovementTarget,)
+
+INTERACTION_FUNCTION(PrimaryPointerUp,onPrimaryPointerUp,)
+INTERACTION_FUNCTION(PrimaryPointerDown,onPrimaryPointerDown,)
+
+INTERACTION_FUNCTION(ActivateConsole,activateConsole,)
+
+INTERACTION_FUNCTION(ToggleConsole,toggleConsole,)

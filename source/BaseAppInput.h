@@ -26,6 +26,8 @@
 #include <SDL/SDL_mouse.h>
 #endif
 
+#include "KeyboardState.h"
+
 typedef Uint8 KeyArray; // to make return values readable
 
 class BaseAppInput
@@ -34,8 +36,11 @@ public:
 	BaseAppInput(void);
 	virtual ~BaseAppInput(void);
 	virtual void setup(void);
-	virtual bool runFrame(void);
+	bool runFrame(void);
 protected:
+	virtual bool runFrameInternal(void){return true;};
+	// Inherited classes should re-implement this method to get code into runFrame.
+	// Re-implementing runFrame, as originally designed, did not work due to finicky inheritance issues.
 	
 	virtual bool processEvent(SDL_Event* evt);
 	
@@ -50,14 +55,14 @@ protected:
 	virtual bool fireMiddleMouseDown(void);
 	virtual bool fireMiddleMouseUp(void);
 	
-	//the functions below are all pure virtual
 	virtual bool onKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode) { return true; };
 	virtual bool onKeyUp(SDLKey sym, SDLMod mod, Uint16 unicode) { return true; };
 	
-	
+	KeyboardState mKeyState;
 	bool mWasLeftDown;
 	bool mWasRightDown;
 	bool mWasMiddleDown;
 };
+
 
 #endif

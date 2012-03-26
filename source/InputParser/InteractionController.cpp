@@ -5,9 +5,10 @@
 
 namespace __RocEye__
 {	
-	InteractionController::InteractionController(std::string name,InteractionBooleanExpression* ibe,InteractionBridgeDictionary* dict):
+	InteractionController::InteractionController(std::string inname,InteractionBooleanExpression* ibe,InteractionBridgeDictionary* dict):
+		name(inname),
 		_exp(ibe),
-		_bridge(dict->Find(&name))
+		_bridge(dict->Find(&inname))
 	{
 		if(_bridge==NULL)
 			std::cerr << "Error: Cannot find command " << name << std::endl;
@@ -19,13 +20,13 @@ namespace __RocEye__
 		return 0.0f;
 	}
 
-	bool InteractionController::Execute(InputHandler* h,const InteractionState* s)
+	bool InteractionController::Execute(InputHandler* h,const InteractionState* s,bool matches)
 	{
 		if(!_bridge)
 			return false;
 		if(_exp->Evaluate(s))
-		   return _bridge->Execute(this,h,s);
-		return true;
+		   return _bridge->Execute(h,s);
+		return !matches;
 	}
 //	bool InteractionController::IsValid()
 } // namespace __RocEye__

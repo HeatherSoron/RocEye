@@ -17,6 +17,17 @@ void setNumCells(Ogre::StringVector& vec)
 		OgreConsole::getSingleton().print("Invalid arguments: too few");
 	}
 }
+void exitConsole(Ogre::StringVector& vec)
+{
+	if (vec.size() == 1)
+	{
+		OgreConsole::getSingleton().setVisible(false);
+	}
+	else
+	{
+		OgreConsole::getSingleton().print("Invalid arguments: too many");
+	}
+}
 
 InputHandler::InputHandler(void) :
 	mPointerDown(false),
@@ -372,4 +383,5 @@ void InputHandler::resetState(void)
 void InputHandler::addConsoleCommands(void)
 {
 	mGui->addConsoleCommand("/setnumcells", setNumCells);
+	mGui->addConsoleCommand("/exit", exitConsole);
 }

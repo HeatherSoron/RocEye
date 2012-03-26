@@ -26,21 +26,14 @@ protected:
 	virtual bool onKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode);
 	virtual bool onKeyUp(SDLKey sym, SDLMod mod, Uint16 unicode);
 	
+	virtual bool runFrameInternal();
+	
 	__RocEye__::MasterInteractionController* mController;
 	
 	int mWindowWidth;
 	int mWindowHeight;
 	
 	InputHandler* mHandler;
-	
-	bool mWasKeyDownC;
-	bool mWasKeyDownG;
-	bool mWasKeyDownH;
-	bool mWasKeyDownL;
-	bool mWasKeyDownO;
-	bool mWasKeyDownT;
-	bool mWasKeyDownENTER;
-	
 };
 
 #endif

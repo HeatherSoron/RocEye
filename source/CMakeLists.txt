@@ -121,6 +121,7 @@ set(HDRS
 	./InputParser/InteractionController.h
 	./InputParser/InteractionOperatorNode.h
 	./InputParser/InteractionState.h
+	./KeyboardState.h
 	./OgreConsoleForGorilla.h
 	./BaseAppInput.h
 	./OgreBaseApp.h

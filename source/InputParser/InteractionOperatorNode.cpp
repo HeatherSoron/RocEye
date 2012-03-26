@@ -1,6 +1,5 @@
 #include "InteractionOperatorNode.h"   
 
-
 namespace __RocEye__
 {
 	bool InteractionOperatorAndNode::Evaluate(const InteractionState*,bool a,bool b)

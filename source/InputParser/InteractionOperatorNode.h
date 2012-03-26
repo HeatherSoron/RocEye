@@ -10,17 +10,17 @@ class InteractionNode
 public:
 	InteractionNode(){}
 	virtual ~InteractionNode(){}
-	virtual bool Evaluate(const InteractionState*,bool,bool){return false;}
-	virtual bool IsOperator() const{return false;}
+	virtual bool Evaluate(const InteractionState*,bool,bool)=0;
+	virtual bool IsOperator() const=0;
 }; // class InteractionNode 
 	
 class InteractionOperatorNode: public InteractionNode
 {
 public:
 	InteractionOperatorNode():InteractionNode(){}
-	virtual bool Evaluate(const InteractionState*,bool,bool){return false;}
+	virtual bool Evaluate(const InteractionState*,bool,bool)=0;
 	virtual ~InteractionOperatorNode(){}
-	bool IsOperator(){return true;}
+	virtual bool IsOperator() const{return true;}
 }; // class InteractionOperatorNode
 	
 	

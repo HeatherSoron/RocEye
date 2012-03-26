@@ -3,8 +3,17 @@
 
 #define AND_TOKEN "&&"
 #define OR_TOKEN "||"
-#define KEY_TOKEN "KEY("
+#define KEY_UP_TOKEN "KEYUP("
+#define KEY_UP_TOKEN_LENGTH (sizeof(KEY_UP_TOKEN)-1)
+#define KEY_DOWN_TOKEN "KEYDOWN("
+#define KEY_DOWN_TOKEN_LENGTH (sizeof(KEY_DOWN_TOKEN)-1)
+#define KEY_REPEAT_TOKEN "KEYREPEAT("
+#define KEY_REPEAT_TOKEN_LENGTH (sizeof(KEY_REPEAT_TOKEN)-1)
 #define MODIFIER_KEY_TOKEN "MODIFIERKEY("
+#define MODIFIER_KEY_TOKEN_LENGTH (sizeof(MODIFIER_KEY_TOKEN)-1)
+#define NO_MODIFIER_KEY_TOKEN "NOMODIFIERKEY("
+#define NO_MODIFIER_KEY_TOKEN_LENGTH (sizeof(NO_MODIFIER_KEY_TOKEN)-1)
+// sizeof is compile time, and counts the null which I don't want, hence -1.
 
 
 #endif // INPUT_METHOD_TOKENS_H

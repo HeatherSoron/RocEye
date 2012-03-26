@@ -24,7 +24,7 @@ public:
 	MasterInteractionController* ParseFile(InteractionBridgeDictionary* map);
 	
 private:
-	static void CloneInto(std::vector<std::string>*,unsigned int,const char*,const char*);
+	static void CloneInto(std::vector<std::string>*,unsigned int,const char*,const char*,const char*);
 	InteractionController* ParseLine(std::string,InteractionBridgeDictionary*);
 	
 	std::ifstream ConfigFile;

@@ -10,19 +10,19 @@ class InteractionBooleanNode: public InteractionNode
 {
 public:
 	InteractionBooleanNode():InteractionNode(){}
-	virtual bool Evaluate(const InteractionState*){return false;}
+	virtual bool Evaluate(const InteractionState*,bool,bool)=0;
 	virtual ~InteractionBooleanNode(){}
-	inline bool IsOperator(){return false;}
+	inline bool IsOperator() const{return false;}
 }; // class InteractionBooleanNode
 
 class  InteractionBooleanNodeKeyboard: public InteractionBooleanNode
 {
 public:
-	InteractionBooleanNodeKeyboard(std::string);
-	InteractionBooleanNodeKeyboard(std::string,bool);	
+	InteractionBooleanNodeKeyboard(std::string,Uint8);
 	bool Evaluate(const InteractionState*,bool,bool);
 private:
 	Uint16 _key;
+	Uint8 _mode;
 	
 
 }; // class  InteractionBooleanNodeKeyboard

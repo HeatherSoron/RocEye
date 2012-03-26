@@ -22,12 +22,10 @@ OgreBaseApp::OgreBaseApp(void)
 //-------------------------------------------------------------------------------------
 OgreBaseApp::~OgreBaseApp(void)
 {
-/*
-	Ogre::WindowEventUtilities::removeWindowEventListener(mWindow, this);
-	windowClosed(mWindow);
-*/
-	delete mRoot;
 	delete mInput;
+	
+	//make sure that the root is the last thing we delete
+	delete mRoot;
 	
 	SDL_Quit();
 }
